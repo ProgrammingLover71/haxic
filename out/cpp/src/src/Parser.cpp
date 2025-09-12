@@ -4,14 +4,23 @@
 #ifndef INCLUDED_Std
 #include <Std.h>
 #endif
+#ifndef INCLUDED_haxe_Log
+#include <haxe/Log.h>
+#endif
 #ifndef INCLUDED_src_Parser
 #include <src/Parser.h>
+#endif
+#ifndef INCLUDED_src_ScopeState
+#include <src/ScopeState.h>
 #endif
 #ifndef INCLUDED_src_Token
 #include <src/Token.h>
 #endif
 #ifndef INCLUDED_src_TokenType
 #include <src/TokenType.h>
+#endif
+#ifndef INCLUDED_src_ast_ArrayExpr
+#include <src/ast/ArrayExpr.h>
 #endif
 #ifndef INCLUDED_src_ast_BinaryExpr
 #include <src/ast/BinaryExpr.h>
@@ -22,14 +31,26 @@
 #ifndef INCLUDED_src_ast_BooleanExpr
 #include <src/ast/BooleanExpr.h>
 #endif
+#ifndef INCLUDED_src_ast_CallExpr
+#include <src/ast/CallExpr.h>
+#endif
 #ifndef INCLUDED_src_ast_Expr
 #include <src/ast/Expr.h>
 #endif
 #ifndef INCLUDED_src_ast_ExprStmt
 #include <src/ast/ExprStmt.h>
 #endif
+#ifndef INCLUDED_src_ast_ForeachStmt
+#include <src/ast/ForeachStmt.h>
+#endif
+#ifndef INCLUDED_src_ast_FunctionStmt
+#include <src/ast/FunctionStmt.h>
+#endif
 #ifndef INCLUDED_src_ast_IfStmt
 #include <src/ast/IfStmt.h>
+#endif
+#ifndef INCLUDED_src_ast_IndexExpr
+#include <src/ast/IndexExpr.h>
 #endif
 #ifndef INCLUDED_src_ast_InputStmt
 #include <src/ast/InputStmt.h>
@@ -40,11 +61,20 @@
 #ifndef INCLUDED_src_ast_Node
 #include <src/ast/Node.h>
 #endif
+#ifndef INCLUDED_src_ast_NullExpr
+#include <src/ast/NullExpr.h>
+#endif
 #ifndef INCLUDED_src_ast_NumberExpr
 #include <src/ast/NumberExpr.h>
 #endif
+#ifndef INCLUDED_src_ast_Parameter
+#include <src/ast/Parameter.h>
+#endif
 #ifndef INCLUDED_src_ast_PrintStmt
 #include <src/ast/PrintStmt.h>
+#endif
+#ifndef INCLUDED_src_ast_ReturnStmt
+#include <src/ast/ReturnStmt.h>
 #endif
 #ifndef INCLUDED_src_ast_Stmt
 #include <src/ast/Stmt.h>
@@ -62,44 +92,56 @@
 #include <src/ast/WhileStmt.h>
 #endif
 
-HX_DEFINE_STACK_FRAME(_hx_pos_274b98ea9fd940c5_5_new,"src.Parser","new",0x68619ebb,"src.Parser.new","src/Parser.hx",5,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_15_parse,"src.Parser","parse",0x9f37eb4e,"src.Parser.parse","src/Parser.hx",15,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_25_parsePrintStatement,"src.Parser","parsePrintStatement",0xd2789e30,"src.Parser.parsePrintStatement","src/Parser.hx",25,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_33_parseInputStatement,"src.Parser","parseInputStatement",0xbb0a4eb3,"src.Parser.parseInputStatement","src/Parser.hx",33,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_41_parseLetStatement,"src.Parser","parseLetStatement",0x69e04d42,"src.Parser.parseLetStatement","src/Parser.hx",41,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_61_parseWhileStatement,"src.Parser","parseWhileStatement",0x2597222c,"src.Parser.parseWhileStatement","src/Parser.hx",61,0x4a8448f4)
+HX_DEFINE_STACK_FRAME(_hx_pos_274b98ea9fd940c5_13_new,"src.Parser","new",0x68619ebb,"src.Parser.new","src/Parser.hx",13,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_25_parse,"src.Parser","parse",0x9f37eb4e,"src.Parser.parse","src/Parser.hx",25,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_35_parsePrintStatement,"src.Parser","parsePrintStatement",0xd2789e30,"src.Parser.parsePrintStatement","src/Parser.hx",35,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_43_parseInputStatement,"src.Parser","parseInputStatement",0xbb0a4eb3,"src.Parser.parseInputStatement","src/Parser.hx",43,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_51_parseLetStatement,"src.Parser","parseLetStatement",0x69e04d42,"src.Parser.parseLetStatement","src/Parser.hx",51,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_71_parseWhileStatement,"src.Parser","parseWhileStatement",0x2597222c,"src.Parser.parseWhileStatement","src/Parser.hx",71,0x4a8448f4)
 static const ::String _hx_array_data_0a6f2549_8[] = {
 	HX_("end",db,03,4d,00),
 };
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_74_parseIfStatement,"src.Parser","parseIfStatement",0x4f302be4,"src.Parser.parseIfStatement","src/Parser.hx",74,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_88_parseForeachStatement,"src.Parser","parseForeachStatement",0x7b753cb3,"src.Parser.parseForeachStatement","src/Parser.hx",88,0x4a8448f4)
 static const ::String _hx_array_data_0a6f2549_10[] = {
-	HX_("else",b9,e4,14,43),HX_("end",db,03,4d,00),
-};
-static const ::String _hx_array_data_0a6f2549_11[] = {
 	HX_("end",db,03,4d,00),
 };
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_93_parseIncStatement,"src.Parser","parseIncStatement",0x6781d3df,"src.Parser.parseIncStatement","src/Parser.hx",93,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_104_parseDecStatement,"src.Parser","parseDecStatement",0x96f2ea7b,"src.Parser.parseDecStatement","src/Parser.hx",104,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_115_parseBlockWithTerminators,"src.Parser","parseBlockWithTerminators",0x709e5e27,"src.Parser.parseBlockWithTerminators","src/Parser.hx",115,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_125_parseStatement,"src.Parser","parseStatement",0x169db301,"src.Parser.parseStatement","src/Parser.hx",125,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_138_comparison,"src.Parser","comparison",0x61b91e4e,"src.Parser.comparison","src/Parser.hx",138,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_149_expr,"src.Parser","expr",0xe724be7a,"src.Parser.expr","src/Parser.hx",149,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_160_term,"src.Parser","term",0xf10088b1,"src.Parser.term","src/Parser.hx",160,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_171_unary,"src.Parser","unary",0x88c3b0ca,"src.Parser.unary","src/Parser.hx",171,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_181_factor,"src.Parser","factor",0xa83af554,"src.Parser.factor","src/Parser.hx",181,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_204_match,"src.Parser","match",0xe505a460,"src.Parser.match","src/Parser.hx",204,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_213_consume,"src.Parser","consume",0xfc5e1197,"src.Parser.consume","src/Parser.hx",213,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_219_check,"src.Parser","check",0x2798f3e3,"src.Parser.check","src/Parser.hx",219,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_225_advance,"src.Parser","advance",0xd28fa05d,"src.Parser.advance","src/Parser.hx",225,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_232_isAtEnd,"src.Parser","isAtEnd",0xa6c8fc39,"src.Parser.isAtEnd","src/Parser.hx",232,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_237_peek,"src.Parser","peek",0xee5ba2e0,"src.Parser.peek","src/Parser.hx",237,0x4a8448f4)
-HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_242_previous,"src.Parser","previous",0x535203fc,"src.Parser.previous","src/Parser.hx",242,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_108_parseIfStatement,"src.Parser","parseIfStatement",0x4f302be4,"src.Parser.parseIfStatement","src/Parser.hx",108,0x4a8448f4)
+static const ::String _hx_array_data_0a6f2549_12[] = {
+	HX_("else",b9,e4,14,43),HX_("end",db,03,4d,00),
+};
+static const ::String _hx_array_data_0a6f2549_13[] = {
+	HX_("end",db,03,4d,00),
+};
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_127_parseIncStatement,"src.Parser","parseIncStatement",0x6781d3df,"src.Parser.parseIncStatement","src/Parser.hx",127,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_138_parseDecStatement,"src.Parser","parseDecStatement",0x96f2ea7b,"src.Parser.parseDecStatement","src/Parser.hx",138,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_150_parseReturnStatement,"src.Parser","parseReturnStatement",0x10cbc1b1,"src.Parser.parseReturnStatement","src/Parser.hx",150,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_164_parseFunctionStatement,"src.Parser","parseFunctionStatement",0x439de6c9,"src.Parser.parseFunctionStatement","src/Parser.hx",164,0x4a8448f4)
+static const ::String _hx_array_data_0a6f2549_18[] = {
+	HX_("end",db,03,4d,00),
+};
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_183_parseParameters,"src.Parser","parseParameters",0x22601b98,"src.Parser.parseParameters","src/Parser.hx",183,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_203_parseBlockWithTerminators,"src.Parser","parseBlockWithTerminators",0x709e5e27,"src.Parser.parseBlockWithTerminators","src/Parser.hx",203,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_213_parseStatement,"src.Parser","parseStatement",0x169db301,"src.Parser.parseStatement","src/Parser.hx",213,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_229_comparison,"src.Parser","comparison",0x61b91e4e,"src.Parser.comparison","src/Parser.hx",229,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_240_expr,"src.Parser","expr",0xe724be7a,"src.Parser.expr","src/Parser.hx",240,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_251_term,"src.Parser","term",0xf10088b1,"src.Parser.term","src/Parser.hx",251,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_262_unary,"src.Parser","unary",0x88c3b0ca,"src.Parser.unary","src/Parser.hx",262,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_272_call,"src.Parser","call",0xe5c0d9e3,"src.Parser.call","src/Parser.hx",272,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_296_factor,"src.Parser","factor",0xa83af554,"src.Parser.factor","src/Parser.hx",296,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_334_match,"src.Parser","match",0xe505a460,"src.Parser.match","src/Parser.hx",334,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_343_consume,"src.Parser","consume",0xfc5e1197,"src.Parser.consume","src/Parser.hx",343,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_349_check,"src.Parser","check",0x2798f3e3,"src.Parser.check","src/Parser.hx",349,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_355_advance,"src.Parser","advance",0xd28fa05d,"src.Parser.advance","src/Parser.hx",355,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_362_isAtEnd,"src.Parser","isAtEnd",0xa6c8fc39,"src.Parser.isAtEnd","src/Parser.hx",362,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_367_peek,"src.Parser","peek",0xee5ba2e0,"src.Parser.peek","src/Parser.hx",367,0x4a8448f4)
+HX_LOCAL_STACK_FRAME(_hx_pos_274b98ea9fd940c5_372_previous,"src.Parser","previous",0x535203fc,"src.Parser.previous","src/Parser.hx",372,0x4a8448f4)
 namespace src{
 
 void Parser_obj::__construct(::Array< ::Dynamic> tokens){
-            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_5_new)
-HXLINE(   7)		this->position = 0;
-HXLINE(  11)		this->tokens = tokens;
+            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_13_new)
+HXLINE(  15)		this->position = 0;
+HXLINE(  20)		this->tokens = tokens;
+HXLINE(  21)		this->scopeStates = ::Array_obj< ::Dynamic>::__new(1)->init(0,::src::ScopeState_obj::Global_dyn());
             	}
 
 Dynamic Parser_obj::__CreateEmpty() { return new Parser_obj; }
@@ -118,517 +160,699 @@ bool Parser_obj::_hx_isInstanceOf(int inClassId) {
 }
 
 ::Array< ::Dynamic> Parser_obj::parse(){
-            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_15_parse)
-HXLINE(  16)		::Array< ::Dynamic> statements = ::Array_obj< ::Dynamic>::__new(0);
-HXLINE(  17)		while(!(this->isAtEnd())){
-HXLINE(  18)			statements->push(this->parseStatement());
+            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_25_parse)
+HXLINE(  26)		::Array< ::Dynamic> statements = ::Array_obj< ::Dynamic>::__new(0);
+HXLINE(  27)		while(!(this->isAtEnd())){
+HXLINE(  28)			statements->push(this->parseStatement());
             		}
-HXLINE(  20)		return statements;
+HXLINE(  30)		return statements;
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parse,return )
 
  ::src::ast::PrintStmt Parser_obj::parsePrintStatement(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_25_parsePrintStatement)
-HXLINE(  26)		this->advance();
-HXLINE(  27)		 ::src::ast::Expr expr = this->comparison();
-HXLINE(  28)		this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after value.",76,14,f3,01));
-HXLINE(  29)		int _hx_tmp = this->previous()->line;
-HXDLIN(  29)		return  ::src::ast::PrintStmt_obj::__alloc( HX_CTX ,expr,_hx_tmp,this->previous()->column);
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_35_parsePrintStatement)
+HXLINE(  36)		this->advance();
+HXLINE(  37)		 ::src::ast::Expr expr = this->comparison();
+HXLINE(  38)		this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after value.",76,14,f3,01));
+HXLINE(  39)		int _hx_tmp = this->previous()->line;
+HXDLIN(  39)		return  ::src::ast::PrintStmt_obj::__alloc( HX_CTX ,expr,_hx_tmp,this->previous()->column);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parsePrintStatement,return )
 
  ::src::ast::InputStmt Parser_obj::parseInputStatement(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_33_parseInputStatement)
-HXLINE(  34)		this->advance();
-HXLINE(  35)		 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected variable after 'input'.",ca,b5,ec,ae));
-HXLINE(  36)		this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after value.",76,14,f3,01));
-HXLINE(  37)		return  ::src::ast::InputStmt_obj::__alloc( HX_CTX , ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,( (::String)(name->value) ),name->line,name->column),name->line,name->column);
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_43_parseInputStatement)
+HXLINE(  44)		this->advance();
+HXLINE(  45)		 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected variable after 'input'.",ca,b5,ec,ae));
+HXLINE(  46)		this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after value.",76,14,f3,01));
+HXLINE(  47)		return  ::src::ast::InputStmt_obj::__alloc( HX_CTX , ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,( (::String)(name->value) ),name->line,name->column),name->line,name->column);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseInputStatement,return )
 
  ::src::ast::LetStmt Parser_obj::parseLetStatement(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_41_parseLetStatement)
-HXLINE(  42)		this->advance();
-HXLINE(  43)		::Array< ::Dynamic> bindings = ::Array_obj< ::Dynamic>::__new(0);
-HXLINE(  44)		do {
-HXLINE(  45)			 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected variable name in let statement.",e6,d3,0f,26));
-HXLINE(  46)			bindings->push( ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,( (::String)(name->value) ),name->line,name->column));
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_51_parseLetStatement)
+HXLINE(  52)		this->advance();
+HXLINE(  53)		::Array< ::Dynamic> bindings = ::Array_obj< ::Dynamic>::__new(0);
+HXLINE(  54)		do {
+HXLINE(  55)			 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected variable name in let statement.",e6,d3,0f,26));
+HXLINE(  56)			bindings->push( ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,( (::String)(name->value) ),name->line,name->column));
             		} while(this->match(::src::TokenType_obj::COMMA_dyn()));
 ;
-HXLINE(  49)		if (this->check(::src::TokenType_obj::EQUALS_dyn())) {
-HXLINE(  50)			this->consume(::src::TokenType_obj::EQUALS_dyn(),HX_("Expected '=' after variable names in let statement.",fe,98,69,c3));
-HXLINE(  51)			 ::src::ast::Expr value = this->comparison();
-HXLINE(  52)			this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after value.",76,14,f3,01));
-HXLINE(  53)			int _hx_tmp = this->previous()->line;
-HXDLIN(  53)			return  ::src::ast::LetStmt_obj::__alloc( HX_CTX ,bindings,value,_hx_tmp,this->previous()->column);
+HXLINE(  59)		if (this->check(::src::TokenType_obj::EQUALS_dyn())) {
+HXLINE(  60)			this->consume(::src::TokenType_obj::EQUALS_dyn(),HX_("Expected '=' after variable names in let statement.",fe,98,69,c3));
+HXLINE(  61)			 ::src::ast::Expr value = this->comparison();
+HXLINE(  62)			this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after value.",76,14,f3,01));
+HXLINE(  63)			int _hx_tmp = this->previous()->line;
+HXDLIN(  63)			return  ::src::ast::LetStmt_obj::__alloc( HX_CTX ,bindings,value,_hx_tmp,this->previous()->column);
             		}
             		else {
-HXLINE(  55)			this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after variable names.",d1,90,75,93));
-HXLINE(  56)			int _hx_tmp1 = this->previous()->line;
-HXDLIN(  56)			return  ::src::ast::LetStmt_obj::__alloc( HX_CTX ,bindings,null(),_hx_tmp1,this->previous()->column);
+HXLINE(  65)			this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after variable names.",d1,90,75,93));
+HXLINE(  66)			int _hx_tmp1 = this->previous()->line;
+HXDLIN(  66)			return  ::src::ast::LetStmt_obj::__alloc( HX_CTX ,bindings,null(),_hx_tmp1,this->previous()->column);
             		}
-HXLINE(  49)		return null();
+HXLINE(  59)		return null();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseLetStatement,return )
 
  ::src::ast::WhileStmt Parser_obj::parseWhileStatement(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_61_parseWhileStatement)
-HXLINE(  62)		this->advance();
-HXLINE(  63)		 ::src::ast::Expr condition = this->comparison();
-HXLINE(  64)		this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'do' after condition.",3a,7e,1f,f0));
-HXLINE(  65)		if ((( (::String)(this->previous()->value) ) != HX_("do",8b,57,00,00))) {
-HXLINE(  65)			HX_STACK_DO_THROW(HX_("Expected 'do' after condition.",3a,7e,1f,f0));
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_71_parseWhileStatement)
+HXLINE(  72)		this->advance();
+HXLINE(  73)		 ::src::ast::Expr condition = this->comparison();
+HXLINE(  74)		this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'do' after condition.",3a,7e,1f,f0));
+HXLINE(  75)		if ((( (::String)(this->previous()->value) ) != HX_("do",8b,57,00,00))) {
+HXLINE(  75)			HX_STACK_DO_THROW(HX_("Expected 'do' after condition.",3a,7e,1f,f0));
             		}
-HXLINE(  66)		int body = this->previous()->line;
-HXDLIN(  66)		 ::src::ast::BlockStmt body1 = this->parseBlockWithTerminators(::Array_obj< ::String >::fromData( _hx_array_data_0a6f2549_8,1),body,this->previous()->column);
-HXLINE(  67)		 ::src::Token kwEnd = this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'end' after while statement.",27,61,a3,8a));
-HXLINE(  68)		if ((( (::String)(kwEnd->value) ) != HX_("end",db,03,4d,00))) {
-HXLINE(  68)			HX_STACK_DO_THROW(HX_("Expected 'end' after while statement.",27,61,a3,8a));
+HXLINE(  76)		this->scopeStates->push(::src::ScopeState_obj::Loop_dyn());
+HXLINE(  78)		int body = this->previous()->line;
+HXDLIN(  78)		 ::src::ast::BlockStmt body1 = this->parseBlockWithTerminators(::Array_obj< ::String >::fromData( _hx_array_data_0a6f2549_8,1),body,this->previous()->column);
+HXLINE(  79)		 ::src::Token kwEnd = this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'end' after while statement.",27,61,a3,8a));
+HXLINE(  80)		if ((( (::String)(kwEnd->value) ) != HX_("end",db,03,4d,00))) {
+HXLINE(  80)			HX_STACK_DO_THROW(HX_("Expected 'end' after while statement.",27,61,a3,8a));
             		}
-HXLINE(  70)		return  ::src::ast::WhileStmt_obj::__alloc( HX_CTX ,condition,body1,condition->line,condition->column);
+HXLINE(  82)		this->scopeStates->pop().StaticCast<  ::src::ScopeState >();
+HXLINE(  84)		return  ::src::ast::WhileStmt_obj::__alloc( HX_CTX ,condition,body1,condition->line,condition->column);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseWhileStatement,return )
 
- ::src::ast::IfStmt Parser_obj::parseIfStatement(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_74_parseIfStatement)
-HXLINE(  75)		this->advance();
-HXLINE(  76)		 ::src::ast::Expr condition = this->comparison();
-HXLINE(  77)		this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'then' after condition.",cc,6b,d7,7f));
-HXLINE(  78)		if ((( (::String)(this->previous()->value) ) != HX_("then",dd,02,fc,4c))) {
-HXLINE(  78)			HX_STACK_DO_THROW(HX_("Expected 'then' after condition.",cc,6b,d7,7f));
+ ::src::ast::ForeachStmt Parser_obj::parseForeachStatement(){
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_88_parseForeachStatement)
+HXLINE(  89)		this->advance();
+HXLINE(  90)		 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected loop variable after 'for'.",9d,67,c4,ff));
+HXLINE(  91)		this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'in' after loop variable.",17,91,c9,f1));
+HXLINE(  92)		if ((( (::String)(this->previous()->value) ) != HX_("in",e5,5b,00,00))) {
+HXLINE(  92)			HX_STACK_DO_THROW(HX_("Expected 'in' after loop variable.",17,91,c9,f1));
             		}
-HXLINE(  79)		int thenBranch = this->previous()->line;
-HXDLIN(  79)		 ::src::ast::BlockStmt thenBranch1 = this->parseBlockWithTerminators(::Array_obj< ::String >::fromData( _hx_array_data_0a6f2549_10,2),thenBranch,this->previous()->column);
-HXLINE(  80)		 ::src::ast::BlockStmt elseBranch = null();
-HXLINE(  81)		bool _hx_tmp;
-HXDLIN(  81)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE(  81)			_hx_tmp = (( (::String)(this->peek()->value) ) == HX_("else",b9,e4,14,43));
+HXLINE(  93)		 ::src::ast::Expr iterable = this->comparison();
+HXLINE(  94)		this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'do' after iterable.",15,5b,51,e1));
+HXLINE(  95)		if ((( (::String)(this->previous()->value) ) != HX_("do",8b,57,00,00))) {
+HXLINE(  95)			HX_STACK_DO_THROW(HX_("Expected 'do' after iterable.",15,5b,51,e1));
+            		}
+HXLINE(  96)		this->scopeStates->push(::src::ScopeState_obj::Loop_dyn());
+HXLINE(  98)		int body = this->previous()->line;
+HXDLIN(  98)		 ::src::ast::BlockStmt body1 = this->parseBlockWithTerminators(::Array_obj< ::String >::fromData( _hx_array_data_0a6f2549_10,1),body,this->previous()->column);
+HXLINE(  99)		 ::src::Token kwEnd = this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'end' after for statement.",8f,4c,77,fb));
+HXLINE( 100)		if ((( (::String)(kwEnd->value) ) != HX_("end",db,03,4d,00))) {
+HXLINE( 100)			HX_STACK_DO_THROW(HX_("Expected 'end' after for statement.",8f,4c,77,fb));
+            		}
+HXLINE( 102)		this->scopeStates->pop().StaticCast<  ::src::ScopeState >();
+HXLINE( 104)		return  ::src::ast::ForeachStmt_obj::__alloc( HX_CTX , ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,( (::String)(name->value) ),name->line,name->column),iterable,body1,name->line,name->column);
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseForeachStatement,return )
+
+ ::src::ast::IfStmt Parser_obj::parseIfStatement(){
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_108_parseIfStatement)
+HXLINE( 109)		this->advance();
+HXLINE( 110)		 ::src::ast::Expr condition = this->comparison();
+HXLINE( 111)		this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'then' after condition.",cc,6b,d7,7f));
+HXLINE( 112)		if ((( (::String)(this->previous()->value) ) != HX_("then",dd,02,fc,4c))) {
+HXLINE( 112)			HX_STACK_DO_THROW(HX_("Expected 'then' after condition.",cc,6b,d7,7f));
+            		}
+HXLINE( 113)		int thenBranch = this->previous()->line;
+HXDLIN( 113)		 ::src::ast::BlockStmt thenBranch1 = this->parseBlockWithTerminators(::Array_obj< ::String >::fromData( _hx_array_data_0a6f2549_12,2),thenBranch,this->previous()->column);
+HXLINE( 114)		 ::src::ast::BlockStmt elseBranch = null();
+HXLINE( 115)		bool _hx_tmp;
+HXDLIN( 115)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 115)			_hx_tmp = (( (::String)(this->peek()->value) ) == HX_("else",b9,e4,14,43));
             		}
             		else {
-HXLINE(  81)			_hx_tmp = false;
+HXLINE( 115)			_hx_tmp = false;
             		}
-HXDLIN(  81)		if (_hx_tmp) {
-HXLINE(  82)			this->advance();
-HXLINE(  83)			int elseBranch1 = this->previous()->line;
-HXDLIN(  83)			elseBranch = this->parseBlockWithTerminators(::Array_obj< ::String >::fromData( _hx_array_data_0a6f2549_11,1),elseBranch1,this->previous()->column);
+HXDLIN( 115)		if (_hx_tmp) {
+HXLINE( 116)			this->advance();
+HXLINE( 117)			int elseBranch1 = this->previous()->line;
+HXDLIN( 117)			elseBranch = this->parseBlockWithTerminators(::Array_obj< ::String >::fromData( _hx_array_data_0a6f2549_13,1),elseBranch1,this->previous()->column);
             		}
-HXLINE(  86)		 ::src::Token kwEnd = this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'end' after if statement.",e9,5a,ef,63));
-HXLINE(  87)		if ((( (::String)(kwEnd->value) ) != HX_("end",db,03,4d,00))) {
-HXLINE(  87)			HX_STACK_DO_THROW(HX_("Expected 'end' after if statement.",e9,5a,ef,63));
+HXLINE( 120)		 ::src::Token kwEnd = this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'end' after if statement.",e9,5a,ef,63));
+HXLINE( 121)		if ((( (::String)(kwEnd->value) ) != HX_("end",db,03,4d,00))) {
+HXLINE( 121)			HX_STACK_DO_THROW(HX_("Expected 'end' after if statement.",e9,5a,ef,63));
             		}
-HXLINE(  89)		return  ::src::ast::IfStmt_obj::__alloc( HX_CTX ,condition,thenBranch1,elseBranch,condition->line,condition->column);
+HXLINE( 123)		return  ::src::ast::IfStmt_obj::__alloc( HX_CTX ,condition,thenBranch1,elseBranch,condition->line,condition->column);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseIfStatement,return )
 
  ::src::ast::LetStmt Parser_obj::parseIncStatement(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_93_parseIncStatement)
-HXLINE(  94)		this->advance();
-HXLINE(  95)		 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected variable after 'inc'.",5e,33,b9,b7));
-HXLINE(  96)		this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after variable.",39,1f,80,00));
-HXLINE(  97)		 ::src::ast::VariableExpr varExpr =  ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,( (::String)(name->value) ),name->line,name->column);
-HXLINE(  98)		 ::src::ast::NumberExpr one =  ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,( (Float)(1) ),name->line,name->column);
-HXLINE(  99)		 ::src::ast::BinaryExpr binary =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,varExpr, ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::PLUS_dyn(),HX_("+",2b,00,00,00),name->line,name->column),one,name->line,name->column);
-HXLINE( 100)		::String _hx_tmp;
-HXDLIN( 100)		if (::hx::IsNull( name->value )) {
-HXLINE( 100)			_hx_tmp = HX_("null",87,9e,0e,49);
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_127_parseIncStatement)
+HXLINE( 128)		this->advance();
+HXLINE( 129)		 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected variable after 'inc'.",5e,33,b9,b7));
+HXLINE( 130)		this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after variable.",39,1f,80,00));
+HXLINE( 131)		 ::src::ast::VariableExpr varExpr =  ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,( (::String)(name->value) ),name->line,name->column);
+HXLINE( 132)		 ::src::ast::NumberExpr one =  ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,( (Float)(1) ),name->line,name->column);
+HXLINE( 133)		 ::src::ast::BinaryExpr binary =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,varExpr, ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::PLUS_dyn(),HX_("+",2b,00,00,00),name->line,name->column),one,name->line,name->column);
+HXLINE( 134)		::String _hx_tmp;
+HXDLIN( 134)		if (::hx::IsNull( name->value )) {
+HXLINE( 134)			_hx_tmp = HX_("null",87,9e,0e,49);
             		}
             		else {
-HXLINE( 100)			_hx_tmp = ::Std_obj::string(name->value);
+HXLINE( 134)			_hx_tmp = ::Std_obj::string(name->value);
             		}
-HXDLIN( 100)		return  ::src::ast::LetStmt_obj::__alloc( HX_CTX ,::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,_hx_tmp,name->line,name->column)),binary,name->line,name->column);
+HXDLIN( 134)		return  ::src::ast::LetStmt_obj::__alloc( HX_CTX ,::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,_hx_tmp,name->line,name->column)),binary,name->line,name->column);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseIncStatement,return )
 
  ::src::ast::LetStmt Parser_obj::parseDecStatement(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_104_parseDecStatement)
-HXLINE( 105)		this->advance();
-HXLINE( 106)		 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected variable after 'dec'.",42,61,c5,d0));
-HXLINE( 107)		this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after variable.",39,1f,80,00));
-HXLINE( 108)		 ::src::ast::VariableExpr varExpr =  ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,( (::String)(name->value) ),name->line,name->column);
-HXLINE( 109)		 ::src::ast::NumberExpr one =  ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,( (Float)(1) ),name->line,name->column);
-HXLINE( 110)		 ::src::ast::BinaryExpr binary =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,varExpr, ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::MINUS_dyn(),HX_("-",2d,00,00,00),name->line,name->column),one,name->line,name->column);
-HXLINE( 111)		::String _hx_tmp;
-HXDLIN( 111)		if (::hx::IsNull( name->value )) {
-HXLINE( 111)			_hx_tmp = HX_("null",87,9e,0e,49);
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_138_parseDecStatement)
+HXLINE( 139)		this->advance();
+HXLINE( 140)		 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected variable after 'dec'.",42,61,c5,d0));
+HXLINE( 141)		this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';' after variable.",39,1f,80,00));
+HXLINE( 142)		 ::src::ast::VariableExpr varExpr =  ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,( (::String)(name->value) ),name->line,name->column);
+HXLINE( 143)		 ::src::ast::NumberExpr one =  ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,( (Float)(1) ),name->line,name->column);
+HXLINE( 144)		 ::src::ast::BinaryExpr binary =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,varExpr, ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::MINUS_dyn(),HX_("-",2d,00,00,00),name->line,name->column),one,name->line,name->column);
+HXLINE( 145)		::String _hx_tmp;
+HXDLIN( 145)		if (::hx::IsNull( name->value )) {
+HXLINE( 145)			_hx_tmp = HX_("null",87,9e,0e,49);
             		}
             		else {
-HXLINE( 111)			_hx_tmp = ::Std_obj::string(name->value);
+HXLINE( 145)			_hx_tmp = ::Std_obj::string(name->value);
             		}
-HXDLIN( 111)		return  ::src::ast::LetStmt_obj::__alloc( HX_CTX ,::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,_hx_tmp,name->line,name->column)),binary,name->line,name->column);
+HXDLIN( 145)		return  ::src::ast::LetStmt_obj::__alloc( HX_CTX ,::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,_hx_tmp,name->line,name->column)),binary,name->line,name->column);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseDecStatement,return )
 
+ ::src::ast::ReturnStmt Parser_obj::parseReturnStatement(){
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_150_parseReturnStatement)
+HXDLIN( 150)		if (::hx::IsPointerEq( this->scopeStates->__get((this->scopeStates->length - 1)).StaticCast<  ::src::ScopeState >(),::src::ScopeState_obj::Function_dyn() )) {
+HXLINE( 151)			this->advance();
+HXLINE( 152)			int expr = this->previous()->line;
+HXDLIN( 152)			 ::src::ast::Expr expr1 =  ::src::ast::NullExpr_obj::__alloc( HX_CTX ,expr,this->previous()->column);
+HXLINE( 153)			if (!(this->check(::src::TokenType_obj::SEMICOLON_dyn()))) {
+HXLINE( 154)				expr1 = this->comparison();
+            			}
+HXLINE( 156)			this->consume(::src::TokenType_obj::SEMICOLON_dyn(),HX_("Expected ';'.",e3,77,f3,45));
+HXLINE( 157)			int _hx_tmp = this->previous()->line;
+HXDLIN( 157)			return  ::src::ast::ReturnStmt_obj::__alloc( HX_CTX ,expr1,_hx_tmp,this->previous()->column);
+            		}
+            		else {
+HXLINE( 159)			::String _hx_tmp1 = ((HX_("Return statement not allowed outside of function at line ",df,35,6d,64) + this->peek()->line) + HX_(", column ",96,fc,25,5b));
+HXDLIN( 159)			HX_STACK_DO_THROW((_hx_tmp1 + this->peek()->column));
+            		}
+HXLINE( 150)		return null();
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseReturnStatement,return )
+
+ ::src::ast::FunctionStmt Parser_obj::parseFunctionStatement(){
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_164_parseFunctionStatement)
+HXLINE( 165)		this->advance();
+HXLINE( 166)		 ::src::Token nameToken = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected function name after 'func'.",b9,8d,77,7d));
+HXLINE( 167)		 ::Dynamic name = nameToken->value;
+HXLINE( 168)		this->consume(::src::TokenType_obj::LPAREN_dyn(),HX_("Expected '(' after function name.",01,54,c1,eb));
+HXLINE( 169)		::Array< ::Dynamic> params = this->parseParameters();
+HXLINE( 170)		this->consume(::src::TokenType_obj::RPAREN_dyn(),HX_("Expected ')' after parameters.",9d,bf,cf,f7));
+HXLINE( 172)		this->scopeStates->push(::src::ScopeState_obj::Function_dyn());
+HXLINE( 173)		int body = this->previous()->line;
+HXDLIN( 173)		 ::src::ast::BlockStmt body1 = this->parseBlockWithTerminators(::Array_obj< ::String >::fromData( _hx_array_data_0a6f2549_18,1),body,this->previous()->column);
+HXLINE( 174)		 ::src::Token kwEnd = this->consume(::src::TokenType_obj::KEYWORD_dyn(),HX_("Expected 'end' after function body.",fd,4b,eb,42));
+HXLINE( 175)		if ((( (::String)(kwEnd->value) ) != HX_("end",db,03,4d,00))) {
+HXLINE( 175)			HX_STACK_DO_THROW(HX_("Expected 'end' after function body.",fd,4b,eb,42));
+            		}
+HXLINE( 177)		this->scopeStates->pop().StaticCast<  ::src::ScopeState >();
+HXLINE( 178)		::haxe::Log_obj::trace(params,::hx::SourceInfo(HX_("src/Parser.hx",f4,48,84,4a),178,HX_("src.Parser",49,25,6f,0a),HX_("parseFunctionStatement",44,70,4c,ed)));
+HXLINE( 179)		return  ::src::ast::FunctionStmt_obj::__alloc( HX_CTX ,( (::String)(name) ),params,body1,nameToken->line,nameToken->column);
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseFunctionStatement,return )
+
+::Array< ::Dynamic> Parser_obj::parseParameters(){
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_183_parseParameters)
+HXLINE( 184)		::Array< ::Dynamic> params = ::Array_obj< ::Dynamic>::__new(0);
+HXLINE( 186)		if (!(this->check(::src::TokenType_obj::RPAREN_dyn()))) {
+HXLINE( 187)			do {
+HXLINE( 188)				 ::src::Token name = this->consume(::src::TokenType_obj::IDENTIFIER_dyn(),HX_("Expected parameter name.",44,34,81,e4));
+HXLINE( 189)				 ::src::ast::Expr defaultValue = null();
+HXLINE( 191)				if (this->match(::src::TokenType_obj::EQUALS_dyn())) {
+HXLINE( 192)					defaultValue = this->expr();
+            				}
+HXLINE( 195)				params->push( ::src::ast::Parameter_obj::__alloc( HX_CTX ,( (::String)(name->value) ),defaultValue,name->line,name->column));
+            			} while(this->match(::src::TokenType_obj::COMMA_dyn()));
+;
+            		}
+HXLINE( 199)		return params;
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseParameters,return )
+
  ::src::ast::BlockStmt Parser_obj::parseBlockWithTerminators(::Array< ::String > terminators,int line,int column){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_115_parseBlockWithTerminators)
-HXLINE( 116)		::Array< ::Dynamic> statements = ::Array_obj< ::Dynamic>::__new(0);
-HXLINE( 117)		while(true){
-HXLINE( 117)			bool _hx_tmp;
-HXDLIN( 117)			if (!(this->isAtEnd())) {
-HXLINE( 117)				bool _hx_tmp1;
-HXDLIN( 117)				if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE( 117)					_hx_tmp1 = (terminators->indexOf(( (::String)(this->peek()->value) ),null()) != -1);
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_203_parseBlockWithTerminators)
+HXLINE( 204)		::Array< ::Dynamic> statements = ::Array_obj< ::Dynamic>::__new(0);
+HXLINE( 205)		while(true){
+HXLINE( 205)			bool _hx_tmp;
+HXDLIN( 205)			if (!(this->isAtEnd())) {
+HXLINE( 205)				bool _hx_tmp1;
+HXDLIN( 205)				if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 205)					_hx_tmp1 = (terminators->indexOf(( (::String)(this->peek()->value) ),null()) != -1);
             				}
             				else {
-HXLINE( 117)					_hx_tmp1 = false;
+HXLINE( 205)					_hx_tmp1 = false;
             				}
-HXDLIN( 117)				_hx_tmp = !(_hx_tmp1);
+HXDLIN( 205)				_hx_tmp = !(_hx_tmp1);
             			}
             			else {
-HXLINE( 117)				_hx_tmp = false;
+HXLINE( 205)				_hx_tmp = false;
             			}
-HXDLIN( 117)			if (!(_hx_tmp)) {
-HXLINE( 117)				goto _hx_goto_14;
+HXDLIN( 205)			if (!(_hx_tmp)) {
+HXLINE( 205)				goto _hx_goto_21;
             			}
-HXLINE( 118)			statements->push(this->parseStatement());
+HXLINE( 206)			statements->push(this->parseStatement());
             		}
-            		_hx_goto_14:;
-HXLINE( 121)		return  ::src::ast::BlockStmt_obj::__alloc( HX_CTX ,statements,line,column);
+            		_hx_goto_21:;
+HXLINE( 209)		return  ::src::ast::BlockStmt_obj::__alloc( HX_CTX ,statements,line,column);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC3(Parser_obj,parseBlockWithTerminators,return )
 
  ::src::ast::Stmt Parser_obj::parseStatement(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_125_parseStatement)
-HXLINE( 126)		bool _hx_tmp;
-HXDLIN( 126)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE( 126)			_hx_tmp = (( (::String)(this->peek()->value) ) == HX_("print",2d,58,8b,c8));
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_213_parseStatement)
+HXLINE( 214)		bool _hx_tmp;
+HXDLIN( 214)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 214)			_hx_tmp = (( (::String)(this->peek()->value) ) == HX_("print",2d,58,8b,c8));
             		}
             		else {
-HXLINE( 126)			_hx_tmp = false;
+HXLINE( 214)			_hx_tmp = false;
             		}
-HXDLIN( 126)		if (_hx_tmp) {
-HXLINE( 126)			return this->parsePrintStatement();
+HXDLIN( 214)		if (_hx_tmp) {
+HXLINE( 214)			return this->parsePrintStatement();
             		}
-HXLINE( 127)		bool _hx_tmp1;
-HXDLIN( 127)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE( 127)			_hx_tmp1 = (( (::String)(this->peek()->value) ) == HX_("input",0a,c4,1d,be));
-            		}
-            		else {
-HXLINE( 127)			_hx_tmp1 = false;
-            		}
-HXDLIN( 127)		if (_hx_tmp1) {
-HXLINE( 127)			return this->parseInputStatement();
-            		}
-HXLINE( 128)		bool _hx_tmp2;
-HXDLIN( 128)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE( 128)			_hx_tmp2 = (( (::String)(this->peek()->value) ) == HX_("let",db,4b,52,00));
+HXLINE( 215)		bool _hx_tmp1;
+HXDLIN( 215)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 215)			_hx_tmp1 = (( (::String)(this->peek()->value) ) == HX_("input",0a,c4,1d,be));
             		}
             		else {
-HXLINE( 128)			_hx_tmp2 = false;
+HXLINE( 215)			_hx_tmp1 = false;
             		}
-HXDLIN( 128)		if (_hx_tmp2) {
-HXLINE( 128)			return this->parseLetStatement();
+HXDLIN( 215)		if (_hx_tmp1) {
+HXLINE( 215)			return this->parseInputStatement();
             		}
-HXLINE( 129)		bool _hx_tmp3;
-HXDLIN( 129)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE( 129)			_hx_tmp3 = (( (::String)(this->peek()->value) ) == HX_("if",dd,5b,00,00));
-            		}
-            		else {
-HXLINE( 129)			_hx_tmp3 = false;
-            		}
-HXDLIN( 129)		if (_hx_tmp3) {
-HXLINE( 129)			return this->parseIfStatement();
-            		}
-HXLINE( 130)		bool _hx_tmp4;
-HXDLIN( 130)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE( 130)			_hx_tmp4 = (( (::String)(this->peek()->value) ) == HX_("while",b1,43,bd,c9));
+HXLINE( 216)		bool _hx_tmp2;
+HXDLIN( 216)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 216)			_hx_tmp2 = (( (::String)(this->peek()->value) ) == HX_("let",db,4b,52,00));
             		}
             		else {
-HXLINE( 130)			_hx_tmp4 = false;
+HXLINE( 216)			_hx_tmp2 = false;
             		}
-HXDLIN( 130)		if (_hx_tmp4) {
-HXLINE( 130)			return this->parseWhileStatement();
+HXDLIN( 216)		if (_hx_tmp2) {
+HXLINE( 216)			return this->parseLetStatement();
             		}
-HXLINE( 131)		bool _hx_tmp5;
-HXDLIN( 131)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE( 131)			_hx_tmp5 = (( (::String)(this->peek()->value) ) == HX_("inc",de,0c,50,00));
-            		}
-            		else {
-HXLINE( 131)			_hx_tmp5 = false;
-            		}
-HXDLIN( 131)		if (_hx_tmp5) {
-HXLINE( 131)			return this->parseIncStatement();
-            		}
-HXLINE( 132)		bool _hx_tmp6;
-HXDLIN( 132)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE( 132)			_hx_tmp6 = (( (::String)(this->peek()->value) ) == HX_("dec",c2,39,4c,00));
+HXLINE( 217)		bool _hx_tmp3;
+HXDLIN( 217)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 217)			_hx_tmp3 = (( (::String)(this->peek()->value) ) == HX_("if",dd,5b,00,00));
             		}
             		else {
-HXLINE( 132)			_hx_tmp6 = false;
+HXLINE( 217)			_hx_tmp3 = false;
             		}
-HXDLIN( 132)		if (_hx_tmp6) {
-HXLINE( 132)			return this->parseDecStatement();
+HXDLIN( 217)		if (_hx_tmp3) {
+HXLINE( 217)			return this->parseIfStatement();
             		}
-HXLINE( 135)		 ::src::ast::Expr _hx_tmp7 = this->comparison();
-HXDLIN( 135)		int _hx_tmp8 = this->peek()->line;
-HXDLIN( 135)		return  ::src::ast::ExprStmt_obj::__alloc( HX_CTX ,_hx_tmp7,_hx_tmp8,this->peek()->column);
+HXLINE( 218)		bool _hx_tmp4;
+HXDLIN( 218)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 218)			_hx_tmp4 = (( (::String)(this->peek()->value) ) == HX_("while",b1,43,bd,c9));
+            		}
+            		else {
+HXLINE( 218)			_hx_tmp4 = false;
+            		}
+HXDLIN( 218)		if (_hx_tmp4) {
+HXLINE( 218)			return this->parseWhileStatement();
+            		}
+HXLINE( 219)		bool _hx_tmp5;
+HXDLIN( 219)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 219)			_hx_tmp5 = (( (::String)(this->peek()->value) ) == HX_("for",09,c7,4d,00));
+            		}
+            		else {
+HXLINE( 219)			_hx_tmp5 = false;
+            		}
+HXDLIN( 219)		if (_hx_tmp5) {
+HXLINE( 219)			return this->parseForeachStatement();
+            		}
+HXLINE( 220)		bool _hx_tmp6;
+HXDLIN( 220)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 220)			_hx_tmp6 = (( (::String)(this->peek()->value) ) == HX_("inc",de,0c,50,00));
+            		}
+            		else {
+HXLINE( 220)			_hx_tmp6 = false;
+            		}
+HXDLIN( 220)		if (_hx_tmp6) {
+HXLINE( 220)			return this->parseIncStatement();
+            		}
+HXLINE( 221)		bool _hx_tmp7;
+HXDLIN( 221)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 221)			_hx_tmp7 = (( (::String)(this->peek()->value) ) == HX_("dec",c2,39,4c,00));
+            		}
+            		else {
+HXLINE( 221)			_hx_tmp7 = false;
+            		}
+HXDLIN( 221)		if (_hx_tmp7) {
+HXLINE( 221)			return this->parseDecStatement();
+            		}
+HXLINE( 222)		bool _hx_tmp8;
+HXDLIN( 222)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 222)			_hx_tmp8 = (( (::String)(this->peek()->value) ) == HX_("return",b0,a4,2d,09));
+            		}
+            		else {
+HXLINE( 222)			_hx_tmp8 = false;
+            		}
+HXDLIN( 222)		if (_hx_tmp8) {
+HXLINE( 222)			return this->parseReturnStatement();
+            		}
+HXLINE( 223)		bool _hx_tmp9;
+HXDLIN( 223)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 223)			_hx_tmp9 = (( (::String)(this->peek()->value) ) == HX_("func",44,eb,c4,43));
+            		}
+            		else {
+HXLINE( 223)			_hx_tmp9 = false;
+            		}
+HXDLIN( 223)		if (_hx_tmp9) {
+HXLINE( 223)			return this->parseFunctionStatement();
+            		}
+HXLINE( 226)		 ::src::ast::Expr _hx_tmp10 = this->comparison();
+HXDLIN( 226)		int _hx_tmp11 = this->peek()->line;
+HXDLIN( 226)		return  ::src::ast::ExprStmt_obj::__alloc( HX_CTX ,_hx_tmp10,_hx_tmp11,this->peek()->column);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,parseStatement,return )
 
  ::src::ast::Expr Parser_obj::comparison(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_138_comparison)
-HXLINE( 139)		 ::src::ast::Expr left = this->expr();
-HXLINE( 140)		while(true){
-HXLINE( 140)			bool _hx_tmp;
-HXDLIN( 140)			bool _hx_tmp1;
-HXDLIN( 140)			bool _hx_tmp2;
-HXDLIN( 140)			bool _hx_tmp3;
-HXDLIN( 140)			bool _hx_tmp4;
-HXDLIN( 140)			if (!(this->match(::src::TokenType_obj::GT_dyn()))) {
-HXLINE( 140)				_hx_tmp4 = this->match(::src::TokenType_obj::GTEQ_dyn());
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_229_comparison)
+HXLINE( 230)		 ::src::ast::Expr left = this->expr();
+HXLINE( 231)		while(true){
+HXLINE( 231)			bool _hx_tmp;
+HXDLIN( 231)			bool _hx_tmp1;
+HXDLIN( 231)			bool _hx_tmp2;
+HXDLIN( 231)			bool _hx_tmp3;
+HXDLIN( 231)			bool _hx_tmp4;
+HXDLIN( 231)			if (!(this->match(::src::TokenType_obj::GT_dyn()))) {
+HXLINE( 231)				_hx_tmp4 = this->match(::src::TokenType_obj::GTEQ_dyn());
             			}
             			else {
-HXLINE( 140)				_hx_tmp4 = true;
+HXLINE( 231)				_hx_tmp4 = true;
             			}
-HXDLIN( 140)			if (!(_hx_tmp4)) {
-HXLINE( 140)				_hx_tmp3 = this->match(::src::TokenType_obj::LT_dyn());
-            			}
-            			else {
-HXLINE( 140)				_hx_tmp3 = true;
-            			}
-HXDLIN( 140)			if (!(_hx_tmp3)) {
-HXLINE( 140)				_hx_tmp2 = this->match(::src::TokenType_obj::LTEQ_dyn());
+HXDLIN( 231)			if (!(_hx_tmp4)) {
+HXLINE( 231)				_hx_tmp3 = this->match(::src::TokenType_obj::LT_dyn());
             			}
             			else {
-HXLINE( 140)				_hx_tmp2 = true;
+HXLINE( 231)				_hx_tmp3 = true;
             			}
-HXDLIN( 140)			if (!(_hx_tmp2)) {
-HXLINE( 140)				_hx_tmp1 = this->match(::src::TokenType_obj::EQEQ_dyn());
-            			}
-            			else {
-HXLINE( 140)				_hx_tmp1 = true;
-            			}
-HXDLIN( 140)			if (!(_hx_tmp1)) {
-HXLINE( 140)				_hx_tmp = this->match(::src::TokenType_obj::NOTEQ_dyn());
+HXDLIN( 231)			if (!(_hx_tmp3)) {
+HXLINE( 231)				_hx_tmp2 = this->match(::src::TokenType_obj::LTEQ_dyn());
             			}
             			else {
-HXLINE( 140)				_hx_tmp = true;
+HXLINE( 231)				_hx_tmp2 = true;
             			}
-HXDLIN( 140)			if (!(_hx_tmp)) {
-HXLINE( 140)				goto _hx_goto_17;
+HXDLIN( 231)			if (!(_hx_tmp2)) {
+HXLINE( 231)				_hx_tmp1 = this->match(::src::TokenType_obj::EQEQ_dyn());
             			}
-HXLINE( 141)			 ::src::Token oper = this->previous();
-HXLINE( 142)			 ::src::ast::Expr right = this->term();
-HXLINE( 143)			left =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,left,oper,right,oper->line,oper->column);
+            			else {
+HXLINE( 231)				_hx_tmp1 = true;
+            			}
+HXDLIN( 231)			if (!(_hx_tmp1)) {
+HXLINE( 231)				_hx_tmp = this->match(::src::TokenType_obj::NOTEQ_dyn());
+            			}
+            			else {
+HXLINE( 231)				_hx_tmp = true;
+            			}
+HXDLIN( 231)			if (!(_hx_tmp)) {
+HXLINE( 231)				goto _hx_goto_24;
+            			}
+HXLINE( 232)			 ::src::Token oper = this->previous();
+HXLINE( 233)			 ::src::ast::Expr right = this->term();
+HXLINE( 234)			left =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,left,oper,right,oper->line,oper->column);
             		}
-            		_hx_goto_17:;
-HXLINE( 145)		return left;
+            		_hx_goto_24:;
+HXLINE( 236)		return left;
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,comparison,return )
 
  ::src::ast::Expr Parser_obj::expr(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_149_expr)
-HXLINE( 150)		 ::src::ast::Expr left = this->term();
-HXLINE( 151)		while(true){
-HXLINE( 151)			bool _hx_tmp;
-HXDLIN( 151)			if (!(this->match(::src::TokenType_obj::PLUS_dyn()))) {
-HXLINE( 151)				_hx_tmp = this->match(::src::TokenType_obj::MINUS_dyn());
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_240_expr)
+HXLINE( 241)		 ::src::ast::Expr left = this->term();
+HXLINE( 242)		while(true){
+HXLINE( 242)			bool _hx_tmp;
+HXDLIN( 242)			if (!(this->match(::src::TokenType_obj::PLUS_dyn()))) {
+HXLINE( 242)				_hx_tmp = this->match(::src::TokenType_obj::MINUS_dyn());
             			}
             			else {
-HXLINE( 151)				_hx_tmp = true;
+HXLINE( 242)				_hx_tmp = true;
             			}
-HXDLIN( 151)			if (!(_hx_tmp)) {
-HXLINE( 151)				goto _hx_goto_19;
+HXDLIN( 242)			if (!(_hx_tmp)) {
+HXLINE( 242)				goto _hx_goto_26;
             			}
-HXLINE( 152)			 ::src::Token oper = this->previous();
-HXLINE( 153)			 ::src::ast::Expr right = this->term();
-HXLINE( 154)			left =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,left,oper,right,oper->line,oper->column);
+HXLINE( 243)			 ::src::Token oper = this->previous();
+HXLINE( 244)			 ::src::ast::Expr right = this->term();
+HXLINE( 245)			left =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,left,oper,right,oper->line,oper->column);
             		}
-            		_hx_goto_19:;
-HXLINE( 156)		return left;
+            		_hx_goto_26:;
+HXLINE( 247)		return left;
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,expr,return )
 
  ::src::ast::Expr Parser_obj::term(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_160_term)
-HXLINE( 161)		 ::src::ast::Expr left = this->unary();
-HXLINE( 162)		while(true){
-HXLINE( 162)			bool _hx_tmp;
-HXDLIN( 162)			if (!(this->match(::src::TokenType_obj::STAR_dyn()))) {
-HXLINE( 162)				_hx_tmp = this->match(::src::TokenType_obj::SLASH_dyn());
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_251_term)
+HXLINE( 252)		 ::src::ast::Expr left = this->unary();
+HXLINE( 253)		while(true){
+HXLINE( 253)			bool _hx_tmp;
+HXDLIN( 253)			if (!(this->match(::src::TokenType_obj::STAR_dyn()))) {
+HXLINE( 253)				_hx_tmp = this->match(::src::TokenType_obj::SLASH_dyn());
             			}
             			else {
-HXLINE( 162)				_hx_tmp = true;
+HXLINE( 253)				_hx_tmp = true;
             			}
-HXDLIN( 162)			if (!(_hx_tmp)) {
-HXLINE( 162)				goto _hx_goto_21;
+HXDLIN( 253)			if (!(_hx_tmp)) {
+HXLINE( 253)				goto _hx_goto_28;
             			}
-HXLINE( 163)			 ::src::Token oper = this->previous();
-HXLINE( 164)			 ::src::ast::Expr right = this->unary();
-HXLINE( 165)			left =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,left,oper,right,oper->line,oper->column);
+HXLINE( 254)			 ::src::Token oper = this->previous();
+HXLINE( 255)			 ::src::ast::Expr right = this->unary();
+HXLINE( 256)			left =  ::src::ast::BinaryExpr_obj::__alloc( HX_CTX ,left,oper,right,oper->line,oper->column);
             		}
-            		_hx_goto_21:;
-HXLINE( 167)		return left;
+            		_hx_goto_28:;
+HXLINE( 258)		return left;
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,term,return )
 
  ::src::ast::Expr Parser_obj::unary(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_171_unary)
-HXLINE( 172)		bool _hx_tmp;
-HXDLIN( 172)		if (!(this->check(::src::TokenType_obj::BANG_dyn()))) {
-HXLINE( 172)			_hx_tmp = this->check(::src::TokenType_obj::MINUS_dyn());
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_262_unary)
+HXLINE( 263)		bool _hx_tmp;
+HXDLIN( 263)		if (!(this->check(::src::TokenType_obj::BANG_dyn()))) {
+HXLINE( 263)			_hx_tmp = this->check(::src::TokenType_obj::MINUS_dyn());
             		}
             		else {
-HXLINE( 172)			_hx_tmp = true;
+HXLINE( 263)			_hx_tmp = true;
             		}
-HXDLIN( 172)		if (_hx_tmp) {
-HXLINE( 173)			 ::src::Token oper = this->advance();
-HXLINE( 174)			 ::src::ast::Expr right = this->unary();
-HXLINE( 175)			return  ::src::ast::UnaryExpr_obj::__alloc( HX_CTX ,oper,right,oper->line,oper->column);
+HXDLIN( 263)		if (_hx_tmp) {
+HXLINE( 264)			 ::src::Token oper = this->advance();
+HXLINE( 265)			 ::src::ast::Expr right = this->unary();
+HXLINE( 266)			return  ::src::ast::UnaryExpr_obj::__alloc( HX_CTX ,oper,right,oper->line,oper->column);
             		}
-HXLINE( 177)		return this->factor();
+HXLINE( 268)		return this->call();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,unary,return )
 
- ::src::ast::Expr Parser_obj::factor(){
-            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_181_factor)
-HXLINE( 182)		if (this->match(::src::TokenType_obj::NUMBER_dyn())) {
-HXLINE( 183)			Float _hx_tmp = ::Std_obj::parseFloat(( (::String)(this->previous()->value) ));
-HXDLIN( 183)			int _hx_tmp1 = this->previous()->line;
-HXDLIN( 183)			return  ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,_hx_tmp,_hx_tmp1,this->previous()->column);
-            		}
-HXLINE( 185)		if (this->match(::src::TokenType_obj::LPAREN_dyn())) {
-HXLINE( 186)			 ::src::ast::Expr expr = this->expr();
-HXLINE( 187)			this->consume(::src::TokenType_obj::RPAREN_dyn(),HX_("Expected ')' after expression.",ef,fc,f7,96));
-HXLINE( 188)			return expr;
-            		}
-HXLINE( 190)		if (this->match(::src::TokenType_obj::IDENTIFIER_dyn())) {
-HXLINE( 191)			::String _hx_tmp2 = ( (::String)(this->previous()->value) );
-HXDLIN( 191)			int _hx_tmp3 = this->previous()->line;
-HXDLIN( 191)			return  ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,_hx_tmp2,_hx_tmp3,this->previous()->column);
-            		}
-HXLINE( 193)		if (this->match(::src::TokenType_obj::STRING_dyn())) {
-HXLINE( 194)			::String _hx_tmp4 = ( (::String)(this->previous()->value) );
-HXDLIN( 194)			int _hx_tmp5 = this->previous()->line;
-HXDLIN( 194)			return  ::src::ast::StringExpr_obj::__alloc( HX_CTX ,_hx_tmp4,_hx_tmp5,this->previous()->column);
-            		}
-HXLINE( 196)		bool _hx_tmp6;
-HXDLIN( 196)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
-HXLINE( 196)			if ((( (::String)(this->peek()->value) ) != HX_("true",4e,a7,03,4d))) {
-HXLINE( 196)				_hx_tmp6 = (( (::String)(this->peek()->value) ) == HX_("false",a3,35,4f,fb));
+ ::src::ast::Expr Parser_obj::call(){
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_272_call)
+HXLINE( 273)		 ::src::ast::Expr expr = this->factor();
+HXLINE( 274)		while(true){
+HXLINE( 275)			if (this->match(::src::TokenType_obj::LPAREN_dyn())) {
+HXLINE( 276)				::Array< ::Dynamic> args = ::Array_obj< ::Dynamic>::__new(0);
+HXLINE( 277)				if (!(this->check(::src::TokenType_obj::RPAREN_dyn()))) {
+HXLINE( 278)					do {
+HXLINE( 279)						args->push(this->comparison());
+            					} while(this->match(::src::TokenType_obj::COMMA_dyn()));
+;
+            				}
+HXLINE( 282)				 ::src::Token paren = this->consume(::src::TokenType_obj::RPAREN_dyn(),HX_("Expected ')' after arguments.",df,b0,4c,56));
+HXLINE( 283)				expr =  ::src::ast::CallExpr_obj::__alloc( HX_CTX ,expr,args,paren->line,paren->column);
             			}
             			else {
-HXLINE( 196)				_hx_tmp6 = true;
+HXLINE( 284)				if (this->match(::src::TokenType_obj::LBRACK_dyn())) {
+HXLINE( 285)					 ::src::ast::Expr indexExpr = this->comparison();
+HXLINE( 286)					 ::src::Token rbrack = this->consume(::src::TokenType_obj::RBRACK_dyn(),HX_("Expected ']' after array index.",3e,ab,cd,e1));
+HXLINE( 287)					expr =  ::src::ast::IndexExpr_obj::__alloc( HX_CTX ,expr,indexExpr,rbrack->line,rbrack->column);
+            				}
+            				else {
+HXLINE( 289)					goto _hx_goto_31;
+            				}
+            			}
+            		}
+            		_hx_goto_31:;
+HXLINE( 292)		return expr;
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,call,return )
+
+ ::src::ast::Expr Parser_obj::factor(){
+            	HX_GC_STACKFRAME(&_hx_pos_274b98ea9fd940c5_296_factor)
+HXLINE( 297)		if (this->match(::src::TokenType_obj::NUMBER_dyn())) {
+HXLINE( 298)			Float _hx_tmp = ::Std_obj::parseFloat(( (::String)(this->previous()->value) ));
+HXDLIN( 298)			int _hx_tmp1 = this->previous()->line;
+HXDLIN( 298)			return  ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,_hx_tmp,_hx_tmp1,this->previous()->column);
+            		}
+HXLINE( 300)		if (this->match(::src::TokenType_obj::LPAREN_dyn())) {
+HXLINE( 301)			 ::src::ast::Expr expr = this->expr();
+HXLINE( 302)			this->consume(::src::TokenType_obj::RPAREN_dyn(),HX_("Expected ')' after expression.",ef,fc,f7,96));
+HXLINE( 303)			return expr;
+            		}
+HXLINE( 305)		if (this->match(::src::TokenType_obj::IDENTIFIER_dyn())) {
+HXLINE( 306)			::String _hx_tmp2 = ( (::String)(this->previous()->value) );
+HXDLIN( 306)			int _hx_tmp3 = this->previous()->line;
+HXDLIN( 306)			return  ::src::ast::VariableExpr_obj::__alloc( HX_CTX ,_hx_tmp2,_hx_tmp3,this->previous()->column);
+            		}
+HXLINE( 308)		if (this->match(::src::TokenType_obj::STRING_dyn())) {
+HXLINE( 309)			::String _hx_tmp4 = ( (::String)(this->previous()->value) );
+HXDLIN( 309)			int _hx_tmp5 = this->previous()->line;
+HXDLIN( 309)			return  ::src::ast::StringExpr_obj::__alloc( HX_CTX ,_hx_tmp4,_hx_tmp5,this->previous()->column);
+            		}
+HXLINE( 311)		bool _hx_tmp6;
+HXDLIN( 311)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 311)			if ((( (::String)(this->peek()->value) ) != HX_("true",4e,a7,03,4d))) {
+HXLINE( 311)				_hx_tmp6 = (( (::String)(this->peek()->value) ) == HX_("false",a3,35,4f,fb));
+            			}
+            			else {
+HXLINE( 311)				_hx_tmp6 = true;
             			}
             		}
             		else {
-HXLINE( 196)			_hx_tmp6 = false;
+HXLINE( 311)			_hx_tmp6 = false;
             		}
-HXDLIN( 196)		if (_hx_tmp6) {
-HXLINE( 197)			 ::src::Token kw = this->advance();
-HXLINE( 198)			return  ::src::ast::BooleanExpr_obj::__alloc( HX_CTX ,(( (::String)(kw->value) ) == HX_("true",4e,a7,03,4d)),kw->line,kw->column);
+HXDLIN( 311)		if (_hx_tmp6) {
+HXLINE( 312)			 ::src::Token kw = this->advance();
+HXLINE( 313)			return  ::src::ast::BooleanExpr_obj::__alloc( HX_CTX ,(( (::String)(kw->value) ) == HX_("true",4e,a7,03,4d)),kw->line,kw->column);
             		}
-HXLINE( 200)		HX_STACK_DO_THROW((HX_("Unexpected token in factor: ",3a,0b,e3,25) + ::Std_obj::string(this->peek())));
-HXDLIN( 200)		return null();
+HXLINE( 315)		bool _hx_tmp7;
+HXDLIN( 315)		if (this->check(::src::TokenType_obj::KEYWORD_dyn())) {
+HXLINE( 315)			_hx_tmp7 = (( (::String)(this->peek()->value) ) == HX_("null",87,9e,0e,49));
+            		}
+            		else {
+HXLINE( 315)			_hx_tmp7 = false;
+            		}
+HXDLIN( 315)		if (_hx_tmp7) {
+HXLINE( 316)			 ::src::Token kw1 = this->advance();
+HXLINE( 317)			return  ::src::ast::NullExpr_obj::__alloc( HX_CTX ,kw1->line,kw1->column);
+            		}
+HXLINE( 319)		if (this->check(::src::TokenType_obj::LBRACK_dyn())) {
+HXLINE( 320)			this->advance();
+HXLINE( 321)			::Array< ::Dynamic> elements = ::Array_obj< ::Dynamic>::__new(0);
+HXLINE( 322)			if (!(this->check(::src::TokenType_obj::RBRACK_dyn()))) {
+HXLINE( 323)				do {
+HXLINE( 324)					elements->push(this->comparison());
+            				} while(this->match(::src::TokenType_obj::COMMA_dyn()));
+;
+            			}
+HXLINE( 327)			this->consume(::src::TokenType_obj::RBRACK_dyn(),HX_("Expected ']' after array elements.",f5,4c,19,85));
+HXLINE( 328)			int _hx_tmp8 = this->previous()->line;
+HXDLIN( 328)			return  ::src::ast::ArrayExpr_obj::__alloc( HX_CTX ,elements,_hx_tmp8,this->previous()->column);
+            		}
+HXLINE( 330)		HX_STACK_DO_THROW((HX_("Unexpected token in factor: ",3a,0b,e3,25) + ::Std_obj::string(this->peek())));
+HXDLIN( 330)		return null();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,factor,return )
 
 bool Parser_obj::match( ::src::TokenType type){
-            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_204_match)
-HXLINE( 205)		if (this->check(type)) {
-HXLINE( 206)			this->advance();
-HXLINE( 207)			return true;
+            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_334_match)
+HXLINE( 335)		if (this->check(type)) {
+HXLINE( 336)			this->advance();
+HXLINE( 337)			return true;
             		}
-HXLINE( 209)		return false;
+HXLINE( 339)		return false;
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Parser_obj,match,return )
 
  ::src::Token Parser_obj::consume( ::src::TokenType type,::String message){
-            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_213_consume)
-HXLINE( 214)		if (this->check(type)) {
-HXLINE( 214)			return this->advance();
+            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_343_consume)
+HXLINE( 344)		if (this->check(type)) {
+HXLINE( 344)			return this->advance();
             		}
-HXLINE( 215)		HX_STACK_DO_THROW(((message + HX_(" -- Found: ",a8,24,01,8b)) + ::Std_obj::string(this->peek())));
-HXDLIN( 215)		return null();
+HXLINE( 345)		HX_STACK_DO_THROW(((message + HX_(" -- Found: ",a8,24,01,8b)) + ::Std_obj::string(this->peek())));
+HXDLIN( 345)		return null();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC2(Parser_obj,consume,return )
 
 bool Parser_obj::check( ::src::TokenType type){
-            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_219_check)
-HXLINE( 220)		if (this->isAtEnd()) {
-HXLINE( 220)			return false;
+            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_349_check)
+HXLINE( 350)		if (this->isAtEnd()) {
+HXLINE( 350)			return false;
             		}
-HXLINE( 221)		return ::hx::IsPointerEq( this->peek()->type,type );
+HXLINE( 351)		return ::hx::IsPointerEq( this->peek()->type,type );
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Parser_obj,check,return )
 
  ::src::Token Parser_obj::advance(){
-            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_225_advance)
-HXLINE( 226)		if (!(this->isAtEnd())) {
-HXLINE( 226)			this->position++;
+            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_355_advance)
+HXLINE( 356)		if (!(this->isAtEnd())) {
+HXLINE( 356)			this->position++;
             		}
-HXLINE( 227)		return this->previous();
+HXLINE( 357)		return this->previous();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,advance,return )
 
 bool Parser_obj::isAtEnd(){
-            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_232_isAtEnd)
-HXDLIN( 232)		return (this->position >= this->tokens->length);
+            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_362_isAtEnd)
+HXDLIN( 362)		return (this->position >= this->tokens->length);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,isAtEnd,return )
 
  ::src::Token Parser_obj::peek(){
-            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_237_peek)
-HXDLIN( 237)		if (this->isAtEnd()) {
-HXDLIN( 237)			return null();
+            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_367_peek)
+HXDLIN( 367)		if (this->isAtEnd()) {
+HXDLIN( 367)			return null();
             		}
             		else {
-HXDLIN( 237)			return this->tokens->__get(this->position).StaticCast<  ::src::Token >();
+HXDLIN( 367)			return this->tokens->__get(this->position).StaticCast<  ::src::Token >();
             		}
-HXDLIN( 237)		return null();
+HXDLIN( 367)		return null();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Parser_obj,peek,return )
 
  ::src::Token Parser_obj::previous(){
-            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_242_previous)
-HXDLIN( 242)		if ((this->position > 0)) {
-HXDLIN( 242)			return this->tokens->__get((this->position - 1)).StaticCast<  ::src::Token >();
+            	HX_STACKFRAME(&_hx_pos_274b98ea9fd940c5_372_previous)
+HXDLIN( 372)		if ((this->position > 0)) {
+HXDLIN( 372)			return this->tokens->__get((this->position - 1)).StaticCast<  ::src::Token >();
             		}
             		else {
-HXDLIN( 242)			return null();
+HXDLIN( 372)			return null();
             		}
-HXDLIN( 242)		return null();
+HXDLIN( 372)		return null();
             	}
 
 
@@ -657,6 +881,7 @@ void Parser_obj::__Mark(HX_MARK_PARAMS)
 	HX_MARK_BEGIN_CLASS(Parser);
 	HX_MARK_MEMBER_NAME(tokens,"tokens");
 	HX_MARK_MEMBER_NAME(position,"position");
+	HX_MARK_MEMBER_NAME(scopeStates,"scopeStates");
 	HX_MARK_END_CLASS();
 }
 
@@ -664,6 +889,7 @@ void Parser_obj::__Visit(HX_VISIT_PARAMS)
 {
 	HX_VISIT_MEMBER_NAME(tokens,"tokens");
 	HX_VISIT_MEMBER_NAME(position,"position");
+	HX_VISIT_MEMBER_NAME(scopeStates,"scopeStates");
 }
 
 ::hx::Val Parser_obj::__Field(const ::String &inName,::hx::PropertyAccess inCallProp)
@@ -672,6 +898,7 @@ void Parser_obj::__Visit(HX_VISIT_PARAMS)
 	case 4:
 		if (HX_FIELD_EQ(inName,"expr") ) { return ::hx::Val( expr_dyn() ); }
 		if (HX_FIELD_EQ(inName,"term") ) { return ::hx::Val( term_dyn() ); }
+		if (HX_FIELD_EQ(inName,"call") ) { return ::hx::Val( call_dyn() ); }
 		if (HX_FIELD_EQ(inName,"peek") ) { return ::hx::Val( peek_dyn() ); }
 		break;
 	case 5:
@@ -696,8 +923,14 @@ void Parser_obj::__Visit(HX_VISIT_PARAMS)
 	case 10:
 		if (HX_FIELD_EQ(inName,"comparison") ) { return ::hx::Val( comparison_dyn() ); }
 		break;
+	case 11:
+		if (HX_FIELD_EQ(inName,"scopeStates") ) { return ::hx::Val( scopeStates ); }
+		break;
 	case 14:
 		if (HX_FIELD_EQ(inName,"parseStatement") ) { return ::hx::Val( parseStatement_dyn() ); }
+		break;
+	case 15:
+		if (HX_FIELD_EQ(inName,"parseParameters") ) { return ::hx::Val( parseParameters_dyn() ); }
 		break;
 	case 16:
 		if (HX_FIELD_EQ(inName,"parseIfStatement") ) { return ::hx::Val( parseIfStatement_dyn() ); }
@@ -711,6 +944,15 @@ void Parser_obj::__Visit(HX_VISIT_PARAMS)
 		if (HX_FIELD_EQ(inName,"parsePrintStatement") ) { return ::hx::Val( parsePrintStatement_dyn() ); }
 		if (HX_FIELD_EQ(inName,"parseInputStatement") ) { return ::hx::Val( parseInputStatement_dyn() ); }
 		if (HX_FIELD_EQ(inName,"parseWhileStatement") ) { return ::hx::Val( parseWhileStatement_dyn() ); }
+		break;
+	case 20:
+		if (HX_FIELD_EQ(inName,"parseReturnStatement") ) { return ::hx::Val( parseReturnStatement_dyn() ); }
+		break;
+	case 21:
+		if (HX_FIELD_EQ(inName,"parseForeachStatement") ) { return ::hx::Val( parseForeachStatement_dyn() ); }
+		break;
+	case 22:
+		if (HX_FIELD_EQ(inName,"parseFunctionStatement") ) { return ::hx::Val( parseFunctionStatement_dyn() ); }
 		break;
 	case 25:
 		if (HX_FIELD_EQ(inName,"parseBlockWithTerminators") ) { return ::hx::Val( parseBlockWithTerminators_dyn() ); }
@@ -726,6 +968,9 @@ void Parser_obj::__Visit(HX_VISIT_PARAMS)
 		break;
 	case 8:
 		if (HX_FIELD_EQ(inName,"position") ) { position=inValue.Cast< int >(); return inValue; }
+		break;
+	case 11:
+		if (HX_FIELD_EQ(inName,"scopeStates") ) { scopeStates=inValue.Cast< ::Array< ::Dynamic> >(); return inValue; }
 	}
 	return super::__SetField(inName,inValue,inCallProp);
 }
@@ -734,6 +979,7 @@ void Parser_obj::__GetFields(Array< ::String> &outFields)
 {
 	outFields->push(HX_("tokens",5a,17,e7,91));
 	outFields->push(HX_("position",a9,a0,fa,ca));
+	outFields->push(HX_("scopeStates",f6,25,fd,5f));
 	super::__GetFields(outFields);
 };
 
@@ -741,6 +987,7 @@ void Parser_obj::__GetFields(Array< ::String> &outFields)
 static ::hx::StorageInfo Parser_obj_sMemberStorageInfo[] = {
 	{::hx::fsObject /* ::Array< ::Dynamic> */ ,(int)offsetof(Parser_obj,tokens),HX_("tokens",5a,17,e7,91)},
 	{::hx::fsInt,(int)offsetof(Parser_obj,position),HX_("position",a9,a0,fa,ca)},
+	{::hx::fsObject /* ::Array< ::Dynamic> */ ,(int)offsetof(Parser_obj,scopeStates),HX_("scopeStates",f6,25,fd,5f)},
 	{ ::hx::fsUnknown, 0, null()}
 };
 static ::hx::StaticInfo *Parser_obj_sStaticStorageInfo = 0;
@@ -749,20 +996,26 @@ static ::hx::StaticInfo *Parser_obj_sStaticStorageInfo = 0;
 static ::String Parser_obj_sMemberFields[] = {
 	HX_("tokens",5a,17,e7,91),
 	HX_("position",a9,a0,fa,ca),
+	HX_("scopeStates",f6,25,fd,5f),
 	HX_("parse",33,90,55,bd),
 	HX_("parsePrintStatement",d5,29,c3,00),
 	HX_("parseInputStatement",58,da,54,e9),
 	HX_("parseLetStatement",a7,35,14,75),
 	HX_("parseWhileStatement",d1,ad,e1,53),
+	HX_("parseForeachStatement",98,bb,35,ba),
 	HX_("parseIfStatement",1f,17,aa,ce),
 	HX_("parseIncStatement",44,bc,b5,72),
 	HX_("parseDecStatement",e0,d2,26,a2),
+	HX_("parseReturnStatement",6c,66,bb,63),
+	HX_("parseFunctionStatement",44,70,4c,ed),
+	HX_("parseParameters",bd,b0,68,aa),
 	HX_("parseBlockWithTerminators",8c,b3,38,67),
 	HX_("parseStatement",7c,c9,48,84),
 	HX_("comparison",49,9b,62,11),
 	HX_("expr",35,fd,1d,43),
 	HX_("term",6c,c7,f9,4c),
 	HX_("unary",af,55,e1,a6),
+	HX_("call",9e,18,ba,41),
 	HX_("factor",cf,98,0d,e4),
 	HX_("match",45,49,23,03),
 	HX_("consume",bc,79,da,18),

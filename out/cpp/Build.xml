@@ -41,16 +41,33 @@
    <depend name="include/src/ast/Node.h"/>
    <depend name="include/src/ast/StringExpr.h"/>
   </file>
+  <file name="src/src/ast/ReturnStmt.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/ReturnStmt.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+  </file>
   <file name="src/src/ast/PrintStmt.cpp" >
    <depend name="include/src/ast/Expr.h"/>
    <depend name="include/src/ast/Node.h"/>
    <depend name="include/src/ast/PrintStmt.h"/>
    <depend name="include/src/ast/Stmt.h"/>
   </file>
+  <file name="src/src/ast/Parameter.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Parameter.h"/>
+  </file>
   <file name="src/src/ast/NumberExpr.cpp" >
    <depend name="include/src/ast/Expr.h"/>
    <depend name="include/src/ast/Node.h"/>
    <depend name="include/src/ast/NumberExpr.h"/>
+  </file>
+  <file name="src/src/ast/NullExpr.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/NullExpr.h"/>
   </file>
   <file name="src/src/ast/LetStmt.cpp" >
    <depend name="include/Std.h"/>
@@ -67,6 +84,11 @@
    <depend name="include/src/ast/Stmt.h"/>
    <depend name="include/src/ast/VariableExpr.h"/>
   </file>
+  <file name="src/src/ast/IndexExpr.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/IndexExpr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+  </file>
   <file name="src/src/ast/IfStmt.cpp" >
    <depend name="include/src/ast/BlockStmt.h"/>
    <depend name="include/src/ast/Expr.h"/>
@@ -74,11 +96,29 @@
    <depend name="include/src/ast/Node.h"/>
    <depend name="include/src/ast/Stmt.h"/>
   </file>
+  <file name="src/src/ast/FunctionStmt.cpp" >
+   <depend name="include/src/ast/FunctionStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Parameter.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+  </file>
+  <file name="src/src/ast/ForeachStmt.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/ForeachStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/src/ast/VariableExpr.h"/>
+  </file>
   <file name="src/src/ast/ExprStmt.cpp" >
    <depend name="include/src/ast/Expr.h"/>
    <depend name="include/src/ast/ExprStmt.h"/>
    <depend name="include/src/ast/Node.h"/>
    <depend name="include/src/ast/Stmt.h"/>
+  </file>
+  <file name="src/src/ast/CallExpr.cpp" >
+   <depend name="include/src/ast/CallExpr.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
   </file>
   <file name="src/src/ast/BooleanExpr.cpp" >
    <depend name="include/Std.h"/>
@@ -99,6 +139,11 @@
    <depend name="include/Std.h"/>
    <depend name="include/src/Token.h"/>
    <depend name="include/src/ast/BinaryExpr.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+  </file>
+  <file name="src/src/ast/ArrayExpr.cpp" >
+   <depend name="include/src/ast/ArrayExpr.h"/>
    <depend name="include/src/ast/Expr.h"/>
    <depend name="include/src/ast/Node.h"/>
   </file>
@@ -128,32 +173,46 @@
   </file>
   <file name="src/src/Parser.cpp" >
    <depend name="include/Std.h"/>
+   <depend name="include/haxe/Log.h"/>
    <depend name="include/src/Parser.h"/>
+   <depend name="include/src/ScopeState.h"/>
    <depend name="include/src/Token.h"/>
    <depend name="include/src/TokenType.h"/>
+   <depend name="include/src/ast/ArrayExpr.h"/>
    <depend name="include/src/ast/BinaryExpr.h"/>
    <depend name="include/src/ast/BlockStmt.h"/>
    <depend name="include/src/ast/BooleanExpr.h"/>
+   <depend name="include/src/ast/CallExpr.h"/>
    <depend name="include/src/ast/Expr.h"/>
    <depend name="include/src/ast/ExprStmt.h"/>
+   <depend name="include/src/ast/ForeachStmt.h"/>
+   <depend name="include/src/ast/FunctionStmt.h"/>
    <depend name="include/src/ast/IfStmt.h"/>
+   <depend name="include/src/ast/IndexExpr.h"/>
    <depend name="include/src/ast/InputStmt.h"/>
    <depend name="include/src/ast/LetStmt.h"/>
    <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/NullExpr.h"/>
    <depend name="include/src/ast/NumberExpr.h"/>
+   <depend name="include/src/ast/Parameter.h"/>
    <depend name="include/src/ast/PrintStmt.h"/>
+   <depend name="include/src/ast/ReturnStmt.h"/>
    <depend name="include/src/ast/Stmt.h"/>
    <depend name="include/src/ast/StringExpr.h"/>
    <depend name="include/src/ast/UnaryExpr.h"/>
    <depend name="include/src/ast/VariableExpr.h"/>
    <depend name="include/src/ast/WhileStmt.h"/>
   </file>
+  <file name="src/src/ScopeState.cpp" >
+   <depend name="include/src/ScopeState.h"/>
+  </file>
   <file name="src/src/Main.cpp" >
    <depend name="include/Sys.h"/>
+   <depend name="include/haxe/Exception.h"/>
    <depend name="include/haxe/io/Input.h"/>
    <depend name="include/haxe/io/Output.h"/>
    <depend name="include/src/ASTWalker.h"/>
-   <depend name="include/src/InterpBknd.h"/>
+   <depend name="include/src/Interpreter.h"/>
    <depend name="include/src/Lexer.h"/>
    <depend name="include/src/Main.h"/>
    <depend name="include/src/Parser.h"/>
@@ -169,32 +228,61 @@
    <depend name="include/src/Token.h"/>
    <depend name="include/src/TokenType.h"/>
   </file>
-  <file name="src/src/InterpBknd.cpp" >
+  <file name="src/src/Interpreter.cpp" >
    <depend name="include/Std.h"/>
    <depend name="include/Sys.h"/>
-   <depend name="include/haxe/IMap.h"/>
-   <depend name="include/haxe/ds/StringMap.h"/>
+   <depend name="include/haxe/Exception.h"/>
    <depend name="include/haxe/io/Input.h"/>
    <depend name="include/src/ASTWalker.h"/>
-   <depend name="include/src/InterpBknd.h"/>
+   <depend name="include/src/Environment.h"/>
+   <depend name="include/src/Function.h"/>
+   <depend name="include/src/Interpreter.h"/>
+   <depend name="include/src/Return.h"/>
    <depend name="include/src/Token.h"/>
    <depend name="include/src/TokenType.h"/>
    <depend name="include/src/Utils.h"/>
+   <depend name="include/src/ast/ArrayExpr.h"/>
    <depend name="include/src/ast/BinaryExpr.h"/>
    <depend name="include/src/ast/BlockStmt.h"/>
+   <depend name="include/src/ast/CallExpr.h"/>
    <depend name="include/src/ast/Expr.h"/>
    <depend name="include/src/ast/ExprStmt.h"/>
+   <depend name="include/src/ast/ForeachStmt.h"/>
+   <depend name="include/src/ast/FunctionStmt.h"/>
    <depend name="include/src/ast/IfStmt.h"/>
+   <depend name="include/src/ast/IndexExpr.h"/>
    <depend name="include/src/ast/InputStmt.h"/>
    <depend name="include/src/ast/LetStmt.h"/>
    <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/NullExpr.h"/>
    <depend name="include/src/ast/NumberExpr.h"/>
+   <depend name="include/src/ast/Parameter.h"/>
    <depend name="include/src/ast/PrintStmt.h"/>
+   <depend name="include/src/ast/ReturnStmt.h"/>
    <depend name="include/src/ast/Stmt.h"/>
    <depend name="include/src/ast/StringExpr.h"/>
    <depend name="include/src/ast/UnaryExpr.h"/>
    <depend name="include/src/ast/VariableExpr.h"/>
    <depend name="include/src/ast/WhileStmt.h"/>
+  </file>
+  <file name="src/src/Return.cpp" >
+   <depend name="include/haxe/Exception.h"/>
+   <depend name="include/src/Return.h"/>
+  </file>
+  <file name="src/src/Environment.cpp" >
+   <depend name="include/haxe/IMap.h"/>
+   <depend name="include/haxe/ds/StringMap.h"/>
+   <depend name="include/src/Environment.h"/>
+  </file>
+  <file name="src/src/Function.cpp" >
+   <depend name="include/src/ASTWalker.h"/>
+   <depend name="include/src/Environment.h"/>
+   <depend name="include/src/Function.h"/>
+   <depend name="include/src/Interpreter.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Parameter.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
   </file>
   <file name="src/src/ASTWalker.cpp" >
    <depend name="include/src/ASTWalker.h"/>
@@ -274,9 +362,15 @@
   <file name="src/haxe/NativeStackTrace.cpp" >
    <depend name="include/haxe/NativeStackTrace.h"/>
   </file>
+  <file name="src/haxe/Log.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/haxe/Log.h"/>
+  </file>
   <file name="src/haxe/Exception.cpp" >
+   <depend name="include/Std.h"/>
    <depend name="include/haxe/Exception.h"/>
    <depend name="include/haxe/NativeStackTrace.h"/>
+   <depend name="include/haxe/ValueException.h"/>
   </file>
   <file name="src/haxe/IMap.cpp" >
    <depend name="include/haxe/IMap.h"/>
@@ -303,8 +397,10 @@
   </file>
   <file name="src/__boot__.cpp" >
    <depend name="include/src/TokenType.h"/>
+   <depend name="include/src/ScopeState.h"/>
    <depend name="include/haxe/io/Error.h"/>
    <depend name="include/haxe/io/Encoding.h"/>
+   <depend name="include/haxe/Log.h"/>
   </file>
   <file name="src/__files__.cpp" if='HXCPP_DEBUGGER'>
   </file>

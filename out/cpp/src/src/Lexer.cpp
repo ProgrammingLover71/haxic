@@ -20,9 +20,9 @@ HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_34_peek,"src.Lexer","peek",0xfafd1
 HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_42_isEof,"src.Lexer","isEof",0xa3cc2a66,"src.Lexer.isEof","src/Lexer.hx",42,0xd3e3d81d)
 HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_46_skipWhitespace,"src.Lexer","skipWhitespace",0x2327c2e8,"src.Lexer.skipWhitespace","src/Lexer.hx",46,0xd3e3d81d)
 HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_51_tokenize,"src.Lexer","tokenize",0x0e129b07,"src.Lexer.tokenize","src/Lexer.hx",51,0xd3e3d81d)
-HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_156_isKeyword,"src.Lexer","isKeyword",0x42918993,"src.Lexer.isKeyword","src/Lexer.hx",156,0xd3e3d81d)
+HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_162_isKeyword,"src.Lexer","isKeyword",0x42918993,"src.Lexer.isKeyword","src/Lexer.hx",162,0xd3e3d81d)
 static const ::String _hx_array_data_b9b28ce2_13[] = {
-	HX_("print",2d,58,8b,c8),HX_("input",0a,c4,1d,be),HX_("let",db,4b,52,00),HX_("if",dd,5b,00,00),HX_("then",dd,02,fc,4c),HX_("else",b9,e4,14,43),HX_("while",b1,43,bd,c9),HX_("do",8b,57,00,00),HX_("end",db,03,4d,00),HX_("true",4e,a7,03,4d),HX_("false",a3,35,4f,fb),HX_("inc",de,0c,50,00),HX_("dec",c2,39,4c,00),
+	HX_("print",2d,58,8b,c8),HX_("input",0a,c4,1d,be),HX_("let",db,4b,52,00),HX_("if",dd,5b,00,00),HX_("then",dd,02,fc,4c),HX_("else",b9,e4,14,43),HX_("while",b1,43,bd,c9),HX_("do",8b,57,00,00),HX_("end",db,03,4d,00),HX_("true",4e,a7,03,4d),HX_("false",a3,35,4f,fb),HX_("inc",de,0c,50,00),HX_("dec",c2,39,4c,00),HX_("func",44,eb,c4,43),HX_("return",b0,a4,2d,09),HX_("null",87,9e,0e,49),HX_("for",09,c7,4d,00),HX_("in",e5,5b,00,00),
 };
 namespace src{
 
@@ -143,41 +143,41 @@ HXLINE(  57)				goto _hx_goto_6;
             			}
 HXLINE(  59)			::String _hx_switch_0 = this->current;
             			if (  (_hx_switch_0==HX_("!",21,00,00,00)) ){
-HXLINE( 108)				if ((this->peek() == HX_("=",3d,00,00,00))) {
-HXLINE( 109)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::NOTEQ_dyn(),HX_("!=",fc,1c,00,00),this->line,this->column));
-HXLINE( 110)					this->advance();
-HXLINE( 111)					this->advance();
+HXLINE( 114)				if ((this->peek() == HX_("=",3d,00,00,00))) {
+HXLINE( 115)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::NOTEQ_dyn(),HX_("!=",fc,1c,00,00),this->line,this->column));
+HXLINE( 116)					this->advance();
+HXLINE( 117)					this->advance();
             				}
             				else {
-HXLINE( 113)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::BANG_dyn(),this->current,this->line,this->column));
-HXLINE( 114)					this->advance();
+HXLINE( 119)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::BANG_dyn(),this->current,this->line,this->column));
+HXLINE( 120)					this->advance();
             				}
-HXLINE( 108)				goto _hx_goto_9;
+HXLINE( 114)				goto _hx_goto_9;
             			}
             			if (  (_hx_switch_0==HX_("\"",22,00,00,00)) ){
-HXLINE( 121)				int start = (this->position + 1);
-HXLINE( 122)				this->advance();
-HXLINE( 123)				while(true){
-HXLINE( 123)					bool _hx_tmp;
-HXDLIN( 123)					if (!(this->isEof())) {
-HXLINE( 123)						_hx_tmp = (this->current != HX_("\"",22,00,00,00));
+HXLINE( 127)				int start = (this->position + 1);
+HXLINE( 128)				this->advance();
+HXLINE( 129)				while(true){
+HXLINE( 129)					bool _hx_tmp;
+HXDLIN( 129)					if (!(this->isEof())) {
+HXLINE( 129)						_hx_tmp = (this->current != HX_("\"",22,00,00,00));
             					}
             					else {
-HXLINE( 123)						_hx_tmp = false;
+HXLINE( 129)						_hx_tmp = false;
             					}
-HXDLIN( 123)					if (!(_hx_tmp)) {
-HXLINE( 123)						goto _hx_goto_10;
+HXDLIN( 129)					if (!(_hx_tmp)) {
+HXLINE( 129)						goto _hx_goto_10;
             					}
-HXLINE( 124)					this->advance();
+HXLINE( 130)					this->advance();
             				}
             				_hx_goto_10:;
-HXLINE( 126)				if (this->isEof()) {
-HXLINE( 126)					HX_STACK_DO_THROW((((HX_("Unterminated string literal at line ",3b,3a,7f,6b) + this->line) + HX_(", column ",96,fc,25,5b)) + this->column));
+HXLINE( 132)				if (this->isEof()) {
+HXLINE( 132)					HX_STACK_DO_THROW((((HX_("Unterminated string literal at line ",3b,3a,7f,6b) + this->line) + HX_(", column ",96,fc,25,5b)) + this->column));
             				}
-HXLINE( 127)				::String strValue = this->source.substring(start,this->position);
-HXLINE( 128)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::STRING_dyn(),strValue,this->line,(this->column - ((this->position - start) + 1))));
-HXLINE( 129)				this->advance();
-HXLINE( 119)				goto _hx_goto_9;
+HXLINE( 133)				::String strValue = this->source.substring(start,this->position);
+HXLINE( 134)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::STRING_dyn(),strValue,this->line,(this->column - ((this->position - start) + 1))));
+HXLINE( 135)				this->advance();
+HXLINE( 125)				goto _hx_goto_9;
             			}
             			if (  (_hx_switch_0==HX_("(",28,00,00,00)) ){
 HXLINE(  73)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::LPAREN_dyn(),this->current,this->line,this->column));
@@ -200,9 +200,9 @@ HXLINE(  62)				this->advance();
 HXLINE(  60)				goto _hx_goto_9;
             			}
             			if (  (_hx_switch_0==HX_(",",2c,00,00,00)) ){
-HXLINE( 117)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::COMMA_dyn(),this->current,this->line,this->column));
-HXLINE( 118)				this->advance();
-HXLINE( 116)				goto _hx_goto_9;
+HXLINE( 123)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::COMMA_dyn(),this->current,this->line,this->column));
+HXLINE( 124)				this->advance();
+HXLINE( 122)				goto _hx_goto_9;
             			}
             			if (  (_hx_switch_0==HX_("-",2d,00,00,00)) ){
 HXLINE(  64)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::MINUS_dyn(),this->current,this->line,this->column));
@@ -215,110 +215,120 @@ HXLINE(  71)				this->advance();
 HXLINE(  69)				goto _hx_goto_9;
             			}
             			if (  (_hx_switch_0==HX_(";",3b,00,00,00)) ){
-HXLINE(  79)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::SEMICOLON_dyn(),this->current,this->line,this->column));
+HXLINE(  85)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::SEMICOLON_dyn(),this->current,this->line,this->column));
+HXLINE(  86)				this->advance();
+HXLINE(  84)				goto _hx_goto_9;
+            			}
+            			if (  (_hx_switch_0==HX_("<",3c,00,00,00)) ){
+HXLINE( 105)				if ((this->peek() == HX_("=",3d,00,00,00))) {
+HXLINE( 106)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::LTEQ_dyn(),HX_("<=",81,34,00,00),this->line,this->column));
+HXLINE( 107)					this->advance();
+HXLINE( 108)					this->advance();
+            				}
+            				else {
+HXLINE( 110)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::LT_dyn(),this->current,this->line,this->column));
+HXLINE( 111)					this->advance();
+            				}
+HXLINE( 105)				goto _hx_goto_9;
+            			}
+            			if (  (_hx_switch_0==HX_("=",3d,00,00,00)) ){
+HXLINE(  88)				this->advance();
+HXLINE(  89)				if ((this->peek() == HX_("=",3d,00,00,00))) {
+HXLINE(  90)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::EQEQ_dyn(),HX_("==",60,35,00,00),this->line,this->column));
+HXLINE(  91)					this->advance();
+            				}
+            				else {
+HXLINE(  93)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::EQUALS_dyn(),this->current,this->line,this->column));
+            				}
+HXLINE(  87)				goto _hx_goto_9;
+            			}
+            			if (  (_hx_switch_0==HX_(">",3e,00,00,00)) ){
+HXLINE(  96)				if ((this->peek() == HX_("=",3d,00,00,00))) {
+HXLINE(  97)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::GTEQ_dyn(),HX_(">=",3f,36,00,00),this->line,this->column));
+HXLINE(  98)					this->advance();
+HXLINE(  99)					this->advance();
+            				}
+            				else {
+HXLINE( 101)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::GT_dyn(),this->current,this->line,this->column));
+HXLINE( 102)					this->advance();
+            				}
+HXLINE(  96)				goto _hx_goto_9;
+            			}
+            			if (  (_hx_switch_0==HX_("[",5b,00,00,00)) ){
+HXLINE(  79)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::LBRACK_dyn(),this->current,this->line,this->column));
 HXLINE(  80)				this->advance();
 HXLINE(  78)				goto _hx_goto_9;
             			}
-            			if (  (_hx_switch_0==HX_("<",3c,00,00,00)) ){
-HXLINE(  99)				if ((this->peek() == HX_("=",3d,00,00,00))) {
-HXLINE( 100)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::LTEQ_dyn(),HX_("<=",81,34,00,00),this->line,this->column));
-HXLINE( 101)					this->advance();
-HXLINE( 102)					this->advance();
-            				}
-            				else {
-HXLINE( 104)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::LT_dyn(),this->current,this->line,this->column));
-HXLINE( 105)					this->advance();
-            				}
-HXLINE(  99)				goto _hx_goto_9;
-            			}
-            			if (  (_hx_switch_0==HX_("=",3d,00,00,00)) ){
-HXLINE(  82)				this->advance();
-HXLINE(  83)				if ((this->peek() == HX_("=",3d,00,00,00))) {
-HXLINE(  84)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::EQEQ_dyn(),HX_("==",60,35,00,00),this->line,this->column));
-HXLINE(  85)					this->advance();
-            				}
-            				else {
-HXLINE(  87)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::EQUALS_dyn(),this->current,this->line,this->column));
-            				}
+            			if (  (_hx_switch_0==HX_("]",5d,00,00,00)) ){
+HXLINE(  82)				tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::RBRACK_dyn(),this->current,this->line,this->column));
+HXLINE(  83)				this->advance();
 HXLINE(  81)				goto _hx_goto_9;
             			}
-            			if (  (_hx_switch_0==HX_(">",3e,00,00,00)) ){
-HXLINE(  90)				if ((this->peek() == HX_("=",3d,00,00,00))) {
-HXLINE(  91)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::GTEQ_dyn(),HX_(">=",3f,36,00,00),this->line,this->column));
-HXLINE(  92)					this->advance();
-HXLINE(  93)					this->advance();
-            				}
-            				else {
-HXLINE(  95)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::GT_dyn(),this->current,this->line,this->column));
-HXLINE(  96)					this->advance();
-            				}
-HXLINE(  90)				goto _hx_goto_9;
-            			}
             			/* default */{
-HXLINE( 132)				if ( ::EReg_obj::__alloc( HX_CTX ,HX_("[a-zA-Z_$$]",79,b2,ba,9f),HX_("",00,00,00,00))->match(this->current)) {
-HXLINE( 133)					int start1 = this->position;
-HXLINE( 134)					while(true){
-HXLINE( 134)						bool _hx_tmp1;
-HXDLIN( 134)						if (!(this->isEof())) {
-HXLINE( 134)							_hx_tmp1 =  ::EReg_obj::__alloc( HX_CTX ,HX_("[a-zA-Z0-9_$$]",bf,dd,18,78),HX_("",00,00,00,00))->match(this->current);
+HXLINE( 138)				if ( ::EReg_obj::__alloc( HX_CTX ,HX_("[a-zA-Z_$$]",79,b2,ba,9f),HX_("",00,00,00,00))->match(this->current)) {
+HXLINE( 139)					int start1 = this->position;
+HXLINE( 140)					while(true){
+HXLINE( 140)						bool _hx_tmp1;
+HXDLIN( 140)						if (!(this->isEof())) {
+HXLINE( 140)							_hx_tmp1 =  ::EReg_obj::__alloc( HX_CTX ,HX_("[a-zA-Z0-9_$$]",bf,dd,18,78),HX_("",00,00,00,00))->match(this->current);
             						}
             						else {
-HXLINE( 134)							_hx_tmp1 = false;
+HXLINE( 140)							_hx_tmp1 = false;
             						}
-HXDLIN( 134)						if (!(_hx_tmp1)) {
-HXLINE( 134)							goto _hx_goto_7;
+HXDLIN( 140)						if (!(_hx_tmp1)) {
+HXLINE( 140)							goto _hx_goto_7;
             						}
-HXLINE( 135)						this->advance();
+HXLINE( 141)						this->advance();
             					}
             					_hx_goto_7:;
-HXLINE( 137)					::String identifier = this->source.substring(start1,this->position);
-HXLINE( 138)					 ::src::TokenType type;
-HXDLIN( 138)					if (this->isKeyword(identifier)) {
-HXLINE( 138)						type = ::src::TokenType_obj::KEYWORD_dyn();
+HXLINE( 143)					::String identifier = this->source.substring(start1,this->position);
+HXLINE( 144)					 ::src::TokenType type;
+HXDLIN( 144)					if (this->isKeyword(identifier)) {
+HXLINE( 144)						type = ::src::TokenType_obj::KEYWORD_dyn();
             					}
             					else {
-HXLINE( 138)						type = ::src::TokenType_obj::IDENTIFIER_dyn();
+HXLINE( 144)						type = ::src::TokenType_obj::IDENTIFIER_dyn();
             					}
-HXLINE( 139)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,type,identifier,this->line,this->column));
+HXLINE( 145)					tokens->push( ::src::Token_obj::__alloc( HX_CTX ,type,identifier,this->line,this->column));
             				}
             				else {
-HXLINE( 140)					if ( ::EReg_obj::__alloc( HX_CTX ,HX_("[0-9]",1c,5f,53,85),HX_("",00,00,00,00))->match(this->current)) {
-HXLINE( 141)						int start2 = this->position;
-HXLINE( 142)						while(true){
-HXLINE( 142)							bool _hx_tmp2;
-HXDLIN( 142)							if (!(this->isEof())) {
-HXLINE( 142)								_hx_tmp2 =  ::EReg_obj::__alloc( HX_CTX ,HX_("[0-9]",1c,5f,53,85),HX_("",00,00,00,00))->match(this->current);
+HXLINE( 146)					if ( ::EReg_obj::__alloc( HX_CTX ,HX_("[0-9]",1c,5f,53,85),HX_("",00,00,00,00))->match(this->current)) {
+HXLINE( 147)						int start2 = this->position;
+HXLINE( 148)						while(true){
+HXLINE( 148)							bool _hx_tmp2;
+HXDLIN( 148)							if (!(this->isEof())) {
+HXLINE( 148)								_hx_tmp2 =  ::EReg_obj::__alloc( HX_CTX ,HX_("[0-9]",1c,5f,53,85),HX_("",00,00,00,00))->match(this->current);
             							}
             							else {
-HXLINE( 142)								_hx_tmp2 = false;
+HXLINE( 148)								_hx_tmp2 = false;
             							}
-HXDLIN( 142)							if (!(_hx_tmp2)) {
-HXLINE( 142)								goto _hx_goto_8;
+HXDLIN( 148)							if (!(_hx_tmp2)) {
+HXLINE( 148)								goto _hx_goto_8;
             							}
-HXLINE( 143)							this->advance();
+HXLINE( 149)							this->advance();
             						}
             						_hx_goto_8:;
-HXLINE( 145)						::String numberStr = this->source.substring(start2,this->position);
-HXLINE( 146)						tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::NUMBER_dyn(),numberStr,this->line,(this->column - (this->position - start2))));
+HXLINE( 151)						::String numberStr = this->source.substring(start2,this->position);
+HXLINE( 152)						tokens->push( ::src::Token_obj::__alloc( HX_CTX ,::src::TokenType_obj::NUMBER_dyn(),numberStr,this->line,(this->column - (this->position - start2))));
             					}
             					else {
-HXLINE( 149)						HX_STACK_DO_THROW((((((HX_("Unknown character: ",d9,80,f1,ed) + this->current) + HX_(" at line ",df,96,71,22)) + this->line) + HX_(", column ",96,fc,25,5b)) + this->column));
+HXLINE( 155)						HX_STACK_DO_THROW((((((HX_("Unknown character: ",d9,80,f1,ed) + this->current) + HX_(" at line ",df,96,71,22)) + this->line) + HX_(", column ",96,fc,25,5b)) + this->column));
             					}
             				}
             			}
             			_hx_goto_9:;
             		}
             		_hx_goto_6:;
-HXLINE( 153)		return tokens;
+HXLINE( 159)		return tokens;
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Lexer_obj,tokenize,return )
 
 bool Lexer_obj::isKeyword(::String identifier){
-            	HX_STACKFRAME(&_hx_pos_3dd68e9c2b948807_156_isKeyword)
-HXLINE( 157)		::Array< ::String > keywords = ::Array_obj< ::String >::fromData( _hx_array_data_b9b28ce2_13,13);
-HXLINE( 158)		return (keywords->indexOf(identifier.toLowerCase(),null()) != -1);
+            	HX_STACKFRAME(&_hx_pos_3dd68e9c2b948807_162_isKeyword)
+HXLINE( 163)		::Array< ::String > keywords = ::Array_obj< ::String >::fromData( _hx_array_data_b9b28ce2_13,18);
+HXLINE( 164)		return (keywords->indexOf(identifier.toLowerCase(),null()) != -1);
             	}
 
 

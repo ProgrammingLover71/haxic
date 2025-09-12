@@ -22,6 +22,8 @@ namespace src{
 
 ::src::TokenType TokenType_obj::KEYWORD;
 
+::src::TokenType TokenType_obj::LBRACK;
+
 ::src::TokenType TokenType_obj::LPAREN;
 
 ::src::TokenType TokenType_obj::LT;
@@ -35,6 +37,8 @@ namespace src{
 ::src::TokenType TokenType_obj::NUMBER;
 
 ::src::TokenType TokenType_obj::PLUS;
+
+::src::TokenType TokenType_obj::RBRACK;
 
 ::src::TokenType TokenType_obj::RPAREN;
 
@@ -56,6 +60,7 @@ bool TokenType_obj::__GetStatic(const ::String &inName, ::Dynamic &outValue, ::h
 	if (inName==HX_("GTEQ",d9,1f,2e,2f)) { outValue = TokenType_obj::GTEQ; return true; }
 	if (inName==HX_("IDENTIFIER",69,3c,36,c0)) { outValue = TokenType_obj::IDENTIFIER; return true; }
 	if (inName==HX_("KEYWORD",c9,1a,d1,3d)) { outValue = TokenType_obj::KEYWORD; return true; }
+	if (inName==HX_("LBRACK",8d,c1,f6,99)) { outValue = TokenType_obj::LBRACK; return true; }
 	if (inName==HX_("LPAREN",1e,28,63,9e)) { outValue = TokenType_obj::LPAREN; return true; }
 	if (inName==HX_("LT",88,42,00,00)) { outValue = TokenType_obj::LT; return true; }
 	if (inName==HX_("LTEQ",f4,30,7c,32)) { outValue = TokenType_obj::LTEQ; return true; }
@@ -63,6 +68,7 @@ bool TokenType_obj::__GetStatic(const ::String &inName, ::Dynamic &outValue, ::h
 	if (inName==HX_("NOTEQ",1f,14,b9,1d)) { outValue = TokenType_obj::NOTEQ; return true; }
 	if (inName==HX_("NUMBER",c9,32,fd,53)) { outValue = TokenType_obj::NUMBER; return true; }
 	if (inName==HX_("PLUS",5a,07,1b,35)) { outValue = TokenType_obj::PLUS; return true; }
+	if (inName==HX_("RBRACK",c7,eb,1a,00)) { outValue = TokenType_obj::RBRACK; return true; }
 	if (inName==HX_("RPAREN",58,52,87,04)) { outValue = TokenType_obj::RPAREN; return true; }
 	if (inName==HX_("SEMICOLON",11,86,2a,49)) { outValue = TokenType_obj::SEMICOLON; return true; }
 	if (inName==HX_("SLASH",1d,f8,af,fc)) { outValue = TokenType_obj::SLASH; return true; }
@@ -75,23 +81,25 @@ HX_DEFINE_CREATE_ENUM(TokenType_obj)
 
 int TokenType_obj::__FindIndex(::String inName)
 {
-	if (inName==HX_("BANG",b8,ab,d1,2b)) return 19;
-	if (inName==HX_("COMMA",b5,69,4b,c8)) return 12;
-	if (inName==HX_("EQEQ",d8,6b,d9,2d)) return 13;
-	if (inName==HX_("EQUALS",3f,9a,75,72)) return 11;
-	if (inName==HX_("GT",2d,3e,00,00)) return 15;
-	if (inName==HX_("GTEQ",d9,1f,2e,2f)) return 16;
+	if (inName==HX_("BANG",b8,ab,d1,2b)) return 21;
+	if (inName==HX_("COMMA",b5,69,4b,c8)) return 14;
+	if (inName==HX_("EQEQ",d8,6b,d9,2d)) return 15;
+	if (inName==HX_("EQUALS",3f,9a,75,72)) return 13;
+	if (inName==HX_("GT",2d,3e,00,00)) return 17;
+	if (inName==HX_("GTEQ",d9,1f,2e,2f)) return 18;
 	if (inName==HX_("IDENTIFIER",69,3c,36,c0)) return 0;
 	if (inName==HX_("KEYWORD",c9,1a,d1,3d)) return 1;
+	if (inName==HX_("LBRACK",8d,c1,f6,99)) return 10;
 	if (inName==HX_("LPAREN",1e,28,63,9e)) return 8;
-	if (inName==HX_("LT",88,42,00,00)) return 17;
-	if (inName==HX_("LTEQ",f4,30,7c,32)) return 18;
+	if (inName==HX_("LT",88,42,00,00)) return 19;
+	if (inName==HX_("LTEQ",f4,30,7c,32)) return 20;
 	if (inName==HX_("MINUS",50,b8,56,86)) return 5;
-	if (inName==HX_("NOTEQ",1f,14,b9,1d)) return 14;
+	if (inName==HX_("NOTEQ",1f,14,b9,1d)) return 16;
 	if (inName==HX_("NUMBER",c9,32,fd,53)) return 2;
 	if (inName==HX_("PLUS",5a,07,1b,35)) return 4;
+	if (inName==HX_("RBRACK",c7,eb,1a,00)) return 11;
 	if (inName==HX_("RPAREN",58,52,87,04)) return 9;
-	if (inName==HX_("SEMICOLON",11,86,2a,49)) return 10;
+	if (inName==HX_("SEMICOLON",11,86,2a,49)) return 12;
 	if (inName==HX_("SLASH",1d,f8,af,fc)) return 7;
 	if (inName==HX_("STAR",d2,ab,1c,37)) return 6;
 	if (inName==HX_("STRING",d1,d4,b2,c3)) return 3;
@@ -108,6 +116,7 @@ int TokenType_obj::__FindArgCount(::String inName)
 	if (inName==HX_("GTEQ",d9,1f,2e,2f)) return 0;
 	if (inName==HX_("IDENTIFIER",69,3c,36,c0)) return 0;
 	if (inName==HX_("KEYWORD",c9,1a,d1,3d)) return 0;
+	if (inName==HX_("LBRACK",8d,c1,f6,99)) return 0;
 	if (inName==HX_("LPAREN",1e,28,63,9e)) return 0;
 	if (inName==HX_("LT",88,42,00,00)) return 0;
 	if (inName==HX_("LTEQ",f4,30,7c,32)) return 0;
@@ -115,6 +124,7 @@ int TokenType_obj::__FindArgCount(::String inName)
 	if (inName==HX_("NOTEQ",1f,14,b9,1d)) return 0;
 	if (inName==HX_("NUMBER",c9,32,fd,53)) return 0;
 	if (inName==HX_("PLUS",5a,07,1b,35)) return 0;
+	if (inName==HX_("RBRACK",c7,eb,1a,00)) return 0;
 	if (inName==HX_("RPAREN",58,52,87,04)) return 0;
 	if (inName==HX_("SEMICOLON",11,86,2a,49)) return 0;
 	if (inName==HX_("SLASH",1d,f8,af,fc)) return 0;
@@ -133,6 +143,7 @@ int TokenType_obj::__FindArgCount(::String inName)
 	if (inName==HX_("GTEQ",d9,1f,2e,2f)) return GTEQ;
 	if (inName==HX_("IDENTIFIER",69,3c,36,c0)) return IDENTIFIER;
 	if (inName==HX_("KEYWORD",c9,1a,d1,3d)) return KEYWORD;
+	if (inName==HX_("LBRACK",8d,c1,f6,99)) return LBRACK;
 	if (inName==HX_("LPAREN",1e,28,63,9e)) return LPAREN;
 	if (inName==HX_("LT",88,42,00,00)) return LT;
 	if (inName==HX_("LTEQ",f4,30,7c,32)) return LTEQ;
@@ -140,6 +151,7 @@ int TokenType_obj::__FindArgCount(::String inName)
 	if (inName==HX_("NOTEQ",1f,14,b9,1d)) return NOTEQ;
 	if (inName==HX_("NUMBER",c9,32,fd,53)) return NUMBER;
 	if (inName==HX_("PLUS",5a,07,1b,35)) return PLUS;
+	if (inName==HX_("RBRACK",c7,eb,1a,00)) return RBRACK;
 	if (inName==HX_("RPAREN",58,52,87,04)) return RPAREN;
 	if (inName==HX_("SEMICOLON",11,86,2a,49)) return SEMICOLON;
 	if (inName==HX_("SLASH",1d,f8,af,fc)) return SLASH;
@@ -159,6 +171,8 @@ static ::String TokenType_obj_sStaticFields[] = {
 	HX_("SLASH",1d,f8,af,fc),
 	HX_("LPAREN",1e,28,63,9e),
 	HX_("RPAREN",58,52,87,04),
+	HX_("LBRACK",8d,c1,f6,99),
+	HX_("RBRACK",c7,eb,1a,00),
 	HX_("SEMICOLON",11,86,2a,49),
 	HX_("EQUALS",3f,9a,75,72),
 	HX_("COMMA",b5,69,4b,c8),
@@ -194,23 +208,25 @@ void TokenType_obj::__register()
 
 void TokenType_obj::__boot()
 {
-BANG = ::hx::CreateConstEnum< TokenType_obj >(HX_("BANG",b8,ab,d1,2b),19);
-COMMA = ::hx::CreateConstEnum< TokenType_obj >(HX_("COMMA",b5,69,4b,c8),12);
-EQEQ = ::hx::CreateConstEnum< TokenType_obj >(HX_("EQEQ",d8,6b,d9,2d),13);
-EQUALS = ::hx::CreateConstEnum< TokenType_obj >(HX_("EQUALS",3f,9a,75,72),11);
-GT = ::hx::CreateConstEnum< TokenType_obj >(HX_("GT",2d,3e,00,00),15);
-GTEQ = ::hx::CreateConstEnum< TokenType_obj >(HX_("GTEQ",d9,1f,2e,2f),16);
+BANG = ::hx::CreateConstEnum< TokenType_obj >(HX_("BANG",b8,ab,d1,2b),21);
+COMMA = ::hx::CreateConstEnum< TokenType_obj >(HX_("COMMA",b5,69,4b,c8),14);
+EQEQ = ::hx::CreateConstEnum< TokenType_obj >(HX_("EQEQ",d8,6b,d9,2d),15);
+EQUALS = ::hx::CreateConstEnum< TokenType_obj >(HX_("EQUALS",3f,9a,75,72),13);
+GT = ::hx::CreateConstEnum< TokenType_obj >(HX_("GT",2d,3e,00,00),17);
+GTEQ = ::hx::CreateConstEnum< TokenType_obj >(HX_("GTEQ",d9,1f,2e,2f),18);
 IDENTIFIER = ::hx::CreateConstEnum< TokenType_obj >(HX_("IDENTIFIER",69,3c,36,c0),0);
 KEYWORD = ::hx::CreateConstEnum< TokenType_obj >(HX_("KEYWORD",c9,1a,d1,3d),1);
+LBRACK = ::hx::CreateConstEnum< TokenType_obj >(HX_("LBRACK",8d,c1,f6,99),10);
 LPAREN = ::hx::CreateConstEnum< TokenType_obj >(HX_("LPAREN",1e,28,63,9e),8);
-LT = ::hx::CreateConstEnum< TokenType_obj >(HX_("LT",88,42,00,00),17);
-LTEQ = ::hx::CreateConstEnum< TokenType_obj >(HX_("LTEQ",f4,30,7c,32),18);
+LT = ::hx::CreateConstEnum< TokenType_obj >(HX_("LT",88,42,00,00),19);
+LTEQ = ::hx::CreateConstEnum< TokenType_obj >(HX_("LTEQ",f4,30,7c,32),20);
 MINUS = ::hx::CreateConstEnum< TokenType_obj >(HX_("MINUS",50,b8,56,86),5);
-NOTEQ = ::hx::CreateConstEnum< TokenType_obj >(HX_("NOTEQ",1f,14,b9,1d),14);
+NOTEQ = ::hx::CreateConstEnum< TokenType_obj >(HX_("NOTEQ",1f,14,b9,1d),16);
 NUMBER = ::hx::CreateConstEnum< TokenType_obj >(HX_("NUMBER",c9,32,fd,53),2);
 PLUS = ::hx::CreateConstEnum< TokenType_obj >(HX_("PLUS",5a,07,1b,35),4);
+RBRACK = ::hx::CreateConstEnum< TokenType_obj >(HX_("RBRACK",c7,eb,1a,00),11);
 RPAREN = ::hx::CreateConstEnum< TokenType_obj >(HX_("RPAREN",58,52,87,04),9);
-SEMICOLON = ::hx::CreateConstEnum< TokenType_obj >(HX_("SEMICOLON",11,86,2a,49),10);
+SEMICOLON = ::hx::CreateConstEnum< TokenType_obj >(HX_("SEMICOLON",11,86,2a,49),12);
 SLASH = ::hx::CreateConstEnum< TokenType_obj >(HX_("SLASH",1d,f8,af,fc),7);
 STAR = ::hx::CreateConstEnum< TokenType_obj >(HX_("STAR",d2,ab,1c,37),6);
 STRING = ::hx::CreateConstEnum< TokenType_obj >(HX_("STRING",d1,d4,b2,c3),3);

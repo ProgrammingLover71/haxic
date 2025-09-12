@@ -7,15 +7,20 @@
 #endif
 
 HX_DECLARE_CLASS1(src,Parser)
+HX_DECLARE_CLASS1(src,ScopeState)
 HX_DECLARE_CLASS1(src,Token)
 HX_DECLARE_CLASS1(src,TokenType)
 HX_DECLARE_CLASS2(src,ast,BlockStmt)
 HX_DECLARE_CLASS2(src,ast,Expr)
+HX_DECLARE_CLASS2(src,ast,ForeachStmt)
+HX_DECLARE_CLASS2(src,ast,FunctionStmt)
 HX_DECLARE_CLASS2(src,ast,IfStmt)
 HX_DECLARE_CLASS2(src,ast,InputStmt)
 HX_DECLARE_CLASS2(src,ast,LetStmt)
 HX_DECLARE_CLASS2(src,ast,Node)
+HX_DECLARE_CLASS2(src,ast,Parameter)
 HX_DECLARE_CLASS2(src,ast,PrintStmt)
+HX_DECLARE_CLASS2(src,ast,ReturnStmt)
 HX_DECLARE_CLASS2(src,ast,Stmt)
 HX_DECLARE_CLASS2(src,ast,WhileStmt)
 
@@ -56,6 +61,7 @@ class HXCPP_CLASS_ATTRIBUTES Parser_obj : public ::hx::Object
 
 		::Array< ::Dynamic> tokens;
 		int position;
+		::Array< ::Dynamic> scopeStates;
 		::Array< ::Dynamic> parse();
 		::Dynamic parse_dyn();
 
@@ -71,6 +77,9 @@ class HXCPP_CLASS_ATTRIBUTES Parser_obj : public ::hx::Object
 		 ::src::ast::WhileStmt parseWhileStatement();
 		::Dynamic parseWhileStatement_dyn();
 
+		 ::src::ast::ForeachStmt parseForeachStatement();
+		::Dynamic parseForeachStatement_dyn();
+
 		 ::src::ast::IfStmt parseIfStatement();
 		::Dynamic parseIfStatement_dyn();
 
@@ -79,6 +88,15 @@ class HXCPP_CLASS_ATTRIBUTES Parser_obj : public ::hx::Object
 
 		 ::src::ast::LetStmt parseDecStatement();
 		::Dynamic parseDecStatement_dyn();
+
+		 ::src::ast::ReturnStmt parseReturnStatement();
+		::Dynamic parseReturnStatement_dyn();
+
+		 ::src::ast::FunctionStmt parseFunctionStatement();
+		::Dynamic parseFunctionStatement_dyn();
+
+		::Array< ::Dynamic> parseParameters();
+		::Dynamic parseParameters_dyn();
 
 		 ::src::ast::BlockStmt parseBlockWithTerminators(::Array< ::String > terminators,int line,int column);
 		::Dynamic parseBlockWithTerminators_dyn();
@@ -97,6 +115,9 @@ class HXCPP_CLASS_ATTRIBUTES Parser_obj : public ::hx::Object
 
 		 ::src::ast::Expr unary();
 		::Dynamic unary_dyn();
+
+		 ::src::ast::Expr call();
+		::Dynamic call_dyn();
 
 		 ::src::ast::Expr factor();
 		::Dynamic factor_dyn();

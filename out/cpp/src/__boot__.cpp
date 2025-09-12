@@ -4,11 +4,17 @@
 #ifndef INCLUDED_src_TokenType
 #include <src/TokenType.h>
 #endif
+#ifndef INCLUDED_src_ScopeState
+#include <src/ScopeState.h>
+#endif
 #ifndef INCLUDED_haxe_io_Error
 #include <haxe/io/Error.h>
 #endif
 #ifndef INCLUDED_haxe_io_Encoding
 #include <haxe/io/Encoding.h>
+#endif
+#ifndef INCLUDED_haxe_Log
+#include <haxe/Log.h>
 #endif
 #ifndef INCLUDED_sys_io_FileOutput
 #include <sys/io/FileOutput.h>
@@ -31,11 +37,20 @@
 #ifndef INCLUDED_src_ast_StringExpr
 #include <src/ast/StringExpr.h>
 #endif
+#ifndef INCLUDED_src_ast_ReturnStmt
+#include <src/ast/ReturnStmt.h>
+#endif
 #ifndef INCLUDED_src_ast_PrintStmt
 #include <src/ast/PrintStmt.h>
 #endif
+#ifndef INCLUDED_src_ast_Parameter
+#include <src/ast/Parameter.h>
+#endif
 #ifndef INCLUDED_src_ast_NumberExpr
 #include <src/ast/NumberExpr.h>
+#endif
+#ifndef INCLUDED_src_ast_NullExpr
+#include <src/ast/NullExpr.h>
 #endif
 #ifndef INCLUDED_src_ast_LetStmt
 #include <src/ast/LetStmt.h>
@@ -43,11 +58,23 @@
 #ifndef INCLUDED_src_ast_InputStmt
 #include <src/ast/InputStmt.h>
 #endif
+#ifndef INCLUDED_src_ast_IndexExpr
+#include <src/ast/IndexExpr.h>
+#endif
 #ifndef INCLUDED_src_ast_IfStmt
 #include <src/ast/IfStmt.h>
 #endif
+#ifndef INCLUDED_src_ast_FunctionStmt
+#include <src/ast/FunctionStmt.h>
+#endif
+#ifndef INCLUDED_src_ast_ForeachStmt
+#include <src/ast/ForeachStmt.h>
+#endif
 #ifndef INCLUDED_src_ast_ExprStmt
 #include <src/ast/ExprStmt.h>
+#endif
+#ifndef INCLUDED_src_ast_CallExpr
+#include <src/ast/CallExpr.h>
 #endif
 #ifndef INCLUDED_src_ast_BooleanExpr
 #include <src/ast/BooleanExpr.h>
@@ -60,6 +87,9 @@
 #endif
 #ifndef INCLUDED_src_ast_BinaryExpr
 #include <src/ast/BinaryExpr.h>
+#endif
+#ifndef INCLUDED_src_ast_ArrayExpr
+#include <src/ast/ArrayExpr.h>
 #endif
 #ifndef INCLUDED_src_ast_Expr
 #include <src/ast/Expr.h>
@@ -82,8 +112,17 @@
 #ifndef INCLUDED_src_Lexer
 #include <src/Lexer.h>
 #endif
-#ifndef INCLUDED_src_InterpBknd
-#include <src/InterpBknd.h>
+#ifndef INCLUDED_src_Interpreter
+#include <src/Interpreter.h>
+#endif
+#ifndef INCLUDED_src_Return
+#include <src/Return.h>
+#endif
+#ifndef INCLUDED_src_Environment
+#include <src/Environment.h>
+#endif
+#ifndef INCLUDED_src_Function
+#include <src/Function.h>
 #endif
 #ifndef INCLUDED_src_ASTWalker
 #include <src/ASTWalker.h>
@@ -150,8 +189,10 @@ void __boot_all()
 __files__boot();
 ::hx::RegisterResources( ::hx::GetResources() );
 ::src::TokenType_obj::__register();
+::src::ScopeState_obj::__register();
 ::haxe::io::Error_obj::__register();
 ::haxe::io::Encoding_obj::__register();
+::haxe::Log_obj::__register();
 ::sys::io::FileOutput_obj::__register();
 ::sys::io::FileInput_obj::__register();
 ::sys::io::File_obj::__register();
@@ -159,16 +200,24 @@ __files__boot();
 ::src::ast::VariableExpr_obj::__register();
 ::src::ast::UnaryExpr_obj::__register();
 ::src::ast::StringExpr_obj::__register();
+::src::ast::ReturnStmt_obj::__register();
 ::src::ast::PrintStmt_obj::__register();
+::src::ast::Parameter_obj::__register();
 ::src::ast::NumberExpr_obj::__register();
+::src::ast::NullExpr_obj::__register();
 ::src::ast::LetStmt_obj::__register();
 ::src::ast::InputStmt_obj::__register();
+::src::ast::IndexExpr_obj::__register();
 ::src::ast::IfStmt_obj::__register();
+::src::ast::FunctionStmt_obj::__register();
+::src::ast::ForeachStmt_obj::__register();
 ::src::ast::ExprStmt_obj::__register();
+::src::ast::CallExpr_obj::__register();
 ::src::ast::BooleanExpr_obj::__register();
 ::src::ast::BlockStmt_obj::__register();
 ::src::ast::Stmt_obj::__register();
 ::src::ast::BinaryExpr_obj::__register();
+::src::ast::ArrayExpr_obj::__register();
 ::src::ast::Expr_obj::__register();
 ::src::ast::Node_obj::__register();
 ::src::Utils_obj::__register();
@@ -176,7 +225,10 @@ __files__boot();
 ::src::Parser_obj::__register();
 ::src::Main_obj::__register();
 ::src::Lexer_obj::__register();
-::src::InterpBknd_obj::__register();
+::src::Interpreter_obj::__register();
+::src::Return_obj::__register();
+::src::Environment_obj::__register();
+::src::Function_obj::__register();
 ::src::ASTWalker_obj::__register();
 ::haxe::iterators::ArrayIterator_obj::__register();
 ::haxe::io::Output_obj::__register();
@@ -197,7 +249,9 @@ __files__boot();
 ::Reflect_obj::__register();
 ::EReg_obj::__register();
 ::src::TokenType_obj::__boot();
+::src::ScopeState_obj::__boot();
 ::haxe::io::Error_obj::__boot();
 ::haxe::io::Encoding_obj::__boot();
+::haxe::Log_obj::__boot();
 }
 

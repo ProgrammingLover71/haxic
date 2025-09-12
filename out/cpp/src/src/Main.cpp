@@ -4,6 +4,9 @@
 #ifndef INCLUDED_Sys
 #include <Sys.h>
 #endif
+#ifndef INCLUDED_haxe_Exception
+#include <haxe/Exception.h>
+#endif
 #ifndef INCLUDED_haxe_io_Input
 #include <haxe/io/Input.h>
 #endif
@@ -13,8 +16,8 @@
 #ifndef INCLUDED_src_ASTWalker
 #include <src/ASTWalker.h>
 #endif
-#ifndef INCLUDED_src_InterpBknd
-#include <src/InterpBknd.h>
+#ifndef INCLUDED_src_Interpreter
+#include <src/Interpreter.h>
 #endif
 #ifndef INCLUDED_src_Lexer
 #include <src/Lexer.h>
@@ -70,27 +73,40 @@ HXLINE(   8)			return;
 HXLINE(  11)		if ((::Sys_obj::args()->length == 1)) {
 HXLINE(  13)			::String filename = ::Sys_obj::args()->__get(0);
 HXLINE(  14)			::String content = ::sys::io::File_obj::getContent(filename);
-HXLINE(  15)			 ::src::Lexer lexer =  ::src::Lexer_obj::__alloc( HX_CTX ,content);
-HXLINE(  16)			::Array< ::Dynamic> tokens = lexer->tokenize();
-HXLINE(  17)			 ::src::Parser parser =  ::src::Parser_obj::__alloc( HX_CTX ,tokens);
-HXLINE(  18)			::Array< ::Dynamic> ast = parser->parse();
-HXLINE(  19)			 ::src::InterpBknd interpreter =  ::src::InterpBknd_obj::__alloc( HX_CTX );
-HXLINE(  20)			interpreter->visit(ast);
-HXLINE(  21)			return;
+HXLINE(  16)			 ::src::Lexer lexer =  ::src::Lexer_obj::__alloc( HX_CTX ,content);
+HXLINE(  17)			::Array< ::Dynamic> tokens = lexer->tokenize();
+HXLINE(  18)			 ::src::Parser parser =  ::src::Parser_obj::__alloc( HX_CTX ,tokens);
+HXLINE(  19)			::Array< ::Dynamic> ast = parser->parse();
+HXLINE(  20)			 ::src::Interpreter interpreter =  ::src::Interpreter_obj::__alloc( HX_CTX );
+HXLINE(  21)			interpreter->visit(ast);
+HXLINE(  22)			return;
             		}
-HXLINE(  25)		 ::src::InterpBknd interpreter1 =  ::src::InterpBknd_obj::__alloc( HX_CTX );
-HXLINE(  26)		while(true){
-HXLINE(  28)			::src::Utils_obj::print(HX_("haxic >> ",39,f7,b9,ed),false);
-HXLINE(  29)			::Sys_obj::_hx_stdout()->flush();
-HXLINE(  30)			::String line = ::Sys_obj::_hx_stdin()->readLine();
-HXLINE(  31)			if (::hx::IsNull( line )) {
-HXLINE(  31)				continue;
+HXLINE(  26)		 ::src::Interpreter interpreter1 =  ::src::Interpreter_obj::__alloc( HX_CTX );
+HXLINE(  27)		while(true){
+HXLINE(  29)			::src::Utils_obj::print(HX_("haxic >> ",39,f7,b9,ed),false);
+HXLINE(  30)			::Sys_obj::_hx_stdout()->flush();
+HXLINE(  31)			::String line = ::Sys_obj::_hx_stdin()->readLine();
+HXLINE(  32)			if (::hx::IsNull( line )) {
+HXLINE(  32)				continue;
             			}
-HXLINE(  33)			 ::src::Lexer lexer1 =  ::src::Lexer_obj::__alloc( HX_CTX ,line);
-HXLINE(  34)			::Array< ::Dynamic> tokens1 = lexer1->tokenize();
-HXLINE(  35)			 ::src::Parser parser1 =  ::src::Parser_obj::__alloc( HX_CTX ,tokens1);
-HXLINE(  36)			::Array< ::Dynamic> ast1 = parser1->parse();
-HXLINE(  37)			interpreter1->visit(ast1);
+HXLINE(  34)			try {
+            				HX_STACK_CATCHABLE( ::Dynamic, 0);
+HXLINE(  35)				 ::src::Lexer lexer1 =  ::src::Lexer_obj::__alloc( HX_CTX ,line);
+HXLINE(  36)				::Array< ::Dynamic> tokens1 = lexer1->tokenize();
+HXLINE(  37)				 ::src::Parser parser1 =  ::src::Parser_obj::__alloc( HX_CTX ,tokens1);
+HXLINE(  38)				::Array< ::Dynamic> ast1 = parser1->parse();
+HXLINE(  39)				interpreter1->visit(ast1);
+            			} catch( ::Dynamic _hx_e) {
+            				if (_hx_e.IsClass<  ::Dynamic >() ){
+            					HX_STACK_BEGIN_CATCH
+            					 ::Dynamic _g = _hx_e;
+HXLINE(  40)					 ::haxe::Exception err = ::haxe::Exception_obj::caught(_g);
+HXLINE(  41)					::src::Utils_obj::print((HX_("Error: ",4e,a8,5b,b7) + err->get_message()),null());
+            				}
+            				else {
+            					HX_STACK_DO_THROW(_hx_e);
+            				}
+            			}
             		}
             	}
 

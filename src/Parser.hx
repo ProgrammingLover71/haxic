@@ -2,13 +2,23 @@ package src;
 
 import src.ast.*;
 
+enum ScopeState {
+    Global;
+    Function;
+    Loop;
+}
+
+
+
 class Parser {
     public var tokens:Array<Token>;
     public var position:Int = 0;
+    public var scopeStates:Array<ScopeState>;
 
 
     public function new(tokens:Array<Token>) {
         this.tokens = tokens;
+        scopeStates = [ScopeState.Global];
     }
 
 
@@ -63,11 +73,35 @@ class Parser {
         var condition = comparison();
         consume(TokenType.KEYWORD, "Expected 'do' after condition.");
         if (previous().value != "do") throw "Expected 'do' after condition.";
+        scopeStates.push(ScopeState.Loop);
+        // Enter a loop scope...
         var body = parseBlockWithTerminators(["end"], previous().line, previous().column);
         var kwEnd = consume(TokenType.KEYWORD, "Expected 'end' after while statement.");
         if (kwEnd.value != "end") throw "Expected 'end' after while statement.";
+        // ...then revert to the previous scope
+        scopeStates.pop();
 
         return new WhileStmt(condition, body, condition.line, condition.column);
+    }
+
+    /// for <identifier> = <comparison> to <comparison> (step <comparison>)? do <block> end
+    function parseForeachStatement():ForeachStmt {
+        advance(); // consume 'for'
+        var name = consume(TokenType.IDENTIFIER, "Expected loop variable after 'for'.");
+        consume(TokenType.KEYWORD, "Expected 'in' after loop variable.");
+        if (previous().value != "in") throw "Expected 'in' after loop variable.";
+        var iterable = comparison();
+        consume(TokenType.KEYWORD, "Expected 'do' after iterable.");
+        if (previous().value != "do") throw "Expected 'do' after iterable.";
+        scopeStates.push(ScopeState.Loop);
+        // Enter a loop scope...
+        var body = parseBlockWithTerminators(["end"], previous().line, previous().column);
+        var kwEnd = consume(TokenType.KEYWORD, "Expected 'end' after for statement.");
+        if (kwEnd.value != "end") throw "Expected 'end' after for statement.";
+        // ...then revert to the previous scope
+        scopeStates.pop();
+
+        return new ForeachStmt(new VariableExpr(name.value, name.line, name.column), iterable, body, name.line, name.column);
     }
 
     /// if <comparison> then <block> (else <block>)?
@@ -111,6 +145,60 @@ class Parser {
         return new LetStmt([new VariableExpr(Std.string(name.value), name.line, name.column)], binary, name.line, name.column);
     }
 
+    /// return (<comparison>)? ;
+    function parseReturnStatement():ReturnStmt {
+        if (scopeStates[scopeStates.length - 1] == ScopeState.Function) {
+            advance(); // consume 'return'
+            var expr:Expr = new NullExpr(previous().line, previous().column);
+            if (!check(TokenType.SEMICOLON)) {
+                expr = comparison();
+            }
+            consume(TokenType.SEMICOLON, "Expected ';'.");
+            return new ReturnStmt(expr, previous().line, previous().column);
+        } else {
+            throw "Return statement not allowed outside of function at line " + peek().line + ", column " + peek().column;
+        }
+    }
+
+    /// func <identifier> ( <identifier> (, <identifier>)* )? <block> end
+    function parseFunctionStatement():FunctionStmt {
+        advance(); // consume 'func'
+        var nameToken = consume(TokenType.IDENTIFIER, "Expected function name after 'func'.");
+        var name = nameToken.value;
+        consume(TokenType.LPAREN, "Expected '(' after function name.");
+        var params:Array<Parameter> = parseParameters();
+        consume(TokenType.RPAREN, "Expected ')' after parameters.");
+        // Start parsing function body in a function scope...
+        scopeStates.push(ScopeState.Function);
+        var body = parseBlockWithTerminators(["end"], previous().line, previous().column);
+        var kwEnd = consume(TokenType.KEYWORD, "Expected 'end' after function body.");
+        if (kwEnd.value != "end") throw "Expected 'end' after function body.";
+        // ...then revert to the previous scope
+        scopeStates.pop();
+        trace(params);
+        return new FunctionStmt(name, params, body, nameToken.line, nameToken.column);
+    }
+
+    /// (id (= expr)? (, id (= expr)?)* )
+    function parseParameters():Array<Parameter> {
+        var params:Array<Parameter> = [];
+
+        if (!check(TokenType.RPAREN)) {
+            do {
+                var name = consume(TokenType.IDENTIFIER, "Expected parameter name.");
+                var defaultValue:Expr = null;
+
+                if (match(TokenType.EQUALS)) {
+                    defaultValue = expr(); // parse default expression
+                }
+
+                params.push(new Parameter(name.value, defaultValue, name.line, name.column));
+            } while (match(TokenType.COMMA));
+        }
+
+        return params;
+    }
+
     /// <statement>*
     function parseBlockWithTerminators(terminators:Array<String>, line:Int, column:Int):BlockStmt {
         var statements:Array<Stmt> = [];
@@ -128,8 +216,11 @@ class Parser {
         if (check(TokenType.KEYWORD) && peek().value == "let") return parseLetStatement();
         if (check(TokenType.KEYWORD) && peek().value == "if") return parseIfStatement();
         if (check(TokenType.KEYWORD) && peek().value == "while") return parseWhileStatement();
+        if (check(TokenType.KEYWORD) && peek().value == "for") return parseForeachStatement();
         if (check(TokenType.KEYWORD) && peek().value == "inc") return parseIncStatement();
         if (check(TokenType.KEYWORD) && peek().value == "dec") return parseDecStatement();
+        if (check(TokenType.KEYWORD) && peek().value == "return") return parseReturnStatement();
+        if (check(TokenType.KEYWORD) && peek().value == "func") return parseFunctionStatement();
 
         // Fallback to expression statement
         return new ExprStmt(comparison(), peek().line, peek().column);
@@ -174,7 +265,31 @@ class Parser {
             var right:Expr = unary();
             return new UnaryExpr(oper, right, oper.line, oper.column);
         }
-        return factor();
+        return call();
+    }
+
+
+    function call():Expr {
+        var expr = factor();
+        while (true) {
+            if (match(TokenType.LPAREN)) {
+                var args:Array<Expr> = [];
+                if (!check(TokenType.RPAREN)) {
+                    do {
+                        args.push(comparison());
+                    } while (match(TokenType.COMMA));
+                }
+                var paren = consume(TokenType.RPAREN, "Expected ')' after arguments.");
+                expr = new CallExpr(expr, args, paren.line, paren.column);
+            } else if (match(TokenType.LBRACK)) {
+                var indexExpr = comparison();
+                var rbrack = consume(TokenType.RBRACK, "Expected ']' after array index.");
+                expr = new IndexExpr(expr, indexExpr, rbrack.line, rbrack.column);
+            } else {
+                break;
+            }
+        }
+        return expr;
     }
 
 
@@ -196,6 +311,21 @@ class Parser {
         if (check(TokenType.KEYWORD) && (peek().value == "true" || peek().value == "false")) {
             var kw = advance();
             return new BooleanExpr(kw.value == "true", kw.line, kw.column);
+        }
+        if (check(TokenType.KEYWORD) && peek().value == "null") {
+            var kw = advance();
+            return new NullExpr(kw.line, kw.column);
+        }
+        if (check(TokenType.LBRACK)) {
+            advance(); // consume '['
+            var elements:Array<Expr> = [];
+            if (!check(TokenType.RBRACK)) {
+                do {
+                    elements.push(comparison());
+                } while (match(TokenType.COMMA));
+            }
+            consume(TokenType.RBRACK, "Expected ']' after array elements.");
+            return new ArrayExpr(elements, previous().line, previous().column);
         }
         throw "Unexpected token in factor: " + peek();
     }

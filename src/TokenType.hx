@@ -13,6 +13,8 @@ enum TokenType {
 
     LPAREN;
     RPAREN;
+    LBRACK;
+    RBRACK;
 
     SEMICOLON;
     EQUALS;

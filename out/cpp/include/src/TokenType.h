@@ -40,6 +40,8 @@ class TokenType_obj : public ::hx::EnumBase_obj
 		static inline ::src::TokenType IDENTIFIER_dyn() { return IDENTIFIER; }
 		static ::src::TokenType KEYWORD;
 		static inline ::src::TokenType KEYWORD_dyn() { return KEYWORD; }
+		static ::src::TokenType LBRACK;
+		static inline ::src::TokenType LBRACK_dyn() { return LBRACK; }
 		static ::src::TokenType LPAREN;
 		static inline ::src::TokenType LPAREN_dyn() { return LPAREN; }
 		static ::src::TokenType LT;
@@ -54,6 +56,8 @@ class TokenType_obj : public ::hx::EnumBase_obj
 		static inline ::src::TokenType NUMBER_dyn() { return NUMBER; }
 		static ::src::TokenType PLUS;
 		static inline ::src::TokenType PLUS_dyn() { return PLUS; }
+		static ::src::TokenType RBRACK;
+		static inline ::src::TokenType RBRACK_dyn() { return RBRACK; }
 		static ::src::TokenType RPAREN;
 		static inline ::src::TokenType RPAREN_dyn() { return RPAREN; }
 		static ::src::TokenType SEMICOLON;

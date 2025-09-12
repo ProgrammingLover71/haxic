@@ -35,6 +35,7 @@ class HXCPP_CLASS_ATTRIBUTES Exception_obj : public ::hx::Object
 
 		HX_DO_RTTI_ALL;
 		::hx::Val __Field(const ::String &inString, ::hx::PropertyAccess inCallProp);
+		static bool __GetStatic(const ::String &inString, Dynamic &outValue, ::hx::PropertyAccess inCallProp);
 		::hx::Val __SetField(const ::String &inString,const ::hx::Val &inValue, ::hx::PropertyAccess inCallProp);
 		void __GetFields(Array< ::String> &outFields);
 		static void __register();
@@ -43,8 +44,12 @@ class HXCPP_CLASS_ATTRIBUTES Exception_obj : public ::hx::Object
 		bool _hx_isInstanceOf(int inClassId);
 		::String __ToString() const { return HX_("Exception",2f,f0,6c,eb); }
 
+		static  ::haxe::Exception caught( ::Dynamic value);
+		static ::Dynamic caught_dyn();
+
 		::String _hx___exceptionMessage;
 		::Array< ::String > _hx___nativeStack;
+		int _hx___skipStack;
 		 ::Dynamic _hx___nativeException;
 		 ::haxe::Exception _hx___previousException;
 		virtual ::String toString();

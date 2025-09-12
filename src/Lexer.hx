@@ -75,6 +75,12 @@ class Lexer {
                 case ')':
                     tokens.push(new Token(TokenType.RPAREN, current, line, column));
                     advance();
+                case '[':
+                    tokens.push(new Token(TokenType.LBRACK, current, line, column));
+                    advance();
+                case ']':
+                    tokens.push(new Token(TokenType.RBRACK, current, line, column));
+                    advance();
                 case ';':
                     tokens.push(new Token(TokenType.SEMICOLON, current, line, column));
                     advance();
@@ -154,7 +160,7 @@ class Lexer {
     }
 
     function isKeyword(identifier:String):Bool {
-        var keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec"];
+        var keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec", "func", "return", "null", "for", "in"];
         return keywords.indexOf(identifier.toLowerCase()) != -1;
     }
 }
