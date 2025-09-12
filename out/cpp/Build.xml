@@ -1,0 +1,337 @@
+<xml>
+<set name="HXCPP_API_LEVEL" value="430" />
+<files id="haxe">
+<compilerflag value="-Iinclude"/>
+  <file name="src/sys/io/FileOutput.cpp" >
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/Error.h"/>
+   <depend name="include/haxe/io/Output.h"/>
+   <depend name="include/sys/io/FileOutput.h"/>
+  </file>
+  <file name="src/sys/io/FileInput.cpp" >
+   <depend name="include/haxe/io/Eof.h"/>
+   <depend name="include/haxe/io/Error.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/sys/io/FileInput.h"/>
+  </file>
+  <file name="src/sys/io/File.cpp" >
+   <depend name="include/sys/io/File.h"/>
+  </file>
+  <file name="src/src/ast/WhileStmt.cpp" >
+   <depend name="include/src/ast/BlockStmt.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/src/ast/WhileStmt.h"/>
+  </file>
+  <file name="src/src/ast/VariableExpr.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/VariableExpr.h"/>
+  </file>
+  <file name="src/src/ast/UnaryExpr.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/src/Token.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/UnaryExpr.h"/>
+  </file>
+  <file name="src/src/ast/StringExpr.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/StringExpr.h"/>
+  </file>
+  <file name="src/src/ast/PrintStmt.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/PrintStmt.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+  </file>
+  <file name="src/src/ast/NumberExpr.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/NumberExpr.h"/>
+  </file>
+  <file name="src/src/ast/LetStmt.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/LetStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/src/ast/VariableExpr.h"/>
+  </file>
+  <file name="src/src/ast/InputStmt.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/InputStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/src/ast/VariableExpr.h"/>
+  </file>
+  <file name="src/src/ast/IfStmt.cpp" >
+   <depend name="include/src/ast/BlockStmt.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/IfStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+  </file>
+  <file name="src/src/ast/ExprStmt.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/ExprStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+  </file>
+  <file name="src/src/ast/BooleanExpr.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/src/ast/BooleanExpr.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+  </file>
+  <file name="src/src/ast/BlockStmt.cpp" >
+   <depend name="include/src/ast/BlockStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+  </file>
+  <file name="src/src/ast/Stmt.cpp" >
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+  </file>
+  <file name="src/src/ast/BinaryExpr.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/src/Token.h"/>
+   <depend name="include/src/ast/BinaryExpr.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+  </file>
+  <file name="src/src/ast/Expr.cpp" >
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+  </file>
+  <file name="src/src/ast/Node.cpp" >
+   <depend name="include/src/ast/Node.h"/>
+  </file>
+  <file name="src/src/Utils.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/Sys.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/Encoding.h"/>
+   <depend name="include/haxe/io/Output.h"/>
+   <depend name="include/src/Utils.h"/>
+  </file>
+  <file name="src/src/TokenType.cpp" >
+   <depend name="include/src/TokenType.h"/>
+  </file>
+  <file name="src/src/Token.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/Type.h"/>
+   <depend name="include/src/Token.h"/>
+   <depend name="include/src/TokenType.h"/>
+  </file>
+  <file name="src/src/Parser.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/src/Parser.h"/>
+   <depend name="include/src/Token.h"/>
+   <depend name="include/src/TokenType.h"/>
+   <depend name="include/src/ast/BinaryExpr.h"/>
+   <depend name="include/src/ast/BlockStmt.h"/>
+   <depend name="include/src/ast/BooleanExpr.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/ExprStmt.h"/>
+   <depend name="include/src/ast/IfStmt.h"/>
+   <depend name="include/src/ast/InputStmt.h"/>
+   <depend name="include/src/ast/LetStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/NumberExpr.h"/>
+   <depend name="include/src/ast/PrintStmt.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/src/ast/StringExpr.h"/>
+   <depend name="include/src/ast/UnaryExpr.h"/>
+   <depend name="include/src/ast/VariableExpr.h"/>
+   <depend name="include/src/ast/WhileStmt.h"/>
+  </file>
+  <file name="src/src/Main.cpp" >
+   <depend name="include/Sys.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/haxe/io/Output.h"/>
+   <depend name="include/src/ASTWalker.h"/>
+   <depend name="include/src/InterpBknd.h"/>
+   <depend name="include/src/Lexer.h"/>
+   <depend name="include/src/Main.h"/>
+   <depend name="include/src/Parser.h"/>
+   <depend name="include/src/Token.h"/>
+   <depend name="include/src/Utils.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/sys/io/File.h"/>
+  </file>
+  <file name="src/src/Lexer.cpp" >
+   <depend name="include/EReg.h"/>
+   <depend name="include/src/Lexer.h"/>
+   <depend name="include/src/Token.h"/>
+   <depend name="include/src/TokenType.h"/>
+  </file>
+  <file name="src/src/InterpBknd.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/Sys.h"/>
+   <depend name="include/haxe/IMap.h"/>
+   <depend name="include/haxe/ds/StringMap.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/src/ASTWalker.h"/>
+   <depend name="include/src/InterpBknd.h"/>
+   <depend name="include/src/Token.h"/>
+   <depend name="include/src/TokenType.h"/>
+   <depend name="include/src/Utils.h"/>
+   <depend name="include/src/ast/BinaryExpr.h"/>
+   <depend name="include/src/ast/BlockStmt.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/ExprStmt.h"/>
+   <depend name="include/src/ast/IfStmt.h"/>
+   <depend name="include/src/ast/InputStmt.h"/>
+   <depend name="include/src/ast/LetStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/NumberExpr.h"/>
+   <depend name="include/src/ast/PrintStmt.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/src/ast/StringExpr.h"/>
+   <depend name="include/src/ast/UnaryExpr.h"/>
+   <depend name="include/src/ast/VariableExpr.h"/>
+   <depend name="include/src/ast/WhileStmt.h"/>
+  </file>
+  <file name="src/src/ASTWalker.cpp" >
+   <depend name="include/src/ASTWalker.h"/>
+   <depend name="include/src/ast/BinaryExpr.h"/>
+   <depend name="include/src/ast/BlockStmt.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/ExprStmt.h"/>
+   <depend name="include/src/ast/IfStmt.h"/>
+   <depend name="include/src/ast/InputStmt.h"/>
+   <depend name="include/src/ast/LetStmt.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/NumberExpr.h"/>
+   <depend name="include/src/ast/PrintStmt.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/src/ast/StringExpr.h"/>
+   <depend name="include/src/ast/UnaryExpr.h"/>
+   <depend name="include/src/ast/VariableExpr.h"/>
+  </file>
+  <file name="src/haxe/iterators/ArrayIterator.cpp" >
+   <depend name="include/haxe/iterators/ArrayIterator.h"/>
+  </file>
+  <file name="src/haxe/io/Output.cpp" >
+   <depend name="include/haxe/Exception.h"/>
+   <depend name="include/haxe/exceptions/NotImplementedException.h"/>
+   <depend name="include/haxe/exceptions/PosException.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/Error.h"/>
+   <depend name="include/haxe/io/Output.h"/>
+  </file>
+  <file name="src/haxe/io/Input.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/haxe/Exception.h"/>
+   <depend name="include/haxe/ValueException.h"/>
+   <depend name="include/haxe/exceptions/NotImplementedException.h"/>
+   <depend name="include/haxe/exceptions/PosException.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/BytesBuffer.h"/>
+   <depend name="include/haxe/io/Eof.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+  </file>
+  <file name="src/haxe/io/Error.cpp" >
+   <depend name="include/haxe/io/Error.h"/>
+  </file>
+  <file name="src/haxe/io/Eof.cpp" >
+   <depend name="include/haxe/io/Eof.h"/>
+  </file>
+  <file name="src/haxe/io/Encoding.cpp" >
+   <depend name="include/haxe/io/Encoding.h"/>
+  </file>
+  <file name="src/haxe/io/BytesBuffer.cpp" >
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/BytesBuffer.h"/>
+  </file>
+  <file name="src/haxe/io/Bytes.cpp" >
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/Encoding.h"/>
+   <depend name="include/haxe/io/Error.h"/>
+  </file>
+  <file name="src/haxe/exceptions/NotImplementedException.cpp" >
+   <depend name="include/haxe/Exception.h"/>
+   <depend name="include/haxe/exceptions/NotImplementedException.h"/>
+   <depend name="include/haxe/exceptions/PosException.h"/>
+  </file>
+  <file name="src/haxe/exceptions/PosException.cpp" >
+   <depend name="include/haxe/Exception.h"/>
+   <depend name="include/haxe/exceptions/PosException.h"/>
+  </file>
+  <file name="src/haxe/ds/StringMap.cpp" >
+   <depend name="include/haxe/IMap.h"/>
+   <depend name="include/haxe/ds/StringMap.h"/>
+  </file>
+  <file name="src/haxe/ValueException.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/haxe/Exception.h"/>
+   <depend name="include/haxe/ValueException.h"/>
+  </file>
+  <file name="src/haxe/NativeStackTrace.cpp" >
+   <depend name="include/haxe/NativeStackTrace.h"/>
+  </file>
+  <file name="src/haxe/Exception.cpp" >
+   <depend name="include/haxe/Exception.h"/>
+   <depend name="include/haxe/NativeStackTrace.h"/>
+  </file>
+  <file name="src/haxe/IMap.cpp" >
+   <depend name="include/haxe/IMap.h"/>
+  </file>
+  <file name="src/Type.cpp" >
+   <depend name="include/Reflect.h"/>
+   <depend name="include/Type.h"/>
+  </file>
+  <file name="src/Sys.cpp" >
+   <depend name="include/Sys.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/haxe/io/Output.h"/>
+   <depend name="include/sys/io/FileInput.h"/>
+   <depend name="include/sys/io/FileOutput.h"/>
+  </file>
+  <file name="src/Std.cpp" >
+   <depend name="include/Std.h"/>
+  </file>
+  <file name="src/Reflect.cpp" >
+   <depend name="include/Reflect.h"/>
+  </file>
+  <file name="src/EReg.cpp" >
+   <depend name="include/EReg.h"/>
+  </file>
+  <file name="src/__boot__.cpp" >
+   <depend name="include/src/TokenType.h"/>
+   <depend name="include/haxe/io/Error.h"/>
+   <depend name="include/haxe/io/Encoding.h"/>
+  </file>
+  <file name="src/__files__.cpp" if='HXCPP_DEBUGGER'>
+  </file>
+   <file name="${HXCPP}/src/hx/NoFiles.cpp" unless="HXCPP_DEBUGGER" />
+  <file name="src/__resources__.cpp" >
+  </file>
+</files>
+<files id="__lib__">
+<compilerflag value="-Iinclude"/>
+  <file name="src/__lib__.cpp" >
+   <depend name="include/src/Main.h"/>
+  </file>
+</files>
+<files id="__main__">
+<compilerflag value="-Iinclude"/>
+  <file name="src/__main__.cpp" >
+   <depend name="include/src/Main.h"/>
+  </file>
+</files>
+<files id="__resources__">
+</files>
+<files id="__externs__">
+</files>
+<set name="HAXE_OUTPUT" value="Main" />
+<include name="${HXCPP}/build-tool/BuildCommon.xml"/>
+<include name="${HXCPP}/src/hx/libs/regexp/Build.xml"/>
+<include name="${HXCPP}/src/hx/libs/std/Build.xml"/>
+<include name="${HXCPP}/src/hx/libs/std/Build.xml"/>
+<error value="Hxcpp is out of date - please update" unlessApi="430" />
+</xml>

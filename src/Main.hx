@@ -25,7 +25,7 @@ class Main {
         var interpreter = new InterpBknd();
         while (true) {
             // Read the input
-            Utils.print("haxic> ", false);
+            Utils.print("haxic >> ", false);
             Sys.stdout().flush();
             var line = Sys.stdin().readLine();
             if (line == null) continue;

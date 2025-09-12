@@ -1582,7 +1582,7 @@ class src_InterpBknd(src_ASTWalker):
     def visitInputStmt(self,stmt):
         input = Sys.stdin().readLine()
         num = Std.parseFloat(input)
-        final_val = (input if ((num is None)) else num)
+        final_val = (input if ((num == Math.NaN)) else num)
         self.environment.h[stmt.target.name] = final_val
 
     def visitLetStmt(self,stmt):
@@ -1921,7 +1921,7 @@ class src_Main:
             return
         interpreter = src_InterpBknd()
         while True:
-            src_Utils.print("haxic> ",False)
+            src_Utils.print("haxic >> ",False)
             Sys.stdout().flush()
             line = Sys.stdin().readLine()
             if (line is None):
