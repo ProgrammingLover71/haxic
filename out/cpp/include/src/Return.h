@@ -9,7 +9,7 @@
 #ifndef INCLUDED_haxe_Exception
 #include <haxe/Exception.h>
 #endif
-HX_DECLARE_STACK_FRAME(_hx_pos_7f416f67976c9bce_98_new)
+HX_DECLARE_STACK_FRAME(_hx_pos_7f416f67976c9bce_142_new)
 HX_DECLARE_CLASS1(haxe,Exception)
 HX_DECLARE_CLASS1(src,Return)
 
@@ -42,9 +42,9 @@ class HXCPP_CLASS_ATTRIBUTES Return_obj : public  ::haxe::Exception_obj
 			Return_obj *__this = (Return_obj*)(::hx::Ctx::alloc(_hx_ctx, sizeof(Return_obj), true, "src.Return"));
 			*(void **)__this = Return_obj::_hx_vtable;
 {
-            	HX_STACKFRAME(&_hx_pos_7f416f67976c9bce_98_new)
-HXLINE(  99)		__this->super::__construct(HX_("Return",d0,18,c2,3d),null(),null());
-HXLINE( 100)		( ( ::src::Return)(__this) )->value = value;
+            	HX_STACKFRAME(&_hx_pos_7f416f67976c9bce_142_new)
+HXLINE( 143)		__this->super::__construct(HX_("Return",d0,18,c2,3d),null(),null());
+HXLINE( 144)		( ( ::src::Return)(__this) )->value = value;
             	}
 		
 			return __this;

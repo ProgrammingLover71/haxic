@@ -60,6 +60,9 @@ class HXCPP_CLASS_ATTRIBUTES Sys_obj : public ::hx::Object
 		static ::Array< ::String > args();
 		static ::Dynamic args_dyn();
 
+		static Float time();
+		static ::Dynamic time_dyn();
+
 };
 
 

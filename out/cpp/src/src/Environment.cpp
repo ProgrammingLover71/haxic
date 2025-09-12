@@ -11,17 +11,17 @@
 #include <src/Environment.h>
 #endif
 
-HX_DEFINE_STACK_FRAME(_hx_pos_91d668d60dd81b93_51_new,"src.Environment","new",0xded7ac9b,"src.Environment.new","src/Interpreter.hx",51,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_91d668d60dd81b93_57_define,"src.Environment","define",0xce31b6e0,"src.Environment.define","src/Interpreter.hx",57,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_91d668d60dd81b93_60_get,"src.Environment","get",0xded25cd1,"src.Environment.get","src/Interpreter.hx",60,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_91d668d60dd81b93_70_assign,"src.Environment","assign",0xb35380d4,"src.Environment.assign","src/Interpreter.hx",70,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_91d668d60dd81b93_82_exists,"src.Environment","exists",0x272d5881,"src.Environment.exists","src/Interpreter.hx",82,0xb37cc36f)
+HX_DEFINE_STACK_FRAME(_hx_pos_91d668d60dd81b93_95_new,"src.Environment","new",0xded7ac9b,"src.Environment.new","src/Interpreter.hx",95,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_91d668d60dd81b93_101_define,"src.Environment","define",0xce31b6e0,"src.Environment.define","src/Interpreter.hx",101,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_91d668d60dd81b93_104_get,"src.Environment","get",0xded25cd1,"src.Environment.get","src/Interpreter.hx",104,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_91d668d60dd81b93_114_assign,"src.Environment","assign",0xb35380d4,"src.Environment.assign","src/Interpreter.hx",114,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_91d668d60dd81b93_126_exists,"src.Environment","exists",0x272d5881,"src.Environment.exists","src/Interpreter.hx",126,0xb37cc36f)
 namespace src{
 
 void Environment_obj::__construct( ::src::Environment enclosing){
-            	HX_GC_STACKFRAME(&_hx_pos_91d668d60dd81b93_51_new)
-HXLINE(  52)		this->values =  ::haxe::ds::StringMap_obj::__alloc( HX_CTX );
-HXLINE(  53)		this->enclosing = enclosing;
+            	HX_GC_STACKFRAME(&_hx_pos_91d668d60dd81b93_95_new)
+HXLINE(  96)		this->values =  ::haxe::ds::StringMap_obj::__alloc( HX_CTX );
+HXLINE(  97)		this->enclosing = enclosing;
             	}
 
 Dynamic Environment_obj::__CreateEmpty() { return new Environment_obj; }
@@ -40,53 +40,53 @@ bool Environment_obj::_hx_isInstanceOf(int inClassId) {
 }
 
 void Environment_obj::define(::String name, ::Dynamic value){
-            	HX_STACKFRAME(&_hx_pos_91d668d60dd81b93_57_define)
-HXDLIN(  57)		this->values->set(name,value);
+            	HX_STACKFRAME(&_hx_pos_91d668d60dd81b93_101_define)
+HXDLIN( 101)		this->values->set(name,value);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC2(Environment_obj,define,(void))
 
  ::Dynamic Environment_obj::get(::String name){
-            	HX_STACKFRAME(&_hx_pos_91d668d60dd81b93_60_get)
-HXLINE(  61)		if (this->values->exists(name)) {
-HXLINE(  62)			return this->values->get(name);
+            	HX_STACKFRAME(&_hx_pos_91d668d60dd81b93_104_get)
+HXLINE( 105)		if (this->values->exists(name)) {
+HXLINE( 106)			return this->values->get(name);
             		}
-HXLINE(  64)		if (::hx::IsNotNull( this->enclosing )) {
-HXLINE(  65)			return this->enclosing->get(name);
+HXLINE( 108)		if (::hx::IsNotNull( this->enclosing )) {
+HXLINE( 109)			return this->enclosing->get(name);
             		}
-HXLINE(  67)		HX_STACK_DO_THROW(((HX_("Undefined variable '",f3,34,cc,06) + name) + HX_("'",27,00,00,00)));
-HXDLIN(  67)		return null();
+HXLINE( 111)		HX_STACK_DO_THROW(((HX_("Undefined variable '",f3,34,cc,06) + name) + HX_("'",27,00,00,00)));
+HXDLIN( 111)		return null();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Environment_obj,get,return )
 
 void Environment_obj::assign(::String name, ::Dynamic value){
-            	HX_STACKFRAME(&_hx_pos_91d668d60dd81b93_70_assign)
-HXLINE(  71)		if (this->values->exists(name)) {
-HXLINE(  72)			this->values->set(name,value);
-HXLINE(  73)			return;
+            	HX_STACKFRAME(&_hx_pos_91d668d60dd81b93_114_assign)
+HXLINE( 115)		if (this->values->exists(name)) {
+HXLINE( 116)			this->values->set(name,value);
+HXLINE( 117)			return;
             		}
-HXLINE(  75)		if (::hx::IsNotNull( this->enclosing )) {
-HXLINE(  76)			this->enclosing->assign(name,value);
-HXLINE(  77)			return;
+HXLINE( 119)		if (::hx::IsNotNull( this->enclosing )) {
+HXLINE( 120)			this->enclosing->assign(name,value);
+HXLINE( 121)			return;
             		}
-HXLINE(  79)		HX_STACK_DO_THROW(((HX_("Undefined variable '",f3,34,cc,06) + name) + HX_("'",27,00,00,00)));
+HXLINE( 123)		HX_STACK_DO_THROW(((HX_("Undefined variable '",f3,34,cc,06) + name) + HX_("'",27,00,00,00)));
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC2(Environment_obj,assign,(void))
 
 bool Environment_obj::exists(::String name){
-            	HX_STACKFRAME(&_hx_pos_91d668d60dd81b93_82_exists)
-HXLINE(  83)		if (this->values->exists(name)) {
-HXLINE(  84)			return true;
+            	HX_STACKFRAME(&_hx_pos_91d668d60dd81b93_126_exists)
+HXLINE( 127)		if (this->values->exists(name)) {
+HXLINE( 128)			return true;
             		}
-HXLINE(  86)		if (::hx::IsNotNull( this->enclosing )) {
-HXLINE(  87)			return this->enclosing->exists(name);
+HXLINE( 130)		if (::hx::IsNotNull( this->enclosing )) {
+HXLINE( 131)			return this->enclosing->exists(name);
             		}
-HXLINE(  89)		return false;
+HXLINE( 133)		return false;
             	}
 
 

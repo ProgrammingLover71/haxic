@@ -1,0 +1,6 @@
+input x;
+if x > 5 then
+    print "X > 5";
+else
+    print "X < 5";
+end

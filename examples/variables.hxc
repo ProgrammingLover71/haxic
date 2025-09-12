@@ -1,0 +1,3 @@
+let x = 5;
+let y = 12 - x;
+print "X = " + x + ", Y = " + y;

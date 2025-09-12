@@ -8,13 +8,13 @@
 #include <src/Return.h>
 #endif
 
-HX_DEFINE_STACK_FRAME(_hx_pos_7f416f67976c9bce_98_new,"src.Return","new",0xdf55630c,"src.Return.new","src/Interpreter.hx",98,0xb37cc36f)
+HX_DEFINE_STACK_FRAME(_hx_pos_7f416f67976c9bce_142_new,"src.Return","new",0xdf55630c,"src.Return.new","src/Interpreter.hx",142,0xb37cc36f)
 namespace src{
 
 void Return_obj::__construct( ::Dynamic value){
-            	HX_STACKFRAME(&_hx_pos_7f416f67976c9bce_98_new)
-HXLINE(  99)		super::__construct(HX_("Return",d0,18,c2,3d),null(),null());
-HXLINE( 100)		this->value = value;
+            	HX_STACKFRAME(&_hx_pos_7f416f67976c9bce_142_new)
+HXLINE( 143)		super::__construct(HX_("Return",d0,18,c2,3d),null(),null());
+HXLINE( 144)		this->value = value;
             	}
 
 Dynamic Return_obj::__CreateEmpty() { return new Return_obj; }

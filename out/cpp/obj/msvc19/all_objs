@@ -41,6 +41,7 @@
 "obj/msvc19/e15e285b_BinaryExpr.obj"
 "obj/msvc19/e15e285b_Node.obj"
 "obj/msvc19/1e2ca1eb_Parser.obj"
+"obj/msvc19/1e2ca1eb_NativeFunction.obj"
 "obj/msvc19/f84b96e9_Log.obj"
 "obj/msvc19/9f9bcf23_ArrayIterator.obj"
 "obj/msvc19/e15e285b_ExprStmt.obj"

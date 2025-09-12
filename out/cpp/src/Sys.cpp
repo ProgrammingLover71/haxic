@@ -20,6 +20,7 @@
 HX_LOCAL_STACK_FRAME(_hx_pos_6531db758068dd5d_37_stdin,"Sys","stdin",0x03b9a107,"Sys.stdin","C:\\HaxeToolkit\\haxe\\std/cpp/_std/Sys.hx",37,0x57bbb657)
 HX_LOCAL_STACK_FRAME(_hx_pos_6531db758068dd5d_42_stdout,"Sys","stdout",0x3eb7d92c,"Sys.stdout","C:\\HaxeToolkit\\haxe\\std/cpp/_std/Sys.hx",42,0x57bbb657)
 HX_LOCAL_STACK_FRAME(_hx_pos_6531db758068dd5d_56_args,"Sys","args",0xeaeddc7e,"Sys.args","C:\\HaxeToolkit\\haxe\\std/cpp/_std/Sys.hx",56,0x57bbb657)
+HX_LOCAL_STACK_FRAME(_hx_pos_6531db758068dd5d_113_time,"Sys","time",0xf7761b2e,"Sys.time","C:\\HaxeToolkit\\haxe\\std/cpp/_std/Sys.hx",113,0x57bbb657)
 
 void Sys_obj::__construct() { }
 
@@ -62,6 +63,14 @@ HXDLIN(  56)		return  ::__get_args();
 
 STATIC_HX_DEFINE_DYNAMIC_FUNC0(Sys_obj,args,return )
 
+Float Sys_obj::time(){
+            	HX_STACKFRAME(&_hx_pos_6531db758068dd5d_113_time)
+HXDLIN( 113)		return _hx_std_sys_time();
+            	}
+
+
+STATIC_HX_DEFINE_DYNAMIC_FUNC0(Sys_obj,time,return )
+
 
 Sys_obj::Sys_obj()
 {
@@ -72,6 +81,7 @@ bool Sys_obj::__GetStatic(const ::String &inName, Dynamic &outValue, ::hx::Prope
 	switch(inName.length) {
 	case 4:
 		if (HX_FIELD_EQ(inName,"args") ) { outValue = args_dyn(); return true; }
+		if (HX_FIELD_EQ(inName,"time") ) { outValue = time_dyn(); return true; }
 		break;
 	case 5:
 		if (HX_FIELD_EQ(inName,"stdin") ) { outValue = _hx_stdin_dyn(); return true; }
@@ -93,6 +103,7 @@ static ::String Sys_obj_sStaticFields[] = {
 	HX_("stdin",48,b3,0d,84),
 	HX_("stdout",cb,bf,f3,07),
 	HX_("args",5d,8d,74,40),
+	HX_("time",0d,cc,fc,4c),
 	::String(null())
 };
 

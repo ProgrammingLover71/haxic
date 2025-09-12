@@ -121,6 +121,9 @@
 #ifndef INCLUDED_src_Environment
 #include <src/Environment.h>
 #endif
+#ifndef INCLUDED_src_NativeFunction
+#include <src/NativeFunction.h>
+#endif
 #ifndef INCLUDED_src_Function
 #include <src/Function.h>
 #endif
@@ -228,6 +231,7 @@ __files__boot();
 ::src::Interpreter_obj::__register();
 ::src::Return_obj::__register();
 ::src::Environment_obj::__register();
+::src::NativeFunction_obj::__register();
 ::src::Function_obj::__register();
 ::src::ASTWalker_obj::__register();
 ::haxe::iterators::ArrayIterator_obj::__register();

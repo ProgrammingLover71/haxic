@@ -9,6 +9,7 @@ import sys as python_lib_Sys
 import builtins as python_lib_Builtins
 import functools as python_lib_Functools
 import re as python_lib_Re
+import time as python_lib_Time
 import traceback as python_lib_Traceback
 
 
@@ -1585,6 +1586,44 @@ class src_Function:
 src_Function._hx_class = src_Function
 
 
+class src_NativeFunction:
+    _hx_class_name = "src.NativeFunction"
+    __slots__ = ("name", "params", "body")
+    _hx_fields = ["name", "params", "body"]
+    _hx_methods = ["toString", "call"]
+
+    def __init__(self,name,params,body):
+        self.name = name
+        self.params = params
+        self.body = body
+
+    def toString(self):
+        return (((("<Native function " + HxOverrides.stringOrNull(self.name)) + ":") + Std.string(len(self.params))) + ">")
+
+    def call(self,args,interp):
+        previousEnv = interp.environment
+        interp.environment = src_Environment(previousEnv)
+        _g = 0
+        _g1 = len(self.params)
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            param = (self.params[i] if i >= 0 and i < len(self.params) else None)
+            value = None
+            if (i < len(args)):
+                value = (args[i] if i >= 0 and i < len(args) else None)
+            elif (param.defaultValue is not None):
+                value = interp.visitExpr(param.defaultValue)
+            else:
+                raise haxe_Exception.thrown((("Missing argument for parameter '" + HxOverrides.stringOrNull(param.name)) + "'"))
+            interp.environment.define(param.name,value)
+        value = self.body(interp.environment)
+        interp.environment = previousEnv
+        return value
+
+src_NativeFunction._hx_class = src_NativeFunction
+
+
 class src_Environment:
     _hx_class_name = "src.Environment"
     __slots__ = ("values", "enclosing")
@@ -1658,6 +1697,18 @@ class src_Interpreter(src_ASTWalker):
         self.environment.define("e",(0.0 if ((1 == Math.NEGATIVE_INFINITY)) else (Math.POSITIVE_INFINITY if ((1 == Math.POSITIVE_INFINITY)) else Reflect.field(Math,"exp")(1))))
         self.environment.define("inf",Math.POSITIVE_INFINITY)
         self.environment.define("nan",Math.NaN)
+        def _hx_local_0(env):
+            return python_lib_Time.time()
+        self.environment.define("clock",src_NativeFunction("clock",[],_hx_local_0))
+        def _hx_local_1(env):
+            item = env.get("item")
+            if Std.isOfType(item,str):
+                return len(item)
+            elif Std.isOfType(item,list):
+                return len(item)
+            else:
+                raise haxe_Exception.thrown("length() argument must be a string or array")
+        self.environment.define("length",src_NativeFunction("length",[src_ast_Parameter("item",None,0,0)],_hx_local_1))
 
     def visit(self,ast):
         _g = 0
@@ -1806,7 +1857,12 @@ class src_Interpreter(src_ASTWalker):
         right = self.visitExpr(expr.right)
         tmp = expr.oper.type.index
         if (tmp == 4):
-            return python_Boot._add_dynamic(left,right)
+            if (Std.isOfType(left,list) and Std.isOfType(right,list)):
+                return (left + right)
+            elif (Std.isOfType(left,str) or Std.isOfType(right,str)):
+                return (Std.string(left) + Std.string(right))
+            else:
+                return python_Boot._add_dynamic(left,right)
         elif (tmp == 5):
             return (left - right)
         elif (tmp == 6):
@@ -1862,6 +1918,8 @@ class src_Interpreter(src_ASTWalker):
                 else:
                     raise _g
             return None
+        elif Std.isOfType(callee,src_NativeFunction):
+            return callee.call(args,self)
         else:
             raise haxe_Exception.thrown(((("Attempted to call a non-function at line " + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
 

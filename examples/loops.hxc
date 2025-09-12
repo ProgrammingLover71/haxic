@@ -1,0 +1,5 @@
+let i = 0;
+while i < 200 do
+    print "Iteration #" + i;
+    inc i;
+end

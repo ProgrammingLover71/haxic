@@ -29,6 +29,9 @@
 #ifndef INCLUDED_src_Interpreter
 #include <src/Interpreter.h>
 #endif
+#ifndef INCLUDED_src_NativeFunction
+#include <src/NativeFunction.h>
+#endif
 #ifndef INCLUDED_src_Return
 #include <src/Return.h>
 #endif
@@ -111,38 +114,70 @@
 #include <src/ast/WhileStmt.h>
 #endif
 
-HX_DEFINE_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_109_new,"src.Interpreter","new",0x92829202,"src.Interpreter.new","src/Interpreter.hx",109,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_118_visit,"src.Interpreter","visit",0xc3a367ed,"src.Interpreter.visit","src/Interpreter.hx",118,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_124_visitPrintStmt,"src.Interpreter","visitPrintStmt",0x9a501f68,"src.Interpreter.visitPrintStmt","src/Interpreter.hx",124,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_131_visitInputStmt,"src.Interpreter","visitInputStmt",0xe0823dc5,"src.Interpreter.visitInputStmt","src/Interpreter.hx",131,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_139_visitLetStmt,"src.Interpreter","visitLetStmt",0x42763756,"src.Interpreter.visitLetStmt","src/Interpreter.hx",139,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_150_visitIfStmt,"src.Interpreter","visitIfStmt",0x642b3492,"src.Interpreter.visitIfStmt","src/Interpreter.hx",150,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_160_visitWhileStmt,"src.Interpreter","visitWhileStmt",0xb3381cec,"src.Interpreter.visitWhileStmt","src/Interpreter.hx",160,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_168_visitForeachStmt,"src.Interpreter","visitForeachStmt",0x59ebb205,"src.Interpreter.visitForeachStmt","src/Interpreter.hx",168,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_188_visitBlockStmt,"src.Interpreter","visitBlockStmt",0x1ee64c88,"src.Interpreter.visitBlockStmt","src/Interpreter.hx",188,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_195_visitExprStmt,"src.Interpreter","visitExprStmt",0x94e4af2a,"src.Interpreter.visitExprStmt","src/Interpreter.hx",195,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_199_visitReturnStmt,"src.Interpreter","visitReturnStmt",0x77af4d65,"src.Interpreter.visitReturnStmt","src/Interpreter.hx",199,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_208_visitFunctionStmt,"src.Interpreter","visitFunctionStmt",0x2d3f950d,"src.Interpreter.visitFunctionStmt","src/Interpreter.hx",208,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_215_visitStmt,"src.Interpreter","visitStmt",0xc40f7cd5,"src.Interpreter.visitStmt","src/Interpreter.hx",215,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_243_visitExpr,"src.Interpreter","visitExpr",0xbad18bc2,"src.Interpreter.visitExpr","src/Interpreter.hx",243,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_267_visitUnaryExpr,"src.Interpreter","visitUnaryExpr",0xf8c214d7,"src.Interpreter.visitUnaryExpr","src/Interpreter.hx",267,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_280_visitBinaryExpr,"src.Interpreter","visitBinaryExpr",0x741bf023,"src.Interpreter.visitBinaryExpr","src/Interpreter.hx",280,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_313_visitNumberExpr,"src.Interpreter","visitNumberExpr",0x10dbbeeb,"src.Interpreter.visitNumberExpr","src/Interpreter.hx",313,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_317_visitVariableExpr,"src.Interpreter","visitVariableExpr",0x5de86d1e,"src.Interpreter.visitVariableExpr","src/Interpreter.hx",317,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_324_visitStringExpr,"src.Interpreter","visitStringExpr",0x843f04f3,"src.Interpreter.visitStringExpr","src/Interpreter.hx",324,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_328_visitCallExpr,"src.Interpreter","visitCallExpr",0x4eff4200,"src.Interpreter.visitCallExpr","src/Interpreter.hx",328,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_348_visitNullExpr,"src.Interpreter","visitNullExpr",0x03d77069,"src.Interpreter.visitNullExpr","src/Interpreter.hx",348,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_352_visitArrayExpr,"src.Interpreter","visitArrayExpr",0x598b69c1,"src.Interpreter.visitArrayExpr","src/Interpreter.hx",352,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_361_visitIndexExpr,"src.Interpreter","visitIndexExpr",0xcc2747ba,"src.Interpreter.visitIndexExpr","src/Interpreter.hx",361,0xb37cc36f)
+HX_DEFINE_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_161_new,"src.Interpreter","new",0x92829202,"src.Interpreter.new","src/Interpreter.hx",161,0xb37cc36f)
+HX_DEFINE_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_163_new,"src.Interpreter","new",0x92829202,"src.Interpreter.new","src/Interpreter.hx",163,0xb37cc36f)
+HX_DEFINE_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_153_new,"src.Interpreter","new",0x92829202,"src.Interpreter.new","src/Interpreter.hx",153,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_176_visit,"src.Interpreter","visit",0xc3a367ed,"src.Interpreter.visit","src/Interpreter.hx",176,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_182_visitPrintStmt,"src.Interpreter","visitPrintStmt",0x9a501f68,"src.Interpreter.visitPrintStmt","src/Interpreter.hx",182,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_189_visitInputStmt,"src.Interpreter","visitInputStmt",0xe0823dc5,"src.Interpreter.visitInputStmt","src/Interpreter.hx",189,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_197_visitLetStmt,"src.Interpreter","visitLetStmt",0x42763756,"src.Interpreter.visitLetStmt","src/Interpreter.hx",197,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_208_visitIfStmt,"src.Interpreter","visitIfStmt",0x642b3492,"src.Interpreter.visitIfStmt","src/Interpreter.hx",208,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_218_visitWhileStmt,"src.Interpreter","visitWhileStmt",0xb3381cec,"src.Interpreter.visitWhileStmt","src/Interpreter.hx",218,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_226_visitForeachStmt,"src.Interpreter","visitForeachStmt",0x59ebb205,"src.Interpreter.visitForeachStmt","src/Interpreter.hx",226,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_246_visitBlockStmt,"src.Interpreter","visitBlockStmt",0x1ee64c88,"src.Interpreter.visitBlockStmt","src/Interpreter.hx",246,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_253_visitExprStmt,"src.Interpreter","visitExprStmt",0x94e4af2a,"src.Interpreter.visitExprStmt","src/Interpreter.hx",253,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_257_visitReturnStmt,"src.Interpreter","visitReturnStmt",0x77af4d65,"src.Interpreter.visitReturnStmt","src/Interpreter.hx",257,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_266_visitFunctionStmt,"src.Interpreter","visitFunctionStmt",0x2d3f950d,"src.Interpreter.visitFunctionStmt","src/Interpreter.hx",266,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_273_visitStmt,"src.Interpreter","visitStmt",0xc40f7cd5,"src.Interpreter.visitStmt","src/Interpreter.hx",273,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_301_visitExpr,"src.Interpreter","visitExpr",0xbad18bc2,"src.Interpreter.visitExpr","src/Interpreter.hx",301,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_325_visitUnaryExpr,"src.Interpreter","visitUnaryExpr",0xf8c214d7,"src.Interpreter.visitUnaryExpr","src/Interpreter.hx",325,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_338_visitBinaryExpr,"src.Interpreter","visitBinaryExpr",0x741bf023,"src.Interpreter.visitBinaryExpr","src/Interpreter.hx",338,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_378_visitNumberExpr,"src.Interpreter","visitNumberExpr",0x10dbbeeb,"src.Interpreter.visitNumberExpr","src/Interpreter.hx",378,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_382_visitVariableExpr,"src.Interpreter","visitVariableExpr",0x5de86d1e,"src.Interpreter.visitVariableExpr","src/Interpreter.hx",382,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_389_visitStringExpr,"src.Interpreter","visitStringExpr",0x843f04f3,"src.Interpreter.visitStringExpr","src/Interpreter.hx",389,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_393_visitCallExpr,"src.Interpreter","visitCallExpr",0x4eff4200,"src.Interpreter.visitCallExpr","src/Interpreter.hx",393,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_415_visitNullExpr,"src.Interpreter","visitNullExpr",0x03d77069,"src.Interpreter.visitNullExpr","src/Interpreter.hx",415,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_419_visitArrayExpr,"src.Interpreter","visitArrayExpr",0x598b69c1,"src.Interpreter.visitArrayExpr","src/Interpreter.hx",419,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_428_visitIndexExpr,"src.Interpreter","visitIndexExpr",0xcc2747ba,"src.Interpreter.visitIndexExpr","src/Interpreter.hx",428,0xb37cc36f)
 namespace src{
 
 void Interpreter_obj::__construct(){
-            	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_109_new)
-HXLINE( 110)		this->environment =  ::src::Environment_obj::__alloc( HX_CTX ,null());
-HXLINE( 111)		this->environment->define(HX_("pi",f9,61,00,00),::Math_obj::PI);
-HXLINE( 112)		this->environment->define(HX_("e",65,00,00,00),::Math_obj::exp(( (Float)(1) )));
-HXLINE( 113)		this->environment->define(HX_("inf",e1,0c,50,00),::Math_obj::POSITIVE_INFINITY);
-HXLINE( 114)		this->environment->define(HX_("nan",db,cc,53,00),::Math_obj::NaN);
+            		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_0) HXARGC(1)
+            		Float _hx_run( ::src::Environment env){
+            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_161_new)
+HXLINE( 161)			return ::Sys_obj::time();
+            		}
+            		HX_END_LOCAL_FUNC1(return)
+
+            		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_1) HXARGC(1)
+            		int _hx_run( ::src::Environment env){
+            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_163_new)
+HXLINE( 164)			 ::Dynamic item = env->get(HX_("item",13,c5,bf,45));
+HXLINE( 165)			if (::Std_obj::isOfType(item,::hx::ClassOf< ::String >())) {
+HXLINE( 166)				return ( (::String)(item) ).length;
+            			}
+            			else {
+HXLINE( 167)				if (::Std_obj::isOfType(item,::hx::ArrayBase::__mClass)) {
+HXLINE( 168)					return ( (::cpp::VirtualArray)(item) )->get_length();
+            				}
+            				else {
+HXLINE( 170)					HX_STACK_DO_THROW(HX_("length() argument must be a string or array",dc,3b,e5,92));
+            				}
+            			}
+HXLINE( 165)			return 0;
+            		}
+            		HX_END_LOCAL_FUNC1(return)
+
+            	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_153_new)
+HXLINE( 154)		this->environment =  ::src::Environment_obj::__alloc( HX_CTX ,null());
+HXLINE( 155)		this->environment->define(HX_("pi",f9,61,00,00),::Math_obj::PI);
+HXLINE( 156)		this->environment->define(HX_("e",65,00,00,00),::Math_obj::exp(( (Float)(1) )));
+HXLINE( 157)		this->environment->define(HX_("inf",e1,0c,50,00),::Math_obj::POSITIVE_INFINITY);
+HXLINE( 158)		this->environment->define(HX_("nan",db,cc,53,00),::Math_obj::NaN);
+HXLINE( 160)		 ::src::Environment _hx_tmp = this->environment;
+HXDLIN( 160)		_hx_tmp->define(HX_("clock",ce,09,63,48), ::src::NativeFunction_obj::__alloc( HX_CTX ,HX_("clock",ce,09,63,48),::Array_obj< ::Dynamic>::__new(0), ::Dynamic(new _hx_Closure_0())));
+HXLINE( 163)		 ::src::Environment _hx_tmp1 = this->environment;
+HXDLIN( 163)		_hx_tmp1->define(HX_("length",e6,94,07,9f), ::src::NativeFunction_obj::__alloc( HX_CTX ,HX_("length",e6,94,07,9f),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("item",13,c5,bf,45),null(),0,0)), ::Dynamic(new _hx_Closure_1())));
             	}
 
 Dynamic Interpreter_obj::__CreateEmpty() { return new Interpreter_obj; }
@@ -165,13 +200,13 @@ bool Interpreter_obj::_hx_isInstanceOf(int inClassId) {
 }
 
 void Interpreter_obj::visit(::Array< ::Dynamic> ast){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_118_visit)
-HXDLIN( 118)		int _g = 0;
-HXDLIN( 118)		while((_g < ast->length)){
-HXDLIN( 118)			 ::src::ast::Stmt stmt = ast->__get(_g).StaticCast<  ::src::ast::Stmt >();
-HXDLIN( 118)			_g = (_g + 1);
-HXLINE( 119)			if (::hx::IsNotNull( stmt )) {
-HXLINE( 119)				this->visitStmt(stmt);
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_176_visit)
+HXDLIN( 176)		int _g = 0;
+HXDLIN( 176)		while((_g < ast->length)){
+HXDLIN( 176)			 ::src::ast::Stmt stmt = ast->__get(_g).StaticCast<  ::src::ast::Stmt >();
+HXDLIN( 176)			_g = (_g + 1);
+HXLINE( 177)			if (::hx::IsNotNull( stmt )) {
+HXLINE( 177)				this->visitStmt(stmt);
             			}
             		}
             	}
@@ -180,65 +215,65 @@ HXLINE( 119)				this->visitStmt(stmt);
 HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visit,(void))
 
 void Interpreter_obj::visitPrintStmt( ::src::ast::PrintStmt stmt){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_124_visitPrintStmt)
-HXLINE( 125)		 ::Dynamic value = this->visitExpr(stmt->expr);
-HXLINE( 127)		::src::Utils_obj::print(value,null());
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_182_visitPrintStmt)
+HXLINE( 183)		 ::Dynamic value = this->visitExpr(stmt->expr);
+HXLINE( 185)		::src::Utils_obj::print(value,null());
             	}
 
 
 void Interpreter_obj::visitInputStmt( ::src::ast::InputStmt stmt){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_131_visitInputStmt)
-HXLINE( 132)		::String input = ::Sys_obj::_hx_stdin()->readLine();
-HXLINE( 133)		Float num = ::Std_obj::parseFloat(input);
-HXLINE( 134)		 ::Dynamic final_val;
-HXDLIN( 134)		if ((num == ::Math_obj::NaN)) {
-HXLINE( 134)			final_val = input;
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_189_visitInputStmt)
+HXLINE( 190)		::String input = ::Sys_obj::_hx_stdin()->readLine();
+HXLINE( 191)		Float num = ::Std_obj::parseFloat(input);
+HXLINE( 192)		 ::Dynamic final_val;
+HXDLIN( 192)		if ((num == ::Math_obj::NaN)) {
+HXLINE( 192)			final_val = input;
             		}
             		else {
-HXLINE( 134)			final_val = num;
+HXLINE( 192)			final_val = num;
             		}
-HXLINE( 135)		this->environment->define(stmt->target->name,final_val);
+HXLINE( 193)		this->environment->define(stmt->target->name,final_val);
             	}
 
 
 void Interpreter_obj::visitLetStmt( ::src::ast::LetStmt stmt){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_139_visitLetStmt)
-HXLINE( 140)		 ::Dynamic value = null();
-HXLINE( 141)		if (::hx::IsNotNull( stmt->value )) {
-HXLINE( 142)			value = this->visitExpr(stmt->value);
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_197_visitLetStmt)
+HXLINE( 198)		 ::Dynamic value = null();
+HXLINE( 199)		if (::hx::IsNotNull( stmt->value )) {
+HXLINE( 200)			value = this->visitExpr(stmt->value);
             		}
-HXLINE( 144)		{
-HXLINE( 144)			int _g = 0;
-HXDLIN( 144)			::Array< ::Dynamic> _g1 = stmt->bindings;
-HXDLIN( 144)			while((_g < _g1->length)){
-HXLINE( 144)				 ::src::ast::VariableExpr v = _g1->__get(_g).StaticCast<  ::src::ast::VariableExpr >();
-HXDLIN( 144)				_g = (_g + 1);
-HXLINE( 145)				this->environment->define(v->name,value);
+HXLINE( 202)		{
+HXLINE( 202)			int _g = 0;
+HXDLIN( 202)			::Array< ::Dynamic> _g1 = stmt->bindings;
+HXDLIN( 202)			while((_g < _g1->length)){
+HXLINE( 202)				 ::src::ast::VariableExpr v = _g1->__get(_g).StaticCast<  ::src::ast::VariableExpr >();
+HXDLIN( 202)				_g = (_g + 1);
+HXLINE( 203)				this->environment->define(v->name,value);
             			}
             		}
             	}
 
 
 void Interpreter_obj::visitIfStmt( ::src::ast::IfStmt stmt){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_150_visitIfStmt)
-HXLINE( 151)		 ::Dynamic condition = this->visitExpr(stmt->condition);
-HXLINE( 152)		if (( (bool)(condition) )) {
-HXLINE( 153)			this->visitBlockStmt(stmt->thenBranch);
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_208_visitIfStmt)
+HXLINE( 209)		 ::Dynamic condition = this->visitExpr(stmt->condition);
+HXLINE( 210)		if (( (bool)(condition) )) {
+HXLINE( 211)			this->visitBlockStmt(stmt->thenBranch);
             		}
             		else {
-HXLINE( 154)			if (::hx::IsNotNull( stmt->elseBranch )) {
-HXLINE( 155)				this->visitBlockStmt(stmt->elseBranch);
+HXLINE( 212)			if (::hx::IsNotNull( stmt->elseBranch )) {
+HXLINE( 213)				this->visitBlockStmt(stmt->elseBranch);
             			}
             		}
             	}
 
 
 void Interpreter_obj::visitWhileStmt( ::src::ast::WhileStmt stmt){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_160_visitWhileStmt)
-HXLINE( 161)		 ::Dynamic condition = this->visitExpr(stmt->condition);
-HXLINE( 162)		while(( (bool)(condition) )){
-HXLINE( 163)			this->visitBlockStmt(stmt->body);
-HXLINE( 164)			condition = this->visitExpr(stmt->condition);
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_218_visitWhileStmt)
+HXLINE( 219)		 ::Dynamic condition = this->visitExpr(stmt->condition);
+HXLINE( 220)		while(( (bool)(condition) )){
+HXLINE( 221)			this->visitBlockStmt(stmt->body);
+HXLINE( 222)			condition = this->visitExpr(stmt->condition);
             		}
             	}
 
@@ -246,33 +281,33 @@ HXLINE( 164)			condition = this->visitExpr(stmt->condition);
 HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitWhileStmt,(void))
 
 void Interpreter_obj::visitForeachStmt( ::src::ast::ForeachStmt stmt){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_168_visitForeachStmt)
-HXLINE( 169)		 ::Dynamic iterable = this->visitExpr(stmt->target);
-HXLINE( 170)		::String varName = stmt->variable->name;
-HXLINE( 171)		if (::Std_obj::isOfType(iterable,::hx::ArrayBase::__mClass)) {
-HXLINE( 172)			int _g = 0;
-HXDLIN( 172)			::cpp::VirtualArray _g1 = ( (::cpp::VirtualArray)(iterable) );
-HXDLIN( 172)			while((_g < _g1->get_length())){
-HXLINE( 172)				 ::Dynamic item = _g1->__get(_g);
-HXDLIN( 172)				_g = (_g + 1);
-HXLINE( 173)				this->environment->define(varName,item);
-HXLINE( 174)				this->visitStmt(stmt->body);
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_226_visitForeachStmt)
+HXLINE( 227)		 ::Dynamic iterable = this->visitExpr(stmt->target);
+HXLINE( 228)		::String varName = stmt->variable->name;
+HXLINE( 229)		if (::Std_obj::isOfType(iterable,::hx::ArrayBase::__mClass)) {
+HXLINE( 230)			int _g = 0;
+HXDLIN( 230)			::cpp::VirtualArray _g1 = ( (::cpp::VirtualArray)(iterable) );
+HXDLIN( 230)			while((_g < _g1->get_length())){
+HXLINE( 230)				 ::Dynamic item = _g1->__get(_g);
+HXDLIN( 230)				_g = (_g + 1);
+HXLINE( 231)				this->environment->define(varName,item);
+HXLINE( 232)				this->visitStmt(stmt->body);
             			}
             		}
             		else {
-HXLINE( 176)			if (::Std_obj::isOfType(iterable,::hx::ClassOf< ::String >())) {
-HXLINE( 177)				int _g2 = 0;
-HXDLIN( 177)				int _g3 = ( (::String)(iterable) ).length;
-HXDLIN( 177)				while((_g2 < _g3)){
-HXLINE( 177)					_g2 = (_g2 + 1);
-HXDLIN( 177)					int i = (_g2 - 1);
-HXLINE( 178)					 ::src::Environment _hx_tmp = this->environment;
-HXDLIN( 178)					_hx_tmp->define(varName,( (::String)(iterable) ).charAt(i));
-HXLINE( 179)					this->visitStmt(stmt->body);
+HXLINE( 234)			if (::Std_obj::isOfType(iterable,::hx::ClassOf< ::String >())) {
+HXLINE( 235)				int _g2 = 0;
+HXDLIN( 235)				int _g3 = ( (::String)(iterable) ).length;
+HXDLIN( 235)				while((_g2 < _g3)){
+HXLINE( 235)					_g2 = (_g2 + 1);
+HXDLIN( 235)					int i = (_g2 - 1);
+HXLINE( 236)					 ::src::Environment _hx_tmp = this->environment;
+HXDLIN( 236)					_hx_tmp->define(varName,( (::String)(iterable) ).charAt(i));
+HXLINE( 237)					this->visitStmt(stmt->body);
             				}
             			}
             			else {
-HXLINE( 182)				HX_STACK_DO_THROW((((HX_("Foreach target must be an array or string at line ",ac,b9,5f,96) + stmt->line) + HX_(", column ",96,fc,25,5b)) + stmt->column));
+HXLINE( 240)				HX_STACK_DO_THROW((((HX_("Foreach target must be an array or string at line ",ac,b9,5f,96) + stmt->line) + HX_(", column ",96,fc,25,5b)) + stmt->column));
             			}
             		}
             	}
@@ -281,87 +316,87 @@ HXLINE( 182)				HX_STACK_DO_THROW((((HX_("Foreach target must be an array or str
 HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitForeachStmt,(void))
 
 void Interpreter_obj::visitBlockStmt( ::src::ast::BlockStmt stmt){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_188_visitBlockStmt)
-HXDLIN( 188)		int _g = 0;
-HXDLIN( 188)		::Array< ::Dynamic> _g1 = stmt->statements;
-HXDLIN( 188)		while((_g < _g1->length)){
-HXDLIN( 188)			 ::src::ast::Stmt s = _g1->__get(_g).StaticCast<  ::src::ast::Stmt >();
-HXDLIN( 188)			_g = (_g + 1);
-HXLINE( 189)			this->visitStmt(s);
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_246_visitBlockStmt)
+HXDLIN( 246)		int _g = 0;
+HXDLIN( 246)		::Array< ::Dynamic> _g1 = stmt->statements;
+HXDLIN( 246)		while((_g < _g1->length)){
+HXDLIN( 246)			 ::src::ast::Stmt s = _g1->__get(_g).StaticCast<  ::src::ast::Stmt >();
+HXDLIN( 246)			_g = (_g + 1);
+HXLINE( 247)			this->visitStmt(s);
             		}
             	}
 
 
 void Interpreter_obj::visitExprStmt( ::src::ast::ExprStmt stmt){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_195_visitExprStmt)
-HXDLIN( 195)		this->visitExpr(stmt->expr);
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_253_visitExprStmt)
+HXDLIN( 253)		this->visitExpr(stmt->expr);
             	}
 
 
 void Interpreter_obj::visitReturnStmt( ::src::ast::ReturnStmt stmt){
-            	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_199_visitReturnStmt)
-HXLINE( 200)		 ::Dynamic value = null();
-HXLINE( 201)		if (::hx::IsNotNull( stmt->value )) {
-HXLINE( 202)			value = this->visitExpr(stmt->value);
+            	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_257_visitReturnStmt)
+HXLINE( 258)		 ::Dynamic value = null();
+HXLINE( 259)		if (::hx::IsNotNull( stmt->value )) {
+HXLINE( 260)			value = this->visitExpr(stmt->value);
             		}
-HXLINE( 204)		HX_STACK_DO_THROW( ::src::Return_obj::__alloc( HX_CTX ,value));
+HXLINE( 262)		HX_STACK_DO_THROW( ::src::Return_obj::__alloc( HX_CTX ,value));
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitReturnStmt,(void))
 
 void Interpreter_obj::visitFunctionStmt( ::src::ast::FunctionStmt stmt){
-            	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_208_visitFunctionStmt)
-HXLINE( 209)		 ::src::Function functionObj =  ::src::Function_obj::__alloc( HX_CTX ,stmt->name,stmt->params,stmt->body);
-HXLINE( 210)		this->environment->define(stmt->name,functionObj);
+            	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_266_visitFunctionStmt)
+HXLINE( 267)		 ::src::Function functionObj =  ::src::Function_obj::__alloc( HX_CTX ,stmt->name,stmt->params,stmt->body);
+HXLINE( 268)		this->environment->define(stmt->name,functionObj);
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitFunctionStmt,(void))
 
 void Interpreter_obj::visitStmt( ::src::ast::Stmt stmt){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_215_visitStmt)
-HXDLIN( 215)		if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::PrintStmt >())) {
-HXLINE( 216)			this->visitPrintStmt(( ( ::src::ast::PrintStmt)(stmt) ));
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_273_visitStmt)
+HXDLIN( 273)		if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::PrintStmt >())) {
+HXLINE( 274)			this->visitPrintStmt(( ( ::src::ast::PrintStmt)(stmt) ));
             		}
             		else {
-HXLINE( 217)			if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::InputStmt >())) {
-HXLINE( 218)				this->visitInputStmt(( ( ::src::ast::InputStmt)(stmt) ));
+HXLINE( 275)			if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::InputStmt >())) {
+HXLINE( 276)				this->visitInputStmt(( ( ::src::ast::InputStmt)(stmt) ));
             			}
             			else {
-HXLINE( 219)				if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::LetStmt >())) {
-HXLINE( 220)					this->visitLetStmt(( ( ::src::ast::LetStmt)(stmt) ));
+HXLINE( 277)				if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::LetStmt >())) {
+HXLINE( 278)					this->visitLetStmt(( ( ::src::ast::LetStmt)(stmt) ));
             				}
             				else {
-HXLINE( 221)					if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::IfStmt >())) {
-HXLINE( 222)						this->visitIfStmt(( ( ::src::ast::IfStmt)(stmt) ));
+HXLINE( 279)					if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::IfStmt >())) {
+HXLINE( 280)						this->visitIfStmt(( ( ::src::ast::IfStmt)(stmt) ));
             					}
             					else {
-HXLINE( 223)						if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::BlockStmt >())) {
-HXLINE( 224)							this->visitBlockStmt(( ( ::src::ast::BlockStmt)(stmt) ));
+HXLINE( 281)						if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::BlockStmt >())) {
+HXLINE( 282)							this->visitBlockStmt(( ( ::src::ast::BlockStmt)(stmt) ));
             						}
             						else {
-HXLINE( 225)							if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::ExprStmt >())) {
-HXLINE( 226)								this->visitExprStmt(( ( ::src::ast::ExprStmt)(stmt) ));
+HXLINE( 283)							if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::ExprStmt >())) {
+HXLINE( 284)								this->visitExprStmt(( ( ::src::ast::ExprStmt)(stmt) ));
             							}
             							else {
-HXLINE( 227)								if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::WhileStmt >())) {
-HXLINE( 228)									this->visitWhileStmt(( ( ::src::ast::WhileStmt)(stmt) ));
+HXLINE( 285)								if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::WhileStmt >())) {
+HXLINE( 286)									this->visitWhileStmt(( ( ::src::ast::WhileStmt)(stmt) ));
             								}
             								else {
-HXLINE( 229)									if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::ForeachStmt >())) {
-HXLINE( 230)										this->visitForeachStmt(( ( ::src::ast::ForeachStmt)(stmt) ));
+HXLINE( 287)									if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::ForeachStmt >())) {
+HXLINE( 288)										this->visitForeachStmt(( ( ::src::ast::ForeachStmt)(stmt) ));
             									}
             									else {
-HXLINE( 231)										if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::ReturnStmt >())) {
-HXLINE( 232)											this->visitReturnStmt(( ( ::src::ast::ReturnStmt)(stmt) ));
+HXLINE( 289)										if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::ReturnStmt >())) {
+HXLINE( 290)											this->visitReturnStmt(( ( ::src::ast::ReturnStmt)(stmt) ));
             										}
             										else {
-HXLINE( 233)											if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::FunctionStmt >())) {
-HXLINE( 234)												this->visitFunctionStmt(( ( ::src::ast::FunctionStmt)(stmt) ));
+HXLINE( 291)											if (::Std_obj::isOfType(stmt,::hx::ClassOf< ::src::ast::FunctionStmt >())) {
+HXLINE( 292)												this->visitFunctionStmt(( ( ::src::ast::FunctionStmt)(stmt) ));
             											}
             											else {
-HXLINE( 236)												HX_STACK_DO_THROW((HX_("Unknown statement type: ",27,79,2e,4f) + ::Std_obj::string(stmt)));
+HXLINE( 294)												HX_STACK_DO_THROW((HX_("Unknown statement type: ",27,79,2e,4f) + ::Std_obj::string(stmt)));
             											}
             										}
             									}
@@ -376,44 +411,44 @@ HXLINE( 236)												HX_STACK_DO_THROW((HX_("Unknown statement type: ",27,79,
 
 
  ::Dynamic Interpreter_obj::visitExpr( ::src::ast::Expr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_243_visitExpr)
-HXDLIN( 243)		if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::BinaryExpr >())) {
-HXLINE( 244)			return this->visitBinaryExpr(( ( ::src::ast::BinaryExpr)(expr) ));
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_301_visitExpr)
+HXDLIN( 301)		if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::BinaryExpr >())) {
+HXLINE( 302)			return this->visitBinaryExpr(( ( ::src::ast::BinaryExpr)(expr) ));
             		}
             		else {
-HXLINE( 245)			if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::NumberExpr >())) {
-HXLINE( 246)				return this->visitNumberExpr(( ( ::src::ast::NumberExpr)(expr) ));
+HXLINE( 303)			if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::NumberExpr >())) {
+HXLINE( 304)				return this->visitNumberExpr(( ( ::src::ast::NumberExpr)(expr) ));
             			}
             			else {
-HXLINE( 247)				if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::VariableExpr >())) {
-HXLINE( 248)					return this->visitVariableExpr(( ( ::src::ast::VariableExpr)(expr) ));
+HXLINE( 305)				if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::VariableExpr >())) {
+HXLINE( 306)					return this->visitVariableExpr(( ( ::src::ast::VariableExpr)(expr) ));
             				}
             				else {
-HXLINE( 249)					if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::UnaryExpr >())) {
-HXLINE( 250)						return this->visitUnaryExpr(( ( ::src::ast::UnaryExpr)(expr) ));
+HXLINE( 307)					if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::UnaryExpr >())) {
+HXLINE( 308)						return this->visitUnaryExpr(( ( ::src::ast::UnaryExpr)(expr) ));
             					}
             					else {
-HXLINE( 251)						if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::StringExpr >())) {
-HXLINE( 252)							return this->visitStringExpr(( ( ::src::ast::StringExpr)(expr) ));
+HXLINE( 309)						if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::StringExpr >())) {
+HXLINE( 310)							return this->visitStringExpr(( ( ::src::ast::StringExpr)(expr) ));
             						}
             						else {
-HXLINE( 253)							if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::CallExpr >())) {
-HXLINE( 254)								return this->visitCallExpr(( ( ::src::ast::CallExpr)(expr) ));
+HXLINE( 311)							if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::CallExpr >())) {
+HXLINE( 312)								return this->visitCallExpr(( ( ::src::ast::CallExpr)(expr) ));
             							}
             							else {
-HXLINE( 255)								if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::NullExpr >())) {
-HXLINE( 256)									return this->visitNullExpr(( ( ::src::ast::NullExpr)(expr) ));
+HXLINE( 313)								if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::NullExpr >())) {
+HXLINE( 314)									return this->visitNullExpr(( ( ::src::ast::NullExpr)(expr) ));
             								}
             								else {
-HXLINE( 257)									if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::ArrayExpr >())) {
-HXLINE( 258)										return this->visitArrayExpr(( ( ::src::ast::ArrayExpr)(expr) ));
+HXLINE( 315)									if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::ArrayExpr >())) {
+HXLINE( 316)										return this->visitArrayExpr(( ( ::src::ast::ArrayExpr)(expr) ));
             									}
             									else {
-HXLINE( 259)										if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::IndexExpr >())) {
-HXLINE( 260)											return this->visitIndexExpr(( ( ::src::ast::IndexExpr)(expr) ));
+HXLINE( 317)										if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::IndexExpr >())) {
+HXLINE( 318)											return this->visitIndexExpr(( ( ::src::ast::IndexExpr)(expr) ));
             										}
             										else {
-HXLINE( 262)											HX_STACK_DO_THROW((HX_("Unknown expression type: ",32,bb,51,d7) + ::Std_obj::string(expr)));
+HXLINE( 320)											HX_STACK_DO_THROW((HX_("Unknown expression type: ",32,bb,51,d7) + ::Std_obj::string(expr)));
             										}
             									}
             								}
@@ -423,239 +458,269 @@ HXLINE( 262)											HX_STACK_DO_THROW((HX_("Unknown expression type: ",32,bb,
             				}
             			}
             		}
-HXLINE( 243)		return null();
+HXLINE( 301)		return null();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitExpr,return )
 
  ::Dynamic Interpreter_obj::visitUnaryExpr( ::src::ast::UnaryExpr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_267_visitUnaryExpr)
-HXLINE( 268)		 ::Dynamic right = this->visitExpr(expr->right);
-HXLINE( 269)		switch((int)(expr->oper->type->_hx_getIndex())){
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_325_visitUnaryExpr)
+HXLINE( 326)		 ::Dynamic right = this->visitExpr(expr->right);
+HXLINE( 327)		switch((int)(expr->oper->type->_hx_getIndex())){
             			case (int)5: {
-HXLINE( 271)				return -(right);
+HXLINE( 329)				return -(right);
             			}
             			break;
             			case (int)21: {
-HXLINE( 273)				return !(( (bool)(right) ));
+HXLINE( 331)				return !(( (bool)(right) ));
             			}
             			break;
             			default:{
-HXLINE( 275)				::String _hx_tmp;
-HXDLIN( 275)				if (::hx::IsNull( expr->oper->value )) {
-HXLINE( 275)					_hx_tmp = HX_("null",87,9e,0e,49);
+HXLINE( 333)				::String _hx_tmp;
+HXDLIN( 333)				if (::hx::IsNull( expr->oper->value )) {
+HXLINE( 333)					_hx_tmp = HX_("null",87,9e,0e,49);
             				}
             				else {
-HXLINE( 275)					_hx_tmp = ::Std_obj::string(expr->oper->value);
+HXLINE( 333)					_hx_tmp = ::Std_obj::string(expr->oper->value);
             				}
-HXDLIN( 275)				HX_STACK_DO_THROW((((((HX_("Unknown unary operator ",95,59,a9,99) + _hx_tmp) + HX_(" at line ",df,96,71,22)) + expr->oper->line) + HX_(", column ",96,fc,25,5b)) + expr->oper->column));
+HXDLIN( 333)				HX_STACK_DO_THROW((((((HX_("Unknown unary operator ",95,59,a9,99) + _hx_tmp) + HX_(" at line ",df,96,71,22)) + expr->oper->line) + HX_(", column ",96,fc,25,5b)) + expr->oper->column));
             			}
             		}
-HXLINE( 269)		return null();
+HXLINE( 327)		return null();
             	}
 
 
  ::Dynamic Interpreter_obj::visitBinaryExpr( ::src::ast::BinaryExpr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_280_visitBinaryExpr)
-HXLINE( 281)		 ::Dynamic left = this->visitExpr(expr->left);
-HXLINE( 282)		 ::Dynamic right = this->visitExpr(expr->right);
-HXLINE( 283)		switch((int)(expr->oper->type->_hx_getIndex())){
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_338_visitBinaryExpr)
+HXLINE( 339)		 ::Dynamic left = this->visitExpr(expr->left);
+HXLINE( 340)		 ::Dynamic right = this->visitExpr(expr->right);
+HXLINE( 341)		switch((int)(expr->oper->type->_hx_getIndex())){
             			case (int)4: {
-HXLINE( 285)				return (left + right);
+HXLINE( 344)				bool _hx_tmp;
+HXDLIN( 344)				if (::Std_obj::isOfType(left,::hx::ArrayBase::__mClass)) {
+HXLINE( 344)					_hx_tmp = ::Std_obj::isOfType(right,::hx::ArrayBase::__mClass);
+            				}
+            				else {
+HXLINE( 344)					_hx_tmp = false;
+            				}
+HXDLIN( 344)				if (_hx_tmp) {
+HXLINE( 345)					return ( (::cpp::VirtualArray)(left) )->concat(( (::cpp::VirtualArray)(right) ));
+            				}
+            				else {
+HXLINE( 346)					bool _hx_tmp1;
+HXDLIN( 346)					if (!(::Std_obj::isOfType(left,::hx::ClassOf< ::String >()))) {
+HXLINE( 346)						_hx_tmp1 = ::Std_obj::isOfType(right,::hx::ClassOf< ::String >());
+            					}
+            					else {
+HXLINE( 346)						_hx_tmp1 = true;
+            					}
+HXDLIN( 346)					if (_hx_tmp1) {
+HXLINE( 347)						::String _hx_tmp2 = ::Std_obj::string(left);
+HXDLIN( 347)						return (_hx_tmp2 + ::Std_obj::string(right));
+            					}
+            					else {
+HXLINE( 349)						return (left + right);
+            					}
+            				}
             			}
             			break;
             			case (int)5: {
-HXLINE( 287)				return (( (Float)(left) ) - ( (Float)(right) ));
+HXLINE( 352)				return (( (Float)(left) ) - ( (Float)(right) ));
             			}
             			break;
             			case (int)6: {
-HXLINE( 289)				return (( (Float)(left) ) * ( (Float)(right) ));
+HXLINE( 354)				return (( (Float)(left) ) * ( (Float)(right) ));
             			}
             			break;
             			case (int)7: {
-HXLINE( 291)				return (( (Float)(left) ) / ( (Float)(right) ));
+HXLINE( 356)				return (( (Float)(left) ) / ( (Float)(right) ));
             			}
             			break;
             			case (int)15: {
-HXLINE( 301)				return ::hx::IsEq( left,right );
+HXLINE( 366)				return ::hx::IsEq( left,right );
             			}
             			break;
             			case (int)16: {
-HXLINE( 303)				return ::hx::IsNotEq( left,right );
+HXLINE( 368)				return ::hx::IsNotEq( left,right );
             			}
             			break;
             			case (int)17: {
-HXLINE( 293)				return ::hx::IsGreater( left,right );
+HXLINE( 358)				return ::hx::IsGreater( left,right );
             			}
             			break;
             			case (int)18: {
-HXLINE( 295)				return ::hx::IsGreaterEq( left,right );
+HXLINE( 360)				return ::hx::IsGreaterEq( left,right );
             			}
             			break;
             			case (int)19: {
-HXLINE( 297)				return ::hx::IsLess( left,right );
+HXLINE( 362)				return ::hx::IsLess( left,right );
             			}
             			break;
             			case (int)20: {
-HXLINE( 299)				return ::hx::IsLessEq( left,right );
+HXLINE( 364)				return ::hx::IsLessEq( left,right );
             			}
             			break;
             			case (int)21: {
-HXLINE( 305)				return !(( (bool)(left) ));
+HXLINE( 370)				return !(( (bool)(left) ));
             			}
             			break;
             			default:{
-HXLINE( 307)				::String _hx_tmp;
-HXDLIN( 307)				if (::hx::IsNull( expr->oper->value )) {
-HXLINE( 307)					_hx_tmp = HX_("null",87,9e,0e,49);
+HXLINE( 372)				::String _hx_tmp3;
+HXDLIN( 372)				if (::hx::IsNull( expr->oper->value )) {
+HXLINE( 372)					_hx_tmp3 = HX_("null",87,9e,0e,49);
             				}
             				else {
-HXLINE( 307)					_hx_tmp = ::Std_obj::string(expr->oper->value);
+HXLINE( 372)					_hx_tmp3 = ::Std_obj::string(expr->oper->value);
             				}
-HXDLIN( 307)				HX_STACK_DO_THROW((((((HX_("Unknown operator ",c6,83,e4,d4) + _hx_tmp) + HX_(" at line ",df,96,71,22)) + expr->oper->line) + HX_(", column ",96,fc,25,5b)) + expr->oper->column));
+HXDLIN( 372)				HX_STACK_DO_THROW((((((HX_("Unknown operator ",c6,83,e4,d4) + _hx_tmp3) + HX_(" at line ",df,96,71,22)) + expr->oper->line) + HX_(", column ",96,fc,25,5b)) + expr->oper->column));
             			}
             		}
-HXLINE( 283)		return null();
+HXLINE( 341)		return null();
             	}
 
 
  ::Dynamic Interpreter_obj::visitNumberExpr( ::src::ast::NumberExpr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_313_visitNumberExpr)
-HXDLIN( 313)		return expr->value;
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_378_visitNumberExpr)
+HXDLIN( 378)		return expr->value;
             	}
 
 
  ::Dynamic Interpreter_obj::visitVariableExpr( ::src::ast::VariableExpr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_317_visitVariableExpr)
-HXLINE( 318)		if (this->environment->exists(expr->name)) {
-HXLINE( 318)			return this->environment->get(expr->name);
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_382_visitVariableExpr)
+HXLINE( 383)		if (this->environment->exists(expr->name)) {
+HXLINE( 383)			return this->environment->get(expr->name);
             		}
-HXLINE( 319)		HX_STACK_DO_THROW((((((HX_("Undefined variable '",f3,34,cc,06) + expr->name) + HX_("' at line ",d8,d9,c9,6d)) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
-HXDLIN( 319)		return null();
+HXLINE( 384)		HX_STACK_DO_THROW((((((HX_("Undefined variable '",f3,34,cc,06) + expr->name) + HX_("' at line ",d8,d9,c9,6d)) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
+HXDLIN( 384)		return null();
             	}
 
 
  ::Dynamic Interpreter_obj::visitStringExpr( ::src::ast::StringExpr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_324_visitStringExpr)
-HXDLIN( 324)		return expr->value;
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_389_visitStringExpr)
+HXDLIN( 389)		return expr->value;
             	}
 
 
  ::Dynamic Interpreter_obj::visitCallExpr( ::src::ast::CallExpr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_328_visitCallExpr)
-HXLINE( 329)		 ::Dynamic callee = this->visitExpr(expr->callee);
-HXLINE( 330)		::cpp::VirtualArray args = ::cpp::VirtualArray_obj::__new(0);
-HXLINE( 331)		{
-HXLINE( 331)			int _g = 0;
-HXDLIN( 331)			::Array< ::Dynamic> _g1 = expr->arguments;
-HXDLIN( 331)			while((_g < _g1->length)){
-HXLINE( 331)				 ::src::ast::Expr arg = _g1->__get(_g).StaticCast<  ::src::ast::Expr >();
-HXDLIN( 331)				_g = (_g + 1);
-HXLINE( 332)				args->push(this->visitExpr(arg));
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_393_visitCallExpr)
+HXLINE( 394)		 ::Dynamic callee = this->visitExpr(expr->callee);
+HXLINE( 395)		::cpp::VirtualArray args = ::cpp::VirtualArray_obj::__new(0);
+HXLINE( 396)		{
+HXLINE( 396)			int _g = 0;
+HXDLIN( 396)			::Array< ::Dynamic> _g1 = expr->arguments;
+HXDLIN( 396)			while((_g < _g1->length)){
+HXLINE( 396)				 ::src::ast::Expr arg = _g1->__get(_g).StaticCast<  ::src::ast::Expr >();
+HXDLIN( 396)				_g = (_g + 1);
+HXLINE( 397)				args->push(this->visitExpr(arg));
             			}
             		}
-HXLINE( 334)		if (::Std_obj::isOfType(callee,::hx::ClassOf< ::src::Function >())) {
-HXLINE( 335)			try {
+HXLINE( 399)		if (::Std_obj::isOfType(callee,::hx::ClassOf< ::src::Function >())) {
+HXLINE( 400)			try {
             				HX_STACK_CATCHABLE( ::src::Return, 0);
-HXLINE( 336)				( ( ::src::Function)(callee) )->call(args,::hx::ObjectPtr<OBJ_>(this));
+HXLINE( 401)				( ( ::src::Function)(callee) )->call(args,::hx::ObjectPtr<OBJ_>(this));
             			} catch( ::Dynamic _hx_e) {
             				if (_hx_e.IsClass<  ::src::Return >() ){
             					HX_STACK_BEGIN_CATCH
             					 ::src::Return e = _hx_e;
-HXLINE( 338)					return e->value;
+HXLINE( 403)					return e->value;
             				}
             				else {
             					HX_STACK_DO_THROW(_hx_e);
             				}
             			}
-HXLINE( 340)			return null();
+HXLINE( 405)			return null();
             		}
             		else {
-HXLINE( 342)			HX_STACK_DO_THROW((((HX_("Attempted to call a non-function at line ",f7,4f,82,6b) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
+HXLINE( 406)			if (::Std_obj::isOfType(callee,::hx::ClassOf< ::src::NativeFunction >())) {
+HXLINE( 407)				return ( ( ::src::NativeFunction)(callee) )->call(args,::hx::ObjectPtr<OBJ_>(this));
+            			}
+            			else {
+HXLINE( 409)				HX_STACK_DO_THROW((((HX_("Attempted to call a non-function at line ",f7,4f,82,6b) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
+            			}
             		}
-HXLINE( 334)		return null();
+HXLINE( 399)		return null();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitCallExpr,return )
 
  ::Dynamic Interpreter_obj::visitNullExpr( ::src::ast::NullExpr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_348_visitNullExpr)
-HXDLIN( 348)		return null();
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_415_visitNullExpr)
+HXDLIN( 415)		return null();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitNullExpr,return )
 
 ::cpp::VirtualArray Interpreter_obj::visitArrayExpr( ::src::ast::ArrayExpr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_352_visitArrayExpr)
-HXLINE( 353)		::cpp::VirtualArray elements = ::cpp::VirtualArray_obj::__new(0);
-HXLINE( 354)		{
-HXLINE( 354)			int _g = 0;
-HXDLIN( 354)			::Array< ::Dynamic> _g1 = expr->elements;
-HXDLIN( 354)			while((_g < _g1->length)){
-HXLINE( 354)				 ::src::ast::Expr el = _g1->__get(_g).StaticCast<  ::src::ast::Expr >();
-HXDLIN( 354)				_g = (_g + 1);
-HXLINE( 355)				elements->push(this->visitExpr(el));
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_419_visitArrayExpr)
+HXLINE( 420)		::cpp::VirtualArray elements = ::cpp::VirtualArray_obj::__new(0);
+HXLINE( 421)		{
+HXLINE( 421)			int _g = 0;
+HXDLIN( 421)			::Array< ::Dynamic> _g1 = expr->elements;
+HXDLIN( 421)			while((_g < _g1->length)){
+HXLINE( 421)				 ::src::ast::Expr el = _g1->__get(_g).StaticCast<  ::src::ast::Expr >();
+HXDLIN( 421)				_g = (_g + 1);
+HXLINE( 422)				elements->push(this->visitExpr(el));
             			}
             		}
-HXLINE( 357)		return elements;
+HXLINE( 424)		return elements;
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitArrayExpr,return )
 
  ::Dynamic Interpreter_obj::visitIndexExpr( ::src::ast::IndexExpr expr){
-            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_361_visitIndexExpr)
-HXLINE( 362)		 ::Dynamic target = this->visitExpr(expr->target);
-HXLINE( 363)		 ::Dynamic index = this->visitExpr(expr->index);
-HXLINE( 364)		if (::Std_obj::isOfType(target,::hx::ArrayBase::__mClass)) {
-HXLINE( 365)			if (::Std_obj::isOfType(index,::hx::ClassOf< int >())) {
-HXLINE( 366)				::cpp::VirtualArray arr = ( (::cpp::VirtualArray)(target) );
-HXLINE( 367)				int idx = ( (int)(index) );
-HXLINE( 368)				bool _hx_tmp;
-HXDLIN( 368)				if ((idx >= 0)) {
-HXLINE( 368)					_hx_tmp = (idx >= arr->get_length());
+            	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_428_visitIndexExpr)
+HXLINE( 429)		 ::Dynamic target = this->visitExpr(expr->target);
+HXLINE( 430)		 ::Dynamic index = this->visitExpr(expr->index);
+HXLINE( 431)		if (::Std_obj::isOfType(target,::hx::ArrayBase::__mClass)) {
+HXLINE( 432)			if (::Std_obj::isOfType(index,::hx::ClassOf< int >())) {
+HXLINE( 433)				::cpp::VirtualArray arr = ( (::cpp::VirtualArray)(target) );
+HXLINE( 434)				int idx = ( (int)(index) );
+HXLINE( 435)				bool _hx_tmp;
+HXDLIN( 435)				if ((idx >= 0)) {
+HXLINE( 435)					_hx_tmp = (idx >= arr->get_length());
             				}
             				else {
-HXLINE( 368)					_hx_tmp = true;
+HXLINE( 435)					_hx_tmp = true;
             				}
-HXDLIN( 368)				if (_hx_tmp) {
-HXLINE( 368)					HX_STACK_DO_THROW((((HX_("Array index out of bounds at line ",68,2d,ca,41) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
+HXDLIN( 435)				if (_hx_tmp) {
+HXLINE( 435)					HX_STACK_DO_THROW((((HX_("Array index out of bounds at line ",68,2d,ca,41) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
             				}
-HXLINE( 369)				return arr->__get(idx);
+HXLINE( 436)				return arr->__get(idx);
             			}
             			else {
-HXLINE( 370)				HX_STACK_DO_THROW((((HX_("Array index must be an integer at line ",d9,bd,05,f5) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
+HXLINE( 437)				HX_STACK_DO_THROW((((HX_("Array index must be an integer at line ",d9,bd,05,f5) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
             			}
             		}
             		else {
-HXLINE( 371)			if (::Std_obj::isOfType(target,::hx::ClassOf< ::String >())) {
-HXLINE( 372)				if (::Std_obj::isOfType(index,::hx::ClassOf< int >())) {
-HXLINE( 373)					::String str = ( (::String)(target) );
-HXLINE( 374)					int idx1 = ( (int)(index) );
-HXLINE( 375)					bool _hx_tmp1;
-HXDLIN( 375)					if ((idx1 >= 0)) {
-HXLINE( 375)						_hx_tmp1 = (idx1 >= str.length);
+HXLINE( 438)			if (::Std_obj::isOfType(target,::hx::ClassOf< ::String >())) {
+HXLINE( 439)				if (::Std_obj::isOfType(index,::hx::ClassOf< int >())) {
+HXLINE( 440)					::String str = ( (::String)(target) );
+HXLINE( 441)					int idx1 = ( (int)(index) );
+HXLINE( 442)					bool _hx_tmp1;
+HXDLIN( 442)					if ((idx1 >= 0)) {
+HXLINE( 442)						_hx_tmp1 = (idx1 >= str.length);
             					}
             					else {
-HXLINE( 375)						_hx_tmp1 = true;
+HXLINE( 442)						_hx_tmp1 = true;
             					}
-HXDLIN( 375)					if (_hx_tmp1) {
-HXLINE( 375)						HX_STACK_DO_THROW((((HX_("String index out of bounds at line ",f0,b2,57,5e) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
+HXDLIN( 442)					if (_hx_tmp1) {
+HXLINE( 442)						HX_STACK_DO_THROW((((HX_("String index out of bounds at line ",f0,b2,57,5e) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
             					}
-HXLINE( 376)					return str.charAt(idx1);
+HXLINE( 443)					return str.charAt(idx1);
             				}
             				else {
-HXLINE( 377)					HX_STACK_DO_THROW((((HX_("String index must be an integer at line ",51,2b,df,10) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
+HXLINE( 444)					HX_STACK_DO_THROW((((HX_("String index must be an integer at line ",51,2b,df,10) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
             				}
             			}
             			else {
-HXLINE( 378)				HX_STACK_DO_THROW((((HX_("Attempted to index a non-array/string at line ",5a,a5,74,ee) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
+HXLINE( 445)				HX_STACK_DO_THROW((((HX_("Attempted to index a non-array/string at line ",5a,a5,74,ee) + expr->line) + HX_(", column ",96,fc,25,5b)) + expr->column));
             			}
             		}
-HXLINE( 364)		return null();
+HXLINE( 431)		return null();
             	}
 
 

@@ -2,6 +2,8 @@ package src;
 
 import src.ast.*;
 
+
+
 class Function {
     public var name:String;
     public var params:Array<Parameter>;
@@ -39,6 +41,48 @@ class Function {
         interp.visitStmt(body);
         // Restore the previous environment
         interp.environment = previousEnv;
+    }
+}
+
+
+
+class NativeFunction {
+    public var name:String;
+    public var params:Array<Parameter>;
+    public var body:((Environment) -> Dynamic);
+
+    public function new(name:String, params:Array<Parameter>, body:((Environment) -> Dynamic)) {
+        this.name = name;
+        this.params = params;
+        this.body = body;
+    }
+
+    public function toString():String {
+        return "<Native function " + name + ":" + params.length + ">";
+    }
+
+    public function call(args:Array<Dynamic>, interp:Interpreter):Dynamic {
+        // Create a new environment for the function call
+        var previousEnv = interp.environment;
+        interp.environment = new Environment(previousEnv);
+        for (i in 0...params.length) {
+            var param = params[i];
+            var value:Dynamic = null;
+
+            if (i < args.length) {
+                value = args[i]; // provided by caller
+            } else if (param.defaultValue != null) {
+                value = interp.visitExpr(param.defaultValue); // evaluate default at call time
+            } else {
+                throw "Missing argument for parameter '" + param.name + "'";
+            }
+            
+            interp.environment.define(param.name, value);
+        }
+        // Throw a Return exception to unwind the stack and return the value
+        var value:Dynamic = body(interp.environment);
+        interp.environment = previousEnv;
+        return value;
     }
 }
 
@@ -112,6 +156,20 @@ class Interpreter extends ASTWalker {
         environment.define("e", Math.exp(1));
         environment.define("inf", Math.POSITIVE_INFINITY);
         environment.define("nan", Math.NaN);
+
+        environment.define("clock", new NativeFunction("clock", [], function(env) {
+            return Sys.time();
+        }));
+        environment.define("length", new NativeFunction("length", [new Parameter("item", null, 0, 0)], function(env) {
+            var item:Dynamic = env.get("item");
+            if (Std.isOfType(item, String)) {
+                return (item : String).length;
+            } else if (Std.isOfType(item, Array)) {
+                return (item : Array<Dynamic>).length;
+            } else {
+                throw "length() argument must be a string or array";
+            }
+        }));
     }
 
     public function visit(ast:Array<Stmt>) {
@@ -282,7 +340,14 @@ class Interpreter extends ASTWalker {
         var right:Dynamic = visitExpr(expr.right);
         switch (expr.oper.type) {
             case TokenType.PLUS:
-                return left + right;
+                // Handle string concatenation and array merging and keep numeric addition
+                if (Std.isOfType(left, Array) && Std.isOfType(right, Array)) {
+                    return (left : Array<Dynamic>).concat((right : Array<Dynamic>));
+                } else if (Std.isOfType(left, String) || Std.isOfType(right, String)) {
+                    return Std.string(left) + Std.string(right);
+                } else {
+                    return left + right;
+                }
             case TokenType.MINUS:
                 return left - right;
             case TokenType.STAR:
@@ -338,6 +403,8 @@ class Interpreter extends ASTWalker {
                 return e.value;
             }
             return null;
+        } else if (Std.isOfType(callee, NativeFunction)) {
+            return (callee : NativeFunction).call(args, this);
         } else {
             throw "Attempted to call a non-function at line " + expr.line + ", column " + expr.column;
         }

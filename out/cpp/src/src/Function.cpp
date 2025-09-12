@@ -26,16 +26,16 @@
 #include <src/ast/Stmt.h>
 #endif
 
-HX_DEFINE_STACK_FRAME(_hx_pos_81eea16e69c77f0a_10_new,"src.Function","new",0x873d6bf4,"src.Function.new","src/Interpreter.hx",10,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_81eea16e69c77f0a_17_toString,"src.Function","toString",0x82a4bc98,"src.Function.toString","src/Interpreter.hx",17,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_81eea16e69c77f0a_20_call,"src.Function","call",0xc7389e8a,"src.Function.call","src/Interpreter.hx",20,0xb37cc36f)
+HX_DEFINE_STACK_FRAME(_hx_pos_81eea16e69c77f0a_12_new,"src.Function","new",0x873d6bf4,"src.Function.new","src/Interpreter.hx",12,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_81eea16e69c77f0a_19_toString,"src.Function","toString",0x82a4bc98,"src.Function.toString","src/Interpreter.hx",19,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_81eea16e69c77f0a_22_call,"src.Function","call",0xc7389e8a,"src.Function.call","src/Interpreter.hx",22,0xb37cc36f)
 namespace src{
 
 void Function_obj::__construct(::String name,::Array< ::Dynamic> params, ::src::ast::Stmt body){
-            	HX_STACKFRAME(&_hx_pos_81eea16e69c77f0a_10_new)
-HXLINE(  11)		this->name = name;
-HXLINE(  12)		this->params = params;
-HXLINE(  13)		this->body = body;
+            	HX_STACKFRAME(&_hx_pos_81eea16e69c77f0a_12_new)
+HXLINE(  13)		this->name = name;
+HXLINE(  14)		this->params = params;
+HXLINE(  15)		this->body = body;
             	}
 
 Dynamic Function_obj::__CreateEmpty() { return new Function_obj; }
@@ -54,41 +54,41 @@ bool Function_obj::_hx_isInstanceOf(int inClassId) {
 }
 
 ::String Function_obj::toString(){
-            	HX_STACKFRAME(&_hx_pos_81eea16e69c77f0a_17_toString)
-HXDLIN(  17)		return ((((HX_("<Function ",2c,02,4a,67) + this->name) + HX_(":",3a,00,00,00)) + this->params->length) + HX_(">",3e,00,00,00));
+            	HX_STACKFRAME(&_hx_pos_81eea16e69c77f0a_19_toString)
+HXDLIN(  19)		return ((((HX_("<Function ",2c,02,4a,67) + this->name) + HX_(":",3a,00,00,00)) + this->params->length) + HX_(">",3e,00,00,00));
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Function_obj,toString,return )
 
 void Function_obj::call(::cpp::VirtualArray args, ::src::Interpreter interp){
-            	HX_GC_STACKFRAME(&_hx_pos_81eea16e69c77f0a_20_call)
-HXLINE(  22)		 ::src::Environment previousEnv = interp->environment;
-HXLINE(  23)		interp->environment =  ::src::Environment_obj::__alloc( HX_CTX ,previousEnv);
-HXLINE(  24)		{
-HXLINE(  24)			int _g = 0;
-HXDLIN(  24)			int _g1 = this->params->length;
-HXDLIN(  24)			while((_g < _g1)){
-HXLINE(  24)				_g = (_g + 1);
-HXDLIN(  24)				int i = (_g - 1);
-HXLINE(  25)				 ::src::ast::Parameter param = this->params->__get(i).StaticCast<  ::src::ast::Parameter >();
-HXLINE(  26)				 ::Dynamic value = null();
-HXLINE(  28)				if ((i < args->get_length())) {
-HXLINE(  29)					value = args->__get(i);
+            	HX_GC_STACKFRAME(&_hx_pos_81eea16e69c77f0a_22_call)
+HXLINE(  24)		 ::src::Environment previousEnv = interp->environment;
+HXLINE(  25)		interp->environment =  ::src::Environment_obj::__alloc( HX_CTX ,previousEnv);
+HXLINE(  26)		{
+HXLINE(  26)			int _g = 0;
+HXDLIN(  26)			int _g1 = this->params->length;
+HXDLIN(  26)			while((_g < _g1)){
+HXLINE(  26)				_g = (_g + 1);
+HXDLIN(  26)				int i = (_g - 1);
+HXLINE(  27)				 ::src::ast::Parameter param = this->params->__get(i).StaticCast<  ::src::ast::Parameter >();
+HXLINE(  28)				 ::Dynamic value = null();
+HXLINE(  30)				if ((i < args->get_length())) {
+HXLINE(  31)					value = args->__get(i);
             				}
             				else {
-HXLINE(  30)					if (::hx::IsNotNull( param->defaultValue )) {
-HXLINE(  31)						value = interp->visitExpr(param->defaultValue);
+HXLINE(  32)					if (::hx::IsNotNull( param->defaultValue )) {
+HXLINE(  33)						value = interp->visitExpr(param->defaultValue);
             					}
             					else {
-HXLINE(  33)						HX_STACK_DO_THROW(((HX_("Missing argument for parameter '",d0,c2,b0,a3) + param->name) + HX_("'",27,00,00,00)));
+HXLINE(  35)						HX_STACK_DO_THROW(((HX_("Missing argument for parameter '",d0,c2,b0,a3) + param->name) + HX_("'",27,00,00,00)));
             					}
             				}
-HXLINE(  36)				interp->environment->define(param->name,value);
+HXLINE(  38)				interp->environment->define(param->name,value);
             			}
             		}
-HXLINE(  39)		interp->visitStmt(this->body);
-HXLINE(  41)		interp->environment = previousEnv;
+HXLINE(  41)		interp->visitStmt(this->body);
+HXLINE(  43)		interp->environment = previousEnv;
             	}
 
 

@@ -237,6 +237,7 @@
    <depend name="include/src/Environment.h"/>
    <depend name="include/src/Function.h"/>
    <depend name="include/src/Interpreter.h"/>
+   <depend name="include/src/NativeFunction.h"/>
    <depend name="include/src/Return.h"/>
    <depend name="include/src/Token.h"/>
    <depend name="include/src/TokenType.h"/>
@@ -273,6 +274,15 @@
    <depend name="include/haxe/IMap.h"/>
    <depend name="include/haxe/ds/StringMap.h"/>
    <depend name="include/src/Environment.h"/>
+  </file>
+  <file name="src/src/NativeFunction.cpp" >
+   <depend name="include/src/ASTWalker.h"/>
+   <depend name="include/src/Environment.h"/>
+   <depend name="include/src/Interpreter.h"/>
+   <depend name="include/src/NativeFunction.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/Parameter.h"/>
   </file>
   <file name="src/src/Function.cpp" >
    <depend name="include/src/ASTWalker.h"/>

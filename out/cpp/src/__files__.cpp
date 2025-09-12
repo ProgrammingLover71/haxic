@@ -138,6 +138,7 @@ const char *__hxcpp_all_classes[] = {
 "haxe.iterators.ArrayIterator",
 "src.ASTWalker",
 "src.Function",
+"src.NativeFunction",
 "src.Environment",
 "src.Return",
 "src.Interpreter",
