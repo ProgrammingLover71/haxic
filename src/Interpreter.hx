@@ -1,5 +1,6 @@
 package src;
 
+import haxe.ds.StringMap;
 import src.ast.*;
 
 
@@ -215,6 +216,32 @@ class Interpreter extends ASTWalker {
             }
             return null;
         }));
+        environment.define("map", new NativeFunction("map", [
+            new Parameter("array", null, 0, 0), 
+            new Parameter("func", null, 0, 0)
+        ], function(env) {
+            var array:Dynamic = env.get("array");
+            var func:Dynamic = env.get("func");
+            if (!Std.isOfType(array, Array)) {
+                throw "map() first argument must be an array";
+            }
+            if (!(Std.isOfType(func, Function) || Std.isOfType(func, NativeFunction))) {
+                throw "map() second argument must be a function";
+            }
+            var result:Array<Dynamic> = [];
+            for (item in (array : Array<Dynamic>)) {
+                if (Std.isOfType(func, Function)) {
+                    try {
+                        (func : Function).call([item], this);
+                    } catch (e:Return) {
+                        result.push(e.value);
+                    }
+                } else if (Std.isOfType(func, NativeFunction)) {
+                    result.push((func : NativeFunction).call([item], this));
+                }
+            }
+            return result;
+        }));
     }
 
     public function visit(ast:Array<Stmt>) {
@@ -227,7 +254,7 @@ class Interpreter extends ASTWalker {
     public function visitPrintStmt(stmt:PrintStmt) {
         var value:Dynamic = visitExpr(stmt.expr);
         // Use Sys.stdout().write() instead of trace() for a cleaner output and to avoid showing the file and line number
-        Utils.print(value);
+        Utils.print(Utils.stringify(value));
     }
 
 
@@ -363,6 +390,10 @@ class Interpreter extends ASTWalker {
             return visitArrayExpr(cast expr);
         } else if (Std.isOfType(expr, IndexExpr)) {
             return visitIndexExpr(cast expr);
+        } else if (Std.isOfType(expr, MapExpr)) {
+            return visitMapExpr(cast expr);
+        } else if (Std.isOfType(expr, FunctionExpr)) {
+            return visitFunctionExpr(cast expr);
         } else {
             throw "Unknown expression type: " + expr;
         }
@@ -387,9 +418,18 @@ class Interpreter extends ASTWalker {
         var right:Dynamic = visitExpr(expr.right);
         switch (expr.oper.type) {
             case TokenType.PLUS:
-                // Handle string concatenation and array merging and keep numeric addition
+                // Handle string concatenation, array merging, map merging and keep numeric addition
                 if (Std.isOfType(left, Array) && Std.isOfType(right, Array)) {
                     return (left : Array<Dynamic>).concat((right : Array<Dynamic>));
+                } else if (Std.isOfType(left, StringMap) && Std.isOfType(right, StringMap)) {
+                    var result:StringMap<Dynamic> = new StringMap();
+                    for (key in (left : StringMap<Dynamic>).keys()) {
+                        result.set(key, (left:StringMap<Dynamic>).get(key));
+                    }
+                    for (key in (right : StringMap<Dynamic>).keys()) {
+                        result.set(key, (right:StringMap<Dynamic>).get(key));
+                    }
+                    return result;
                 } else if (Std.isOfType(left, String) || Std.isOfType(right, String)) {
                     return Std.string(left) + Std.string(right);
                 } else {
@@ -494,6 +534,27 @@ class Interpreter extends ASTWalker {
                 if (idx < 0 || idx >= str.length) throw "String index " + idx + " out of bounds at line " + expr.line + ", column " + expr.column;
                 return str.charAt(idx);
             } else throw "String index " + index + " must be an integer at line " + expr.line + ", column " + expr.column;
+        } else if (Std.isOfType(target, StringMap)) {
+            if (Std.isOfType(index, String)) {
+                var map = (target : StringMap<Dynamic>);
+                var key = (index : String);
+                if (!map.exists(key)) throw "Map key '" + key + "' does not exist at line " + expr.line + ", column " + expr.column;
+                return map.get(key);
+            } else throw "Map key " + index + " must be a string at line " + expr.line + ", column " + expr.column;
         } else throw "Attempted to index non-iterable " + target + " at line " + expr.line + ", column " + expr.column;
+    }
+
+    public function visitMapExpr(expr:MapExpr):StringMap<Dynamic> {
+        var result:StringMap<Dynamic> = new StringMap();
+        for (pair in expr.pairs) {
+            var key = pair.key;
+            var value = visitExpr(pair.value);
+            result.set(key, value);
+        }
+        return result;
+    }
+
+    public function visitFunctionExpr(expr:FunctionExpr):Function {
+        return new Function(expr.name, expr.params, expr.body);
     }
 }

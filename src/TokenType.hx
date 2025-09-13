@@ -15,10 +15,13 @@ enum TokenType {
     RPAREN;
     LBRACK;
     RBRACK;
+    LBRACE;
+    RBRACE;
 
     SEMICOLON;
     EQUALS;
     COMMA;
+    ARROW;
 
     EQEQ;
     NOTEQ;

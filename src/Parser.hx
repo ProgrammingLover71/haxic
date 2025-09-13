@@ -25,7 +25,7 @@ class Parser {
     public function parse():Array<Stmt> {
         var statements:Array<Stmt> = [];
         while (!isAtEnd()) {
-            statements.push(parseStatement());
+            statements.push(statement());
         }
         return statements;
     }
@@ -202,14 +202,14 @@ class Parser {
     function parseBlockWithTerminators(terminators:Array<String>, line:Int, column:Int):BlockStmt {
         var statements:Array<Stmt> = [];
         while (!isAtEnd() && !(check(TokenType.KEYWORD) && terminators.indexOf(peek().value) != -1)) {
-            statements.push(parseStatement());
+            statements.push(statement());
         }
         
         return new BlockStmt(statements, line, column);
     }
 
     
-    function parseStatement():Stmt {
+    function statement():Stmt {
         if (check(TokenType.KEYWORD) && peek().value == "print") return parsePrintStatement();
         if (check(TokenType.KEYWORD) && peek().value == "input") return parseInputStatement();
         if (check(TokenType.KEYWORD) && peek().value == "let") return parseLetStatement();
@@ -295,28 +295,35 @@ class Parser {
 
 
     function factor():Expr {
+        // Numbers
         if (match(TokenType.NUMBER)) {
             return new NumberExpr(Std.parseFloat(previous().value), previous().line, previous().column);
         }
+        // Grouping
         if (match(TokenType.LPAREN)) {
             var expr = expr();
             consume(TokenType.RPAREN, "Expected ')' after expression.");
             return expr;
         }
+        // Variables / function names
         if (match(TokenType.IDENTIFIER)) {
             return new VariableExpr(previous().value, previous().line, previous().column);
         }
+        // Strings
         if (match(TokenType.STRING)) {
             return new StringExpr(previous().value, previous().line, previous().column);
         }
+        // Booleans
         if (check(TokenType.KEYWORD) && (peek().value == "true" || peek().value == "false")) {
             var kw = advance();
             return new BooleanExpr(kw.value == "true", kw.line, kw.column);
         }
+        // Null value
         if (check(TokenType.KEYWORD) && peek().value == "null") {
             var kw = advance();
             return new NullExpr(kw.line, kw.column);
         }
+        // Lists
         if (check(TokenType.LBRACK)) {
             advance(); // consume '['
             var elements:Array<Expr> = [];
@@ -327,6 +334,36 @@ class Parser {
             }
             consume(TokenType.RBRACK, "Expected ']' after array elements.");
             return new ArrayExpr(elements, previous().line, previous().column);
+        }
+        // Maps
+        if (check(TokenType.LBRACE)) {
+            advance(); // consume '{'
+            var pairs:Array<{key:String, value:Expr, line:Int, column:Int}> = [];
+            if (!check(TokenType.RBRACE)) {
+                do {
+                    var keyToken = consume(TokenType.IDENTIFIER, "Expected key in map literal.");
+                    consume(TokenType.ARROW, "Expected '=>' after key in map literal.");
+                    var valueExpr = comparison();
+                    pairs.push({key: keyToken.value, value: valueExpr, line: keyToken.line, column: keyToken.column});
+                } while (match(TokenType.COMMA));
+            }
+            consume(TokenType.RBRACE, "Expected '}' after map literal.");
+            return new MapExpr(pairs, previous().line, previous().column);
+        }
+        // Lambdas
+        if (check(TokenType.KEYWORD) && peek().value == "func") {
+            var kw = advance(); // consume 'func'
+            consume(TokenType.LPAREN, "Expected '(' after 'func'.");
+            var params:Array<Parameter> = parseParameters();
+            consume(TokenType.RPAREN, "Expected ')' after parameters.");
+            // Start parsing function body in a function scope...
+            scopeStates.push(ScopeState.Function);
+            var body = parseBlockWithTerminators(["end"], previous().line, previous().column);
+            var kwEnd = consume(TokenType.KEYWORD, "Expected 'end' after function body.");
+            if (kwEnd.value != "end") throw "Expected 'end' after function body.";
+            // ...then revert to the previous scope
+            scopeStates.pop();
+            return new FunctionExpr("<lambda>", params, body, kw.line, kw.column);
         }
         throw "Unexpected token in factor: " + peek();
     }

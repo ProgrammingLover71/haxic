@@ -714,10 +714,14 @@ class haxe_ds_StringMap:
     _hx_class_name = "haxe.ds.StringMap"
     __slots__ = ("h",)
     _hx_fields = ["h"]
+    _hx_methods = ["keys"]
     _hx_interfaces = [haxe_IMap]
 
     def __init__(self):
         self.h = dict()
+
+    def keys(self):
+        return python_HaxeIterator(iter(self.h.keys()))
 
 haxe_ds_StringMap._hx_class = haxe_ds_StringMap
 
@@ -2036,13 +2040,15 @@ class src_Interpreter(src_ASTWalker):
     _hx_class_name = "src.Interpreter"
     __slots__ = ("environment",)
     _hx_fields = ["environment"]
-    _hx_methods = ["visit", "visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitWhileStmt", "visitForeachStmt", "visitBlockStmt", "visitExprStmt", "visitReturnStmt", "visitFunctionStmt", "visitStmt", "visitExpr", "visitUnaryExpr", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitStringExpr", "visitCallExpr", "visitNullExpr", "visitBooleanExpr", "visitArrayExpr", "visitIndexExpr"]
+    _hx_methods = ["visit", "visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitWhileStmt", "visitForeachStmt", "visitBlockStmt", "visitExprStmt", "visitReturnStmt", "visitFunctionStmt", "visitStmt", "visitExpr", "visitUnaryExpr", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitStringExpr", "visitCallExpr", "visitNullExpr", "visitBooleanExpr", "visitArrayExpr", "visitIndexExpr", "visitMapExpr", "visitFunctionExpr"]
     _hx_statics = []
     _hx_interfaces = []
     _hx_super = src_ASTWalker
 
 
     def __init__(self):
+        self.environment = None
+        _gthis = self
         self.environment = src_Environment()
         self.environment.define("pi",Math.PI)
         self.environment.define("e",(0.0 if ((1 == Math.NEGATIVE_INFINITY)) else (Math.POSITIVE_INFINITY if ((1 == Math.POSITIVE_INFINITY)) else Reflect.field(Math,"exp")(1))))
@@ -2105,6 +2111,35 @@ class src_Interpreter(src_ASTWalker):
                 Sys.command("clear")
             return None
         self.environment.define("clear",src_NativeFunction("clear",[],_hx_local_6))
+        def _hx_local_8(env):
+            array = env.get("array")
+            func = env.get("func")
+            if (not Std.isOfType(array,list)):
+                raise haxe_Exception.thrown("map() first argument must be an array")
+            if (not ((Std.isOfType(func,src_Function) or Std.isOfType(func,src_NativeFunction)))):
+                raise haxe_Exception.thrown("map() second argument must be a function")
+            result = []
+            _g = 0
+            _g1 = array
+            while (_g < len(_g1)):
+                item = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+                _g = (_g + 1)
+                if Std.isOfType(func,src_Function):
+                    try:
+                        func.call([item],_gthis)
+                    except BaseException as _g2:
+                        _g3 = haxe_Exception.caught(_g2)
+                        if Std.isOfType(_g3,src_Return):
+                            e = _g3
+                            x = e.value
+                            result.append(x)
+                        else:
+                            raise _g2
+                elif Std.isOfType(func,src_NativeFunction):
+                    x1 = func.call([item],_gthis)
+                    result.append(x1)
+            return result
+        self.environment.define("map",src_NativeFunction("map",[src_ast_Parameter("array",None,0,0), src_ast_Parameter("func",None,0,0)],_hx_local_8))
 
     def visit(self,ast):
         _g = 0
@@ -2116,7 +2151,7 @@ class src_Interpreter(src_ASTWalker):
 
     def visitPrintStmt(self,stmt):
         value = self.visitExpr(stmt.expr)
-        src_Utils.print(value)
+        src_Utils.print(src_Utils.stringify(value))
 
     def visitInputStmt(self,stmt):
         input = Sys.stdin().readLine()
@@ -2237,6 +2272,10 @@ class src_Interpreter(src_ASTWalker):
             return self.visitArrayExpr(expr)
         elif Std.isOfType(expr,src_ast_IndexExpr):
             return self.visitIndexExpr(expr)
+        elif Std.isOfType(expr,src_ast_MapExpr):
+            return self.visitMapExpr(expr)
+        elif Std.isOfType(expr,src_ast_FunctionExpr):
+            return self.visitFunctionExpr(expr)
         else:
             raise haxe_Exception.thrown(("Unknown expression type: " + Std.string(expr)))
 
@@ -2245,7 +2284,7 @@ class src_Interpreter(src_ASTWalker):
         tmp = expr.oper.type.index
         if (tmp == 5):
             return -right
-        elif (tmp == 21):
+        elif (tmp == 24):
             return (not right)
         else:
             raise haxe_Exception.thrown(((((("Unknown unary operator " + HxOverrides.stringOrNull((("null" if ((expr.oper.value is None)) else Std.string(expr.oper.value))))) + " at line ") + Std.string(expr.oper.line)) + ", column ") + Std.string(expr.oper.column)))
@@ -2257,6 +2296,19 @@ class src_Interpreter(src_ASTWalker):
         if (tmp == 4):
             if (Std.isOfType(left,list) and Std.isOfType(right,list)):
                 return (left + right)
+            elif (Std.isOfType(left,haxe_ds_StringMap) and Std.isOfType(right,haxe_ds_StringMap)):
+                result = haxe_ds_StringMap()
+                key = left.keys()
+                while key.hasNext():
+                    key1 = key.next()
+                    value = left.h.get(key1,None)
+                    result.h[key1] = value
+                key = right.keys()
+                while key.hasNext():
+                    key1 = key.next()
+                    value = right.h.get(key1,None)
+                    result.h[key1] = value
+                return result
             elif (Std.isOfType(left,str) or Std.isOfType(right,str)):
                 return (Std.string(left) + Std.string(right))
             else:
@@ -2267,19 +2319,19 @@ class src_Interpreter(src_ASTWalker):
             return (left * right)
         elif (tmp == 7):
             return (left / right)
-        elif (tmp == 15):
-            return HxOverrides.eq(left,right)
-        elif (tmp == 16):
-            return not HxOverrides.eq(left,right)
-        elif (tmp == 17):
-            return (left > right)
         elif (tmp == 18):
-            return (left >= right)
+            return HxOverrides.eq(left,right)
         elif (tmp == 19):
-            return (left < right)
+            return not HxOverrides.eq(left,right)
         elif (tmp == 20):
-            return (left <= right)
+            return (left > right)
         elif (tmp == 21):
+            return (left >= right)
+        elif (tmp == 22):
+            return (left < right)
+        elif (tmp == 23):
+            return (left <= right)
+        elif (tmp == 24):
             return (not left)
         else:
             raise haxe_Exception.thrown(((((("Unknown operator " + HxOverrides.stringOrNull((("null" if ((expr.oper.value is None)) else Std.string(expr.oper.value))))) + " at line ") + Std.string(expr.oper.line)) + ", column ") + Std.string(expr.oper.column)))
@@ -2368,8 +2420,32 @@ class src_Interpreter(src_ASTWalker):
                     return _hx_str[idx]
             else:
                 raise haxe_Exception.thrown(((((("String index " + Std.string(index)) + " must be an integer at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+        elif Std.isOfType(target,haxe_ds_StringMap):
+            if Std.isOfType(index,str):
+                _hx_map = target
+                key = index
+                if (not (key in _hx_map.h)):
+                    raise haxe_Exception.thrown(((((("Map key '" + ("null" if key is None else key)) + "' does not exist at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+                return _hx_map.h.get(key,None)
+            else:
+                raise haxe_Exception.thrown(((((("Map key " + Std.string(index)) + " must be a string at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
         else:
             raise haxe_Exception.thrown(((((("Attempted to index non-iterable " + Std.string(target)) + " at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+
+    def visitMapExpr(self,expr):
+        result = haxe_ds_StringMap()
+        _g = 0
+        _g1 = expr.pairs
+        while (_g < len(_g1)):
+            pair = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            key = pair.key
+            value = self.visitExpr(pair.value)
+            result.h[key] = value
+        return result
+
+    def visitFunctionExpr(self,expr):
+        return src_Function(expr.name,expr.params,expr.body)
 
 src_Interpreter._hx_class = src_Interpreter
 
@@ -2512,26 +2588,38 @@ class src_Lexer:
                     x13 = src_Token(src_TokenType.EQEQ,"==",self.line,self.column)
                     tokens.append(x13)
                     self.advance()
-                else:
-                    x14 = src_Token(src_TokenType.EQUALS,self.current,self.line,self.column)
+                elif (self.peek() == ">"):
+                    x14 = src_Token(src_TokenType.ARROW,"=>",self.line,self.column)
                     tokens.append(x14)
+                    self.advance()
+                else:
+                    x15 = src_Token(src_TokenType.EQUALS,self.current,self.line,self.column)
+                    tokens.append(x15)
             elif (_g == ">"):
                 if (self.peek() == "="):
-                    x15 = src_Token(src_TokenType.GTEQ,">=",self.line,self.column)
-                    tokens.append(x15)
+                    x16 = src_Token(src_TokenType.GTEQ,">=",self.line,self.column)
+                    tokens.append(x16)
                     self.advance()
                     self.advance()
                 else:
-                    x16 = src_Token(src_TokenType.GT,self.current,self.line,self.column)
-                    tokens.append(x16)
+                    x17 = src_Token(src_TokenType.GT,self.current,self.line,self.column)
+                    tokens.append(x17)
                     self.advance()
             elif (_g == "["):
-                x17 = src_Token(src_TokenType.LBRACK,self.current,self.line,self.column)
-                tokens.append(x17)
+                x18 = src_Token(src_TokenType.LBRACK,self.current,self.line,self.column)
+                tokens.append(x18)
                 self.advance()
             elif (_g == "]"):
-                x18 = src_Token(src_TokenType.RBRACK,self.current,self.line,self.column)
-                tokens.append(x18)
+                x19 = src_Token(src_TokenType.RBRACK,self.current,self.line,self.column)
+                tokens.append(x19)
+                self.advance()
+            elif (_g == "{"):
+                x20 = src_Token(src_TokenType.LBRACE,self.current,self.line,self.column)
+                tokens.append(x20)
+                self.advance()
+            elif (_g == "}"):
+                x21 = src_Token(src_TokenType.RBRACE,self.current,self.line,self.column)
+                tokens.append(x21)
                 self.advance()
             else:
                 _this = EReg("[a-zA-Z_$$]","")
@@ -2551,8 +2639,8 @@ class src_Lexer:
                         self.advance()
                     identifier = HxString.substring(self.source,start1,self.position)
                     _hx_type = (src_TokenType.KEYWORD if (self.isKeyword(identifier)) else src_TokenType.IDENTIFIER)
-                    x19 = src_Token(_hx_type,identifier,self.line,self.column)
-                    tokens.append(x19)
+                    x22 = src_Token(_hx_type,identifier,self.line,self.column)
+                    tokens.append(x22)
                 else:
                     _this2 = EReg("[0-9]","")
                     _this2.matchObj = python_lib_Re.search(_this2.pattern,self.current)
@@ -2570,8 +2658,8 @@ class src_Lexer:
                                 break
                             self.advance()
                         numberStr = HxString.substring(self.source,start2,self.position)
-                        x20 = src_Token(src_TokenType.NUMBER,numberStr,self.line,(self.column - ((self.position - start2))))
-                        tokens.append(x20)
+                        x23 = src_Token(src_TokenType.NUMBER,numberStr,self.line,(self.column - ((self.position - start2))))
+                        tokens.append(x23)
                     else:
                         raise haxe_Exception.thrown(((((("Unknown character: " + HxOverrides.stringOrNull(self.current)) + " at line ") + Std.string(self.line)) + ", column ") + Std.string(self.column)))
         return tokens
@@ -2636,7 +2724,7 @@ class src_Parser:
     _hx_class_name = "src.Parser"
     __slots__ = ("tokens", "position", "scopeStates")
     _hx_fields = ["tokens", "position", "scopeStates"]
-    _hx_methods = ["parse", "parsePrintStatement", "parseInputStatement", "parseLetStatement", "parseWhileStatement", "parseForeachStatement", "parseIfStatement", "parseIncStatement", "parseDecStatement", "parseReturnStatement", "parseFunctionStatement", "parseParameters", "parseBlockWithTerminators", "parseStatement", "comparison", "expr", "term", "unary", "call", "factor", "match", "consume", "check", "advance", "isAtEnd", "peek", "previous"]
+    _hx_methods = ["parse", "parsePrintStatement", "parseInputStatement", "parseLetStatement", "parseWhileStatement", "parseForeachStatement", "parseIfStatement", "parseIncStatement", "parseDecStatement", "parseReturnStatement", "parseFunctionStatement", "parseParameters", "parseBlockWithTerminators", "statement", "comparison", "expr", "term", "unary", "call", "factor", "match", "consume", "check", "advance", "isAtEnd", "peek", "previous"]
 
     def __init__(self,tokens):
         self.position = 0
@@ -2646,7 +2734,7 @@ class src_Parser:
     def parse(self):
         statements = []
         while (not self.isAtEnd()):
-            x = self.parseStatement()
+            x = self.statement()
             statements.append(x)
         return statements
 
@@ -2798,11 +2886,11 @@ class src_Parser:
     def parseBlockWithTerminators(self,terminators,line,column):
         statements = []
         while ((not self.isAtEnd()) and (not ((self.check(src_TokenType.KEYWORD) and ((python_internal_ArrayImpl.indexOf(terminators,self.peek().value,None) != -1)))))):
-            x = self.parseStatement()
+            x = self.statement()
             statements.append(x)
         return src_ast_BlockStmt(statements,line,column)
 
-    def parseStatement(self):
+    def statement(self):
         if (self.check(src_TokenType.KEYWORD) and ((self.peek().value == "print"))):
             return self.parsePrintStatement()
         if (self.check(src_TokenType.KEYWORD) and ((self.peek().value == "input"))):
@@ -2907,6 +2995,35 @@ class src_Parser:
                         break
             self.consume(src_TokenType.RBRACK,"Expected ']' after array elements.")
             return src_ast_ArrayExpr(elements,self.previous().line,self.previous().column)
+        if self.check(src_TokenType.LBRACE):
+            self.advance()
+            pairs = []
+            if (not self.check(src_TokenType.RBRACE)):
+                while True:
+                    keyToken = self.consume(src_TokenType.IDENTIFIER,"Expected key in map literal.")
+                    self.consume(src_TokenType.ARROW,"Expected '=>' after key in map literal.")
+                    valueExpr = self.comparison()
+                    x = _hx_AnonObject({'key': keyToken.value, 'value': valueExpr, 'line': keyToken.line, 'column': keyToken.column})
+                    pairs.append(x)
+                    if (not (self.match(src_TokenType.COMMA))):
+                        break
+            self.consume(src_TokenType.RBRACE,"Expected '}' after map literal.")
+            return src_ast_MapExpr(pairs,self.previous().line,self.previous().column)
+        if (self.check(src_TokenType.KEYWORD) and ((self.peek().value == "func"))):
+            kw = self.advance()
+            self.consume(src_TokenType.LPAREN,"Expected '(' after 'func'.")
+            params = self.parseParameters()
+            self.consume(src_TokenType.RPAREN,"Expected ')' after parameters.")
+            _this = self.scopeStates
+            _this.append(src_ScopeState.Function)
+            body = self.parseBlockWithTerminators(["end"],self.previous().line,self.previous().column)
+            kwEnd = self.consume(src_TokenType.KEYWORD,"Expected 'end' after function body.")
+            if (kwEnd.value != "end"):
+                raise haxe_Exception.thrown("Expected 'end' after function body.")
+            _this = self.scopeStates
+            if (len(_this) != 0):
+                _this.pop()
+            return src_ast_FunctionExpr("<lambda>",params,body,kw.line,kw.column)
         raise haxe_Exception.thrown(("Unexpected token in factor: " + Std.string(self.peek())))
 
     def match(self,_hx_type):
@@ -2971,7 +3088,7 @@ src_Token._hx_class = src_Token
 class src_TokenType(Enum):
     __slots__ = ()
     _hx_class_name = "src.TokenType"
-    _hx_constructs = ["IDENTIFIER", "KEYWORD", "NUMBER", "STRING", "PLUS", "MINUS", "STAR", "SLASH", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "SEMICOLON", "EQUALS", "COMMA", "EQEQ", "NOTEQ", "GT", "GTEQ", "LT", "LTEQ", "BANG"]
+    _hx_constructs = ["IDENTIFIER", "KEYWORD", "NUMBER", "STRING", "PLUS", "MINUS", "STAR", "SLASH", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "LBRACE", "RBRACE", "SEMICOLON", "EQUALS", "COMMA", "ARROW", "EQEQ", "NOTEQ", "GT", "GTEQ", "LT", "LTEQ", "BANG"]
 src_TokenType.IDENTIFIER = src_TokenType("IDENTIFIER", 0, ())
 src_TokenType.KEYWORD = src_TokenType("KEYWORD", 1, ())
 src_TokenType.NUMBER = src_TokenType("NUMBER", 2, ())
@@ -2984,29 +3101,54 @@ src_TokenType.LPAREN = src_TokenType("LPAREN", 8, ())
 src_TokenType.RPAREN = src_TokenType("RPAREN", 9, ())
 src_TokenType.LBRACK = src_TokenType("LBRACK", 10, ())
 src_TokenType.RBRACK = src_TokenType("RBRACK", 11, ())
-src_TokenType.SEMICOLON = src_TokenType("SEMICOLON", 12, ())
-src_TokenType.EQUALS = src_TokenType("EQUALS", 13, ())
-src_TokenType.COMMA = src_TokenType("COMMA", 14, ())
-src_TokenType.EQEQ = src_TokenType("EQEQ", 15, ())
-src_TokenType.NOTEQ = src_TokenType("NOTEQ", 16, ())
-src_TokenType.GT = src_TokenType("GT", 17, ())
-src_TokenType.GTEQ = src_TokenType("GTEQ", 18, ())
-src_TokenType.LT = src_TokenType("LT", 19, ())
-src_TokenType.LTEQ = src_TokenType("LTEQ", 20, ())
-src_TokenType.BANG = src_TokenType("BANG", 21, ())
+src_TokenType.LBRACE = src_TokenType("LBRACE", 12, ())
+src_TokenType.RBRACE = src_TokenType("RBRACE", 13, ())
+src_TokenType.SEMICOLON = src_TokenType("SEMICOLON", 14, ())
+src_TokenType.EQUALS = src_TokenType("EQUALS", 15, ())
+src_TokenType.COMMA = src_TokenType("COMMA", 16, ())
+src_TokenType.ARROW = src_TokenType("ARROW", 17, ())
+src_TokenType.EQEQ = src_TokenType("EQEQ", 18, ())
+src_TokenType.NOTEQ = src_TokenType("NOTEQ", 19, ())
+src_TokenType.GT = src_TokenType("GT", 20, ())
+src_TokenType.GTEQ = src_TokenType("GTEQ", 21, ())
+src_TokenType.LT = src_TokenType("LT", 22, ())
+src_TokenType.LTEQ = src_TokenType("LTEQ", 23, ())
+src_TokenType.BANG = src_TokenType("BANG", 24, ())
 src_TokenType._hx_class = src_TokenType
 
 
 class src_Utils:
     _hx_class_name = "src.Utils"
     __slots__ = ()
-    _hx_statics = ["print"]
+    _hx_statics = ["print", "stringify"]
 
     @staticmethod
     def print(value,writeNewLine = None):
         if (writeNewLine is None):
             writeNewLine = True
         Sys.stdout().write(haxe_io_Bytes.ofString((Std.string(value) + HxOverrides.stringOrNull((("\n" if writeNewLine else ""))))))
+
+    @staticmethod
+    def stringify(value):
+        if (value is None):
+            return "null"
+        elif Std.isOfType(value,str):
+            return value
+        elif Std.isOfType(value,list):
+            arr = value
+            _this = list(map(src_Utils.stringify,arr))
+            return (("[" + HxOverrides.stringOrNull(", ".join([python_Boot.toString1(x1,'') for x1 in _this]))) + "]")
+        elif Std.isOfType(value,haxe_ds_StringMap):
+            _hx_map = value
+            items = []
+            key = _hx_map.keys()
+            while key.hasNext():
+                key1 = key.next()
+                x = ((("null" if key1 is None else key1) + " => ") + HxOverrides.stringOrNull(src_Utils.stringify(_hx_map.h.get(key1,None))))
+                items.append(x)
+            return (("{" + HxOverrides.stringOrNull(", ".join([python_Boot.toString1(x1,'') for x1 in items]))) + "}")
+        else:
+            return Std.string(value)
 src_Utils._hx_class = src_Utils
 
 
@@ -3229,6 +3371,32 @@ class src_ast_ForeachStmt(src_ast_Stmt):
 src_ast_ForeachStmt._hx_class = src_ast_ForeachStmt
 
 
+class src_ast_FunctionExpr(src_ast_Expr):
+    _hx_class_name = "src.ast.FunctionExpr"
+    __slots__ = ("name", "params", "body")
+    _hx_fields = ["name", "params", "body"]
+    _hx_methods = ["toString"]
+    _hx_statics = []
+    _hx_interfaces = []
+    _hx_super = src_ast_Expr
+
+
+    def __init__(self,name,params,body,line,column):
+        self.body = None
+        self.params = None
+        self.name = None
+        super().__init__(line,column)
+        self.name = name
+        self.params = params
+        self.body = body
+
+    def toString(self):
+        _this = self.params
+        return (((((("Function(name=" + HxOverrides.stringOrNull(self.name)) + ", args=[") + HxOverrides.stringOrNull(", ".join([python_Boot.toString1(x1,'') for x1 in _this]))) + "], body=") + HxOverrides.stringOrNull(self.body.toString())) + ")")
+
+src_ast_FunctionExpr._hx_class = src_ast_FunctionExpr
+
+
 class src_ast_FunctionStmt(src_ast_Stmt):
     _hx_class_name = "src.ast.FunctionStmt"
     __slots__ = ("name", "params", "body")
@@ -3345,6 +3513,31 @@ class src_ast_LetStmt(src_ast_Stmt):
         return (((("LetStmt(" + Std.string(self.bindings)) + ", ") + Std.string(self.value)) + ")")
 
 src_ast_LetStmt._hx_class = src_ast_LetStmt
+
+
+class src_ast_MapExpr(src_ast_Expr):
+    _hx_class_name = "src.ast.MapExpr"
+    __slots__ = ("pairs",)
+    _hx_fields = ["pairs"]
+    _hx_methods = ["toString"]
+    _hx_statics = []
+    _hx_interfaces = []
+    _hx_super = src_ast_Expr
+
+
+    def __init__(self,pairs,line,column):
+        self.pairs = None
+        super().__init__(line,column)
+        self.pairs = pairs
+
+    def toString(self):
+        def _hx_local_0(pair):
+            return ((Std.string(pair.key) + " => ") + Std.string(pair.value))
+        _this = list(map(_hx_local_0,self.pairs))
+        pairsStr = ", ".join([python_Boot.toString1(x1,'') for x1 in _this])
+        return (("{" + ("null" if pairsStr is None else pairsStr)) + "}")
+
+src_ast_MapExpr._hx_class = src_ast_MapExpr
 
 
 class src_ast_NullExpr(src_ast_Expr):

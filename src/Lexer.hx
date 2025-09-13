@@ -91,6 +91,12 @@ class Lexer {
                 case ']':
                     tokens.push(new Token(TokenType.RBRACK, current, line, column));
                     advance();
+                case '{':
+                    tokens.push(new Token(TokenType.LBRACE, current, line, column));
+                    advance();
+                case '}':
+                    tokens.push(new Token(TokenType.RBRACE, current, line, column));
+                    advance();
                 case ';':
                     tokens.push(new Token(TokenType.SEMICOLON, current, line, column));
                     advance();
@@ -98,6 +104,9 @@ class Lexer {
                     advance();
                     if (peek() == '=') {
                         tokens.push(new Token(TokenType.EQEQ, "==", line, column));
+                        advance();
+                    } else if (peek() == '>') {
+                        tokens.push(new Token(TokenType.ARROW, "=>", line, column));
                         advance();
                     } else {
                         tokens.push(new Token(TokenType.EQUALS, current, line, column));
