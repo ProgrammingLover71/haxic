@@ -9,8 +9,10 @@ import sys as python_lib_Sys
 import builtins as python_lib_Builtins
 import functools as python_lib_Functools
 import re as python_lib_Re
+import subprocess as python_lib_Subprocess
 import time as python_lib_Time
 import traceback as python_lib_Traceback
+from io import StringIO as python_lib_io_StringIO
 
 
 class _hx_AnonObject:
@@ -245,15 +247,57 @@ class Bool: pass
 class Dynamic: pass
 
 
+class StringBuf:
+    _hx_class_name = "StringBuf"
+    __slots__ = ("b",)
+    _hx_fields = ["b"]
+
+    def __init__(self):
+        self.b = python_lib_io_StringIO()
+
+StringBuf._hx_class = StringBuf
+
+
 class Sys:
     _hx_class_name = "Sys"
     __slots__ = ()
-    _hx_statics = ["args", "stdin", "stdout"]
+    _hx_statics = ["args", "systemName", "command", "stdin", "stdout"]
 
     @staticmethod
     def args():
         argv = python_lib_Sys.argv
         return argv[1:None]
+
+    @staticmethod
+    def systemName():
+        _g = python_lib_Sys.platform
+        x = _g
+        if x.startswith("linux"):
+            return "Linux"
+        else:
+            _g1 = _g
+            _hx_local_0 = len(_g1)
+            if (_hx_local_0 == 5):
+                if (_g1 == "win32"):
+                    return "Windows"
+                else:
+                    raise haxe_Exception.thrown("not supported platform")
+            elif (_hx_local_0 == 6):
+                if (_g1 == "cygwin"):
+                    return "Windows"
+                elif (_g1 == "darwin"):
+                    return "Mac"
+                else:
+                    raise haxe_Exception.thrown("not supported platform")
+            else:
+                raise haxe_Exception.thrown("not supported platform")
+
+    @staticmethod
+    def command(cmd,args = None):
+        if (args is None):
+            return python_lib_Subprocess.call(cmd,**python__KwArgs_KwArgs_Impl_.fromT(_hx_AnonObject({'shell': True})))
+        else:
+            return python_lib_Subprocess.call(([cmd] + args))
 
     @staticmethod
     def stdin():
@@ -304,6 +348,191 @@ class Type:
                 return None
 Type._hx_class = Type
 
+class haxe_StackItem(Enum):
+    __slots__ = ()
+    _hx_class_name = "haxe.StackItem"
+    _hx_constructs = ["CFunction", "Module", "FilePos", "Method", "LocalFunction"]
+
+    @staticmethod
+    def Module(m):
+        return haxe_StackItem("Module", 1, (m,))
+
+    @staticmethod
+    def FilePos(s,file,line,column = None):
+        return haxe_StackItem("FilePos", 2, (s,file,line,column))
+
+    @staticmethod
+    def Method(classname,method):
+        return haxe_StackItem("Method", 3, (classname,method))
+
+    @staticmethod
+    def LocalFunction(v = None):
+        return haxe_StackItem("LocalFunction", 4, (v,))
+haxe_StackItem.CFunction = haxe_StackItem("CFunction", 0, ())
+haxe_StackItem._hx_class = haxe_StackItem
+
+
+class haxe__CallStack_CallStack_Impl_:
+    _hx_class_name = "haxe._CallStack.CallStack_Impl_"
+    __slots__ = ()
+    _hx_statics = ["toString", "subtract", "equalItems", "itemToString"]
+
+    @staticmethod
+    def toString(stack):
+        b = StringBuf()
+        _g = 0
+        _g1 = stack
+        while (_g < len(_g1)):
+            s = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            b.b.write("\nCalled from ")
+            haxe__CallStack_CallStack_Impl_.itemToString(b,s)
+        return b.b.getvalue()
+
+    @staticmethod
+    def subtract(this1,stack):
+        startIndex = -1
+        i = -1
+        while True:
+            i = (i + 1)
+            tmp = i
+            if (not ((tmp < len(this1)))):
+                break
+            _g = 0
+            _g1 = len(stack)
+            while (_g < _g1):
+                j = _g
+                _g = (_g + 1)
+                if haxe__CallStack_CallStack_Impl_.equalItems((this1[i] if i >= 0 and i < len(this1) else None),python_internal_ArrayImpl._get(stack, j)):
+                    if (startIndex < 0):
+                        startIndex = i
+                    i = (i + 1)
+                    if (i >= len(this1)):
+                        break
+                else:
+                    startIndex = -1
+            if (not ((startIndex < 0))):
+                break
+        if (startIndex >= 0):
+            return this1[0:startIndex]
+        else:
+            return this1
+
+    @staticmethod
+    def equalItems(item1,item2):
+        if (item1 is None):
+            if (item2 is None):
+                return True
+            else:
+                return False
+        else:
+            tmp = item1.index
+            if (tmp == 0):
+                if (item2 is None):
+                    return False
+                elif (item2.index == 0):
+                    return True
+                else:
+                    return False
+            elif (tmp == 1):
+                if (item2 is None):
+                    return False
+                elif (item2.index == 1):
+                    m2 = item2.params[0]
+                    m1 = item1.params[0]
+                    return (m1 == m2)
+                else:
+                    return False
+            elif (tmp == 2):
+                if (item2 is None):
+                    return False
+                elif (item2.index == 2):
+                    item21 = item2.params[0]
+                    file2 = item2.params[1]
+                    line2 = item2.params[2]
+                    col2 = item2.params[3]
+                    col1 = item1.params[3]
+                    line1 = item1.params[2]
+                    file1 = item1.params[1]
+                    item11 = item1.params[0]
+                    if (((file1 == file2) and ((line1 == line2))) and ((col1 == col2))):
+                        return haxe__CallStack_CallStack_Impl_.equalItems(item11,item21)
+                    else:
+                        return False
+                else:
+                    return False
+            elif (tmp == 3):
+                if (item2 is None):
+                    return False
+                elif (item2.index == 3):
+                    class2 = item2.params[0]
+                    method2 = item2.params[1]
+                    method1 = item1.params[1]
+                    class1 = item1.params[0]
+                    if (class1 == class2):
+                        return (method1 == method2)
+                    else:
+                        return False
+                else:
+                    return False
+            elif (tmp == 4):
+                if (item2 is None):
+                    return False
+                elif (item2.index == 4):
+                    v2 = item2.params[0]
+                    v1 = item1.params[0]
+                    return (v1 == v2)
+                else:
+                    return False
+            else:
+                pass
+
+    @staticmethod
+    def itemToString(b,s):
+        tmp = s.index
+        if (tmp == 0):
+            b.b.write("a C function")
+        elif (tmp == 1):
+            m = s.params[0]
+            b.b.write("module ")
+            s1 = Std.string(m)
+            b.b.write(s1)
+        elif (tmp == 2):
+            s1 = s.params[0]
+            file = s.params[1]
+            line = s.params[2]
+            col = s.params[3]
+            if (s1 is not None):
+                haxe__CallStack_CallStack_Impl_.itemToString(b,s1)
+                b.b.write(" (")
+            s2 = Std.string(file)
+            b.b.write(s2)
+            b.b.write(" line ")
+            s2 = Std.string(line)
+            b.b.write(s2)
+            if (col is not None):
+                b.b.write(" column ")
+                s2 = Std.string(col)
+                b.b.write(s2)
+            if (s1 is not None):
+                b.b.write(")")
+        elif (tmp == 3):
+            cname = s.params[0]
+            meth = s.params[1]
+            s1 = Std.string(("<unknown>" if ((cname is None)) else cname))
+            b.b.write(s1)
+            b.b.write(".")
+            s1 = Std.string(meth)
+            b.b.write(s1)
+        elif (tmp == 4):
+            n = s.params[0]
+            b.b.write("local function #")
+            s = Std.string(n)
+            b.b.write(s)
+        else:
+            pass
+haxe__CallStack_CallStack_Impl_._hx_class = haxe__CallStack_CallStack_Impl_
+
 
 class haxe_IMap:
     _hx_class_name = "haxe.IMap"
@@ -313,9 +542,9 @@ haxe_IMap._hx_class = haxe_IMap
 
 class haxe_Exception(Exception):
     _hx_class_name = "haxe.Exception"
-    __slots__ = ("_hx___nativeStack", "_hx___skipStack", "_hx___nativeException", "_hx___previousException")
-    _hx_fields = ["__nativeStack", "__skipStack", "__nativeException", "__previousException"]
-    _hx_methods = ["unwrap", "toString", "get_message", "get_native"]
+    __slots__ = ("_hx___exceptionStack", "_hx___nativeStack", "_hx___skipStack", "_hx___nativeException", "_hx___previousException")
+    _hx_fields = ["__exceptionStack", "__nativeStack", "__skipStack", "__nativeException", "__previousException"]
+    _hx_methods = ["unwrap", "toString", "details", "__shiftStack", "get_message", "get_previous", "get_native", "get_stack"]
     _hx_statics = ["caught", "thrown"]
     _hx_interfaces = []
     _hx_super = Exception
@@ -325,6 +554,7 @@ class haxe_Exception(Exception):
         self._hx___previousException = None
         self._hx___nativeException = None
         self._hx___nativeStack = None
+        self._hx___exceptionStack = None
         self._hx___skipStack = 0
         super().__init__(message)
         self._hx___previousException = previous
@@ -345,11 +575,54 @@ class haxe_Exception(Exception):
     def toString(self):
         return self.get_message()
 
+    def details(self):
+        if (self.get_previous() is None):
+            tmp = ("Exception: " + HxOverrides.stringOrNull(self.toString()))
+            tmp1 = self.get_stack()
+            return (("null" if tmp is None else tmp) + HxOverrides.stringOrNull((("null" if ((tmp1 is None)) else haxe__CallStack_CallStack_Impl_.toString(tmp1)))))
+        else:
+            result = ""
+            e = self
+            prev = None
+            while (e is not None):
+                if (prev is None):
+                    result1 = ("Exception: " + HxOverrides.stringOrNull(e.get_message()))
+                    tmp = e.get_stack()
+                    result = ((("null" if result1 is None else result1) + HxOverrides.stringOrNull((("null" if ((tmp is None)) else haxe__CallStack_CallStack_Impl_.toString(tmp))))) + ("null" if result is None else result))
+                else:
+                    prevStack = haxe__CallStack_CallStack_Impl_.subtract(e.get_stack(),prev.get_stack())
+                    result = (((("Exception: " + HxOverrides.stringOrNull(e.get_message())) + HxOverrides.stringOrNull((("null" if ((prevStack is None)) else haxe__CallStack_CallStack_Impl_.toString(prevStack))))) + "\n\nNext ") + ("null" if result is None else result))
+                prev = e
+                e = e.get_previous()
+            return result
+
+    def _hx___shiftStack(self):
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0._hx___skipStack
+        _hx_local_0._hx___skipStack = (_hx_local_1 + 1)
+        _hx_local_1
+
     def get_message(self):
         return str(self)
 
+    def get_previous(self):
+        return self._hx___previousException
+
     def get_native(self):
         return self._hx___nativeException
+
+    def get_stack(self):
+        _g = self._hx___exceptionStack
+        if (_g is None):
+            def _hx_local_1():
+                def _hx_local_0():
+                    self._hx___exceptionStack = haxe_NativeStackTrace.toHaxe(self._hx___nativeStack,self._hx___skipStack)
+                    return self._hx___exceptionStack
+                return _hx_local_0()
+            return _hx_local_1()
+        else:
+            s = _g
+            return s
 
     @staticmethod
     def caught(value):
@@ -377,7 +650,7 @@ haxe_Exception._hx_class = haxe_Exception
 class haxe_NativeStackTrace:
     _hx_class_name = "haxe.NativeStackTrace"
     __slots__ = ()
-    _hx_statics = ["saveStack", "exceptionStack"]
+    _hx_statics = ["saveStack", "exceptionStack", "toHaxe"]
 
     @staticmethod
     def saveStack(exception):
@@ -392,6 +665,23 @@ class haxe_NativeStackTrace:
             return infos
         else:
             return []
+
+    @staticmethod
+    def toHaxe(native,skip = None):
+        if (skip is None):
+            skip = 0
+        stack = []
+        _g = 0
+        _g1 = len(native)
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            if (skip > i):
+                continue
+            elem = (native[i] if i >= 0 and i < len(native) else None)
+            x = haxe_StackItem.FilePos(haxe_StackItem.Method(None,elem[2]),elem[0],elem[1])
+            stack.append(x)
+        return stack
 haxe_NativeStackTrace._hx_class = haxe_NativeStackTrace
 
 
@@ -409,6 +699,10 @@ class haxe_ValueException(haxe_Exception):
         self.value = None
         super().__init__(("null" if ((value is None)) else Std.string(value)),previous,native)
         self.value = value
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0._hx___skipStack
+        _hx_local_0._hx___skipStack = (_hx_local_1 + 1)
+        _hx_local_1
 
     def unwrap(self):
         return self.value
@@ -445,6 +739,10 @@ class haxe_exceptions_PosException(haxe_Exception):
             self.posInfos = _hx_AnonObject({'fileName': "(unknown)", 'lineNumber': 0, 'className': "(unknown)", 'methodName': "(unknown)"})
         else:
             self.posInfos = pos
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0._hx___skipStack
+        _hx_local_0._hx___skipStack = (_hx_local_1 + 1)
+        _hx_local_1
 
     def toString(self):
         return ((((((((("" + HxOverrides.stringOrNull(super().toString())) + " in ") + HxOverrides.stringOrNull(self.posInfos.className)) + ".") + HxOverrides.stringOrNull(self.posInfos.methodName)) + " at ") + HxOverrides.stringOrNull(self.posInfos.fileName)) + ":") + Std.string(self.posInfos.lineNumber))
@@ -466,6 +764,10 @@ class haxe_exceptions_NotImplementedException(haxe_exceptions_PosException):
         if (message is None):
             message = "Not implemented"
         super().__init__(message,previous,pos)
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0._hx___skipStack
+        _hx_local_0._hx___skipStack = (_hx_local_1 + 1)
+        _hx_local_1
 haxe_exceptions_NotImplementedException._hx_class = haxe_exceptions_NotImplementedException
 
 
@@ -1088,6 +1390,38 @@ class python_HaxeIterator:
 python_HaxeIterator._hx_class = python_HaxeIterator
 
 
+class python__KwArgs_KwArgs_Impl_:
+    _hx_class_name = "python._KwArgs.KwArgs_Impl_"
+    __slots__ = ()
+    _hx_statics = ["fromT"]
+
+    @staticmethod
+    def fromT(d):
+        return python_Lib.anonAsDict(d)
+python__KwArgs_KwArgs_Impl_._hx_class = python__KwArgs_KwArgs_Impl_
+
+
+class python_Lib:
+    _hx_class_name = "python.Lib"
+    __slots__ = ()
+    _hx_statics = ["anonToDict", "anonAsDict"]
+
+    @staticmethod
+    def anonToDict(o):
+        if isinstance(o,_hx_AnonObject):
+            return o.__dict__.copy()
+        else:
+            return None
+
+    @staticmethod
+    def anonAsDict(o):
+        if isinstance(o,_hx_AnonObject):
+            return o.__dict__
+        else:
+            return None
+python_Lib._hx_class = python_Lib
+
+
 class python_internal_ArrayImpl:
     _hx_class_name = "python.internal.ArrayImpl"
     __slots__ = ()
@@ -1228,7 +1562,7 @@ python_internal_ArrayImpl._hx_class = python_internal_ArrayImpl
 class HxOverrides:
     _hx_class_name = "HxOverrides"
     __slots__ = ()
-    _hx_statics = ["eq", "stringOrNull"]
+    _hx_statics = ["eq", "stringOrNull", "mapKwArgs"]
 
     @staticmethod
     def eq(a,b):
@@ -1242,6 +1576,19 @@ class HxOverrides:
             return "null"
         else:
             return s
+
+    @staticmethod
+    def mapKwArgs(a,v):
+        a1 = _hx_AnonObject(python_Lib.anonToDict(a))
+        k = python_HaxeIterator(iter(v.keys()))
+        while k.hasNext():
+            k1 = k.next()
+            val = v.get(k1)
+            if a1._hx_hasattr(k1):
+                x = getattr(a1,k1)
+                setattr(a1,val,x)
+                delattr(a1,k1)
+        return a1
 HxOverrides._hx_class = HxOverrides
 
 
@@ -1544,7 +1891,7 @@ python_io_IoTools._hx_class = python_io_IoTools
 class src_ASTWalker:
     _hx_class_name = "src.ASTWalker"
     __slots__ = ()
-    _hx_methods = ["visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitStmt", "visitBlockStmt", "visitExprStmt", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitUnaryExpr", "visitStringExpr"]
+    _hx_methods = ["visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitStmt", "visitBlockStmt", "visitExprStmt", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitUnaryExpr", "visitStringExpr", "visitExpr", "visitArrayExpr", "visitIndexExpr", "visitCallExpr", "visitBooleanExpr", "visitNullExpr"]
 
 src_ASTWalker._hx_class = src_ASTWalker
 
@@ -1677,6 +2024,10 @@ class src_Return(haxe_Exception):
         self.value = None
         super().__init__("Return")
         self.value = value
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0._hx___skipStack
+        _hx_local_0._hx___skipStack = (_hx_local_1 + 1)
+        _hx_local_1
 
 src_Return._hx_class = src_Return
 
@@ -1685,7 +2036,7 @@ class src_Interpreter(src_ASTWalker):
     _hx_class_name = "src.Interpreter"
     __slots__ = ("environment",)
     _hx_fields = ["environment"]
-    _hx_methods = ["visit", "visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitWhileStmt", "visitForeachStmt", "visitBlockStmt", "visitExprStmt", "visitReturnStmt", "visitFunctionStmt", "visitStmt", "visitExpr", "visitUnaryExpr", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitStringExpr", "visitCallExpr", "visitNullExpr", "visitArrayExpr", "visitIndexExpr"]
+    _hx_methods = ["visit", "visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitWhileStmt", "visitForeachStmt", "visitBlockStmt", "visitExprStmt", "visitReturnStmt", "visitFunctionStmt", "visitStmt", "visitExpr", "visitUnaryExpr", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitStringExpr", "visitCallExpr", "visitNullExpr", "visitBooleanExpr", "visitArrayExpr", "visitIndexExpr"]
     _hx_statics = []
     _hx_interfaces = []
     _hx_super = src_ASTWalker
@@ -1709,6 +2060,51 @@ class src_Interpreter(src_ASTWalker):
             else:
                 raise haxe_Exception.thrown("length() argument must be a string or array")
         self.environment.define("length",src_NativeFunction("length",[src_ast_Parameter("item",None,0,0)],_hx_local_1))
+        def _hx_local_2(env):
+            item = env.get("item")
+            if (item is None):
+                return "null"
+            if Std.isOfType(item,Bool):
+                return "bool"
+            if (Std.isOfType(item,Int) or Std.isOfType(item,Float)):
+                return "number"
+            if Std.isOfType(item,str):
+                return "string"
+            if Std.isOfType(item,list):
+                return "array"
+            if (Std.isOfType(item,src_Function) or Std.isOfType(item,src_NativeFunction)):
+                return "function"
+            return "object"
+        self.environment.define("typeof",src_NativeFunction("typeof",[src_ast_Parameter("item",None,0,0)],_hx_local_2))
+        def _hx_local_5(env):
+            start = env.get("start")
+            end = env.get("end")
+            step = env.get("step")
+            if (((not Std.isOfType(start,Int)) or (not Std.isOfType(end,Int))) or (not Std.isOfType(step,Int))):
+                raise haxe_Exception.thrown("range() arguments must be integers")
+            result = []
+            i = start
+            if (step == 0):
+                raise haxe_Exception.thrown("range() step argument must not be zero")
+            if (step > 0):
+                while (i < end):
+                    result.append(i)
+                    i = (i + step)
+            else:
+                while (i > end):
+                    result.append(i)
+                    i = (i + step)
+            return result
+        self.environment.define("range",src_NativeFunction("range",[src_ast_Parameter("start",None,0,0), src_ast_Parameter("end",None,0,0), src_ast_Parameter("step",src_ast_NumberExpr(1,0,0),0,0)],_hx_local_5))
+        def _hx_local_6(env):
+            _this = Sys.systemName().lower()
+            startIndex = None
+            if (((_this.find("windows") if ((startIndex is None)) else HxString.indexOfImpl(_this,"windows",startIndex))) != -1):
+                Sys.command("cls")
+            else:
+                Sys.command("clear")
+            return None
+        self.environment.define("clear",src_NativeFunction("clear",[],_hx_local_6))
 
     def visit(self,ast):
         _g = 0
@@ -1773,7 +2169,7 @@ class src_Interpreter(src_ASTWalker):
                 self.environment.define(varName,("" if (((i < 0) or ((i >= len(_this))))) else _this[i]))
                 self.visitStmt(stmt.body)
         else:
-            raise haxe_Exception.thrown(((("Foreach target must be an array or string at line " + Std.string(stmt.line)) + ", column ") + Std.string(stmt.column)))
+            raise haxe_Exception.thrown(((((("Foreach target" + Std.string(iterable)) + " must be an array or string at line ") + Std.string(stmt.line)) + ", column ") + Std.string(stmt.column)))
 
     def visitBlockStmt(self,stmt):
         _g = 0
@@ -1833,6 +2229,8 @@ class src_Interpreter(src_ASTWalker):
             return self.visitStringExpr(expr)
         elif Std.isOfType(expr,src_ast_CallExpr):
             return self.visitCallExpr(expr)
+        elif Std.isOfType(expr,src_ast_BooleanExpr):
+            return self.visitBooleanExpr(expr)
         elif Std.isOfType(expr,src_ast_NullExpr):
             return self.visitNullExpr(expr)
         elif Std.isOfType(expr,src_ast_ArrayExpr):
@@ -1921,10 +2319,13 @@ class src_Interpreter(src_ASTWalker):
         elif Std.isOfType(callee,src_NativeFunction):
             return callee.call(args,self)
         else:
-            raise haxe_Exception.thrown(((("Attempted to call a non-function at line " + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+            raise haxe_Exception.thrown(((((("Attempted to call non-function object " + Std.string(callee)) + " at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
 
     def visitNullExpr(self,expr):
         return None
+
+    def visitBooleanExpr(self,expr):
+        return expr.value
 
     def visitArrayExpr(self,expr):
         elements = []
@@ -1945,24 +2346,30 @@ class src_Interpreter(src_ASTWalker):
                 arr = target
                 idx = index
                 if ((idx < 0) or ((idx >= len(arr)))):
-                    raise haxe_Exception.thrown(((("Array index out of bounds at line " + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
-                return (arr[idx] if idx >= 0 and idx < len(arr) else None)
+                    raise haxe_Exception.thrown(((((("Array index " + Std.string(idx)) + " out of bounds at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+                tmp = None
+                try:
+                    tmp = int(idx)
+                except BaseException as _g:
+                    None
+                    tmp = None
+                return python_internal_ArrayImpl._get(arr, tmp)
             else:
-                raise haxe_Exception.thrown(((("Array index must be an integer at line " + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+                raise haxe_Exception.thrown(((((("Array index " + Std.string(index)) + " must be an integer at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
         elif Std.isOfType(target,str):
             if Std.isOfType(index,Int):
                 _hx_str = target
                 idx = index
                 if ((idx < 0) or ((idx >= len(_hx_str)))):
-                    raise haxe_Exception.thrown(((("String index out of bounds at line " + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+                    raise haxe_Exception.thrown(((((("String index " + Std.string(idx)) + " out of bounds at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
                 if ((idx < 0) or ((idx >= len(_hx_str)))):
                     return ""
                 else:
                     return _hx_str[idx]
             else:
-                raise haxe_Exception.thrown(((("String index must be an integer at line " + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+                raise haxe_Exception.thrown(((((("String index " + Std.string(index)) + " must be an integer at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
         else:
-            raise haxe_Exception.thrown(((("Attempted to index a non-array/string at line " + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+            raise haxe_Exception.thrown(((((("Attempted to index non-iterable " + Std.string(target)) + " at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
 
 src_Interpreter._hx_class = src_Interpreter
 
@@ -1971,7 +2378,7 @@ class src_Lexer:
     _hx_class_name = "src.Lexer"
     __slots__ = ("source", "position", "current", "line", "column")
     _hx_fields = ["source", "position", "current", "line", "column"]
-    _hx_methods = ["advance", "peek", "isEof", "skipWhitespace", "tokenize", "isKeyword"]
+    _hx_methods = ["advance", "peek", "isEof", "skipWhitespace", "skipComments", "tokenize", "isKeyword"]
 
     def __init__(self,source):
         self.position = 0
@@ -2022,10 +2429,17 @@ class src_Lexer:
         while ((not self.isEof()) and (((((self.current == " ") or ((self.current == "\t"))) or ((self.current == "\n"))) or ((self.current == "\r"))))):
             self.advance()
 
+    def skipComments(self):
+        if (self.current == "#"):
+            while ((not self.isEof()) and ((self.current != "\n"))):
+                self.advance()
+            self.advance()
+
     def tokenize(self):
         tokens = []
         while (not self.isEof()):
             self.skipWhitespace()
+            self.skipComments()
             if self.isEof():
                 break
             _g = self.current
@@ -2190,6 +2604,7 @@ class src_Main:
             interpreter.visit(ast)
             return
         interpreter = src_Interpreter()
+        src_Utils.print("Haxic REPL v1.1, Haxic version 1.0 beta 2. Type Ctrl+C to exit.")
         while True:
             src_Utils.print("haxic >> ",False)
             Sys.stdout().flush()
@@ -2204,7 +2619,7 @@ class src_Main:
                 interpreter.visit(ast)
             except BaseException as _g:
                 err = haxe_Exception.caught(_g)
-                src_Utils.print(("Error: " + HxOverrides.stringOrNull(err.get_message())))
+                src_Utils.print(("Error: " + HxOverrides.stringOrNull(err.details())))
 src_Main._hx_class = src_Main
 
 class src_ScopeState(Enum):
@@ -2364,7 +2779,6 @@ class src_Parser:
         _this = self.scopeStates
         if (len(_this) != 0):
             _this.pop()
-        print(str(params))
         return src_ast_FunctionStmt(name,params,body,nameToken.line,nameToken.column)
 
     def parseParameters(self):
@@ -2409,7 +2823,9 @@ class src_Parser:
             return self.parseReturnStatement()
         if (self.check(src_TokenType.KEYWORD) and ((self.peek().value == "func"))):
             return self.parseFunctionStatement()
-        return src_ast_ExprStmt(self.comparison(),self.peek().line,self.peek().column)
+        val = self.comparison()
+        self.consume(src_TokenType.SEMICOLON,"Expected ';' after expression.")
+        return src_ast_ExprStmt(val,val.line,val.column)
 
     def comparison(self):
         left = self.expr()

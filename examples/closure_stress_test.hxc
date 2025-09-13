@@ -1,0 +1,65 @@
+print "Test #1 Starting: Returning functions";
+func make_adder(n)
+    func adder(x)
+        return x + n;
+    end
+    return adder;
+end
+let add5 = make_adder(5);
+print add5(10); 
+print make_adder(2)(7);
+
+print "Test #2 Starting: Multi-variable closures";
+func power(base, exp)
+    func inner()
+        let result = 1;
+        let i = 0;
+        while i < exp do
+            let result = result * base;
+            inc i;
+        end
+        return result;
+    end
+    return inner;
+end
+print power(2, 8)();
+print power(3, 4)();
+
+print "Test #3 Starting: Stateful closures";
+func make_counter()
+    let count = 0;
+    func counter()
+        inc count;
+        return count;
+    end
+    return counter;
+end
+let c = make_counter();
+print c();
+print c();
+print c();
+
+print "Test #4 Starting: Higher-order functions";
+func twice(f)
+    func inner(x)
+        return f(f(x));
+    end
+    return inner;
+end
+func add1(x) return x + 1; end
+let add2 = twice(add1);
+print add2(5);
+
+print "Test #5 Starting: Recursive closure with outer variable";
+func make_factorial()
+    func fact(n)
+        if n == 0 then
+            return 1;
+        else
+            return n * fact(n - 1);
+        end
+    end
+    return fact;
+end
+let f = make_factorial();
+print f(5);

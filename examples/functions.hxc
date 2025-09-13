@@ -1,0 +1,19 @@
+func add1(arg)
+    return arg + 1;
+end
+
+func rep(call, n)
+    func inner(arg)
+        let res = arg;
+        let i = 0;
+        while i < n do
+            let res = call(res);
+            inc i;
+        end
+        return res;
+    end
+    return inner;
+end
+
+print add1(3);
+print rep(add1, 10)(3);

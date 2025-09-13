@@ -170,6 +170,51 @@ class Interpreter extends ASTWalker {
                 throw "length() argument must be a string or array";
             }
         }));
+        environment.define("typeof", new NativeFunction("typeof", [new Parameter("item", null, 0, 0)], function(env) {
+            var item:Dynamic = env.get("item");
+            if (item == null) return "null";
+            if (Std.isOfType(item, Bool)) return "bool";
+            if (Std.isOfType(item, Int) || Std.isOfType(item, Float)) return "number";
+            if (Std.isOfType(item, String)) return "string";
+            if (Std.isOfType(item, Array)) return "array";
+            if (Std.isOfType(item, Function) || Std.isOfType(item, NativeFunction)) return "function";
+            return "object";
+        }));
+        environment.define("range", new NativeFunction("range", [
+            new Parameter("start", null, 0, 0), 
+            new Parameter("end", null, 0, 0), 
+            new Parameter("step", new NumberExpr(1, 0, 0), 0, 0)
+        ], function(env) {
+            var start:Dynamic = env.get("start");
+            var end:Dynamic = env.get("end");
+            var step:Dynamic = env.get("step");
+            if (!Std.isOfType(start, Int) || !Std.isOfType(end, Int) || !Std.isOfType(step, Int)) {
+                throw "range() arguments must be integers";
+            }
+            var result:Array<Int> = [];
+            var i = (start : Int);
+            if (step == 0) throw "range() step argument must not be zero";
+            if (step > 0) {
+                while (i < (end : Int)) {
+                    result.push(i);
+                    i += (step : Int);
+                }
+            } else {
+                while (i > (end : Int)) {
+                    result.push(i);
+                    i += (step : Int);
+                }
+            }
+            return result;
+        }));
+        environment.define("clear", new NativeFunction("clear", [], function(env) {
+            if (Sys.systemName().toLowerCase().indexOf("windows") != -1) {
+                Sys.command("cls");
+            } else {
+                Sys.command("clear");
+            }
+            return null;
+        }));
     }
 
     public function visit(ast:Array<Stmt>) {
@@ -237,7 +282,7 @@ class Interpreter extends ASTWalker {
                 visitStmt(stmt.body);
             }
         } else {
-            throw "Foreach target must be an array or string at line " + stmt.line + ", column " + stmt.column;
+            throw "Foreach target" + iterable + " must be an array or string at line " + stmt.line + ", column " + stmt.column;
         }
     }
 
@@ -310,6 +355,8 @@ class Interpreter extends ASTWalker {
             return visitStringExpr(cast expr);
         } else if (Std.isOfType(expr, CallExpr)) {
             return visitCallExpr(cast expr);
+        } else if (Std.isOfType(expr, BooleanExpr)) {
+            return visitBooleanExpr(cast expr);
         } else if (Std.isOfType(expr, NullExpr)) {
             return visitNullExpr(cast expr);
         } else if (Std.isOfType(expr, ArrayExpr)) {
@@ -406,13 +453,18 @@ class Interpreter extends ASTWalker {
         } else if (Std.isOfType(callee, NativeFunction)) {
             return (callee : NativeFunction).call(args, this);
         } else {
-            throw "Attempted to call a non-function at line " + expr.line + ", column " + expr.column;
+            throw "Attempted to call non-function object " + callee + " at line " + expr.line + ", column " + expr.column;
         }
     }
 
     
     public function visitNullExpr(expr:NullExpr):Dynamic {
         return null;
+    }
+
+
+    public function visitBooleanExpr(expr:BooleanExpr):Bool {
+        return expr.value;
     }
 
 
@@ -432,16 +484,16 @@ class Interpreter extends ASTWalker {
             if (Std.isOfType(index, Int)) {
                 var arr = (target : Array<Dynamic>);
                 var idx = (index : Int);
-                if (idx < 0 || idx >= arr.length) throw "Array index out of bounds at line " + expr.line + ", column " + expr.column;
-                return arr[idx];
-            } else throw "Array index must be an integer at line " + expr.line + ", column " + expr.column;
+                if (idx < 0 || idx >= arr.length) throw "Array index " + idx + " out of bounds at line " + expr.line + ", column " + expr.column;
+                return arr[Std.int(idx)];
+            } else throw "Array index " + index + " must be an integer at line " + expr.line + ", column " + expr.column;
         } else if (Std.isOfType(target, String)) {
             if (Std.isOfType(index, Int)) {
                 var str = (target : String);
                 var idx = (index : Int);
-                if (idx < 0 || idx >= str.length) throw "String index out of bounds at line " + expr.line + ", column " + expr.column;
+                if (idx < 0 || idx >= str.length) throw "String index " + idx + " out of bounds at line " + expr.line + ", column " + expr.column;
                 return str.charAt(idx);
-            } else throw "String index must be an integer at line " + expr.line + ", column " + expr.column;
-        } else throw "Attempted to index a non-array/string at line " + expr.line + ", column " + expr.column;
+            } else throw "String index " + index + " must be an integer at line " + expr.line + ", column " + expr.column;
+        } else throw "Attempted to index non-iterable " + target + " at line " + expr.line + ", column " + expr.column;
     }
 }

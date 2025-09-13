@@ -67,7 +67,7 @@ class Parser {
         }
     }
 
-    /// while <comparison> do <block> end
+    /// while <comparison> do <stmt> end
     function parseWhileStatement():WhileStmt {
         advance(); // consume 'while'
         var condition = comparison();
@@ -84,7 +84,7 @@ class Parser {
         return new WhileStmt(condition, body, condition.line, condition.column);
     }
 
-    /// for <identifier> = <comparison> to <comparison> (step <comparison>)? do <block> end
+    /// for <identifier> in <comparison> do <stmt> end
     function parseForeachStatement():ForeachStmt {
         advance(); // consume 'for'
         var name = consume(TokenType.IDENTIFIER, "Expected loop variable after 'for'.");
@@ -104,7 +104,7 @@ class Parser {
         return new ForeachStmt(new VariableExpr(name.value, name.line, name.column), iterable, body, name.line, name.column);
     }
 
-    /// if <comparison> then <block> (else <block>)?
+    /// if <comparison> then <stmt> (else <stmt>)?
     function parseIfStatement():IfStmt {
         advance(); // consume 'if'
         var condition = comparison();
@@ -160,7 +160,7 @@ class Parser {
         }
     }
 
-    /// func <identifier> ( <identifier> (, <identifier>)* )? <block> end
+    /// func <identifier> ( <identifier> (, <identifier>)* )? <stmt> end
     function parseFunctionStatement():FunctionStmt {
         advance(); // consume 'func'
         var nameToken = consume(TokenType.IDENTIFIER, "Expected function name after 'func'.");
@@ -175,7 +175,6 @@ class Parser {
         if (kwEnd.value != "end") throw "Expected 'end' after function body.";
         // ...then revert to the previous scope
         scopeStates.pop();
-        trace(params);
         return new FunctionStmt(name, params, body, nameToken.line, nameToken.column);
     }
 
@@ -223,7 +222,9 @@ class Parser {
         if (check(TokenType.KEYWORD) && peek().value == "func") return parseFunctionStatement();
 
         // Fallback to expression statement
-        return new ExprStmt(comparison(), peek().line, peek().column);
+        var val:Expr = comparison();
+        consume(TokenType.SEMICOLON, "Expected ';' after expression.");
+        return new ExprStmt(val, val.line, val.column);
     }
 
     function comparison():Expr {

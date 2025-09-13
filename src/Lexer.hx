@@ -48,12 +48,22 @@ class Lexer {
         }
     }
 
+    function skipComments():Void {
+        if (current == '#') {
+            while (!isEof() && current != '\n') {
+                advance();
+            }
+            advance(); // Skip the newline
+        }
+    }
+
     public function tokenize():Array<Token> {
         var tokens:Array<Token> = [];
         
         // Handle operators for now
         while (!isEof()) {
             skipWhitespace();
+            skipComments();
             if (isEof()) break;
 
             switch (current) {

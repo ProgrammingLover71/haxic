@@ -17,4 +17,10 @@ abstract class ASTWalker {
     abstract public function visitVariableExpr(expr:VariableExpr):Dynamic;
     abstract public function visitUnaryExpr(expr:UnaryExpr):Dynamic;
     abstract public function visitStringExpr(expr:StringExpr):Dynamic;
+    abstract public function visitExpr(expr:Expr):Dynamic;
+    abstract public function visitArrayExpr(expr:ArrayExpr):Dynamic;
+    abstract public function visitIndexExpr(expr:IndexExpr):Dynamic;
+    abstract public function visitCallExpr(expr:CallExpr):Dynamic;
+    abstract public function visitBooleanExpr(expr:BooleanExpr):Dynamic;
+    abstract public function visitNullExpr(expr:NullExpr):Dynamic;
 }
