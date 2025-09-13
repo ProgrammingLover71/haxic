@@ -1,0 +1,11 @@
+let arr = range(1, 100);
+let new_arr = map(arr, func (x)
+    if x < 50 then return x * x;
+    else return x * x * x; end
+end);
+
+print "Original: " + arr;
+print "";
+print "Mapping lambda: func(x) => (x^2 if x < 50 else x^3)";
+print "";
+print "New: " + new_arr;
