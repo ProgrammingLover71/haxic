@@ -1,0 +1,12 @@
+let start = clock();
+
+let sum = 0;
+let i = 0;
+while i < 100000 do
+    let sum = sum + math.sqrt(i);
+    inc i;
+end
+
+let endt = clock();
+print "Sum = " + sum;
+print "Elapsed: " + (endt - start) * 1000 + "ms";

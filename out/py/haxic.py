@@ -991,15 +991,7 @@ haxe_iterators_ArrayKeyValueIterator._hx_class = haxe_iterators_ArrayKeyValueIte
 class python_Boot:
     _hx_class_name = "python.Boot"
     __slots__ = ()
-    _hx_statics = ["keywords", "_add_dynamic", "toString1", "fields", "simpleField", "field", "getInstanceFields", "getSuperClass", "getClassFields", "prefixLength", "unhandleKeywords"]
-
-    @staticmethod
-    def _add_dynamic(a,b):
-        if (isinstance(a,str) and isinstance(b,str)):
-            return (a + b)
-        if (isinstance(a,str) or isinstance(b,str)):
-            return (python_Boot.toString1(a,"") + python_Boot.toString1(b,""))
-        return (a + b)
+    _hx_statics = ["keywords", "toString1", "fields", "simpleField", "field", "getInstanceFields", "getSuperClass", "getClassFields", "prefixLength", "unhandleKeywords"]
 
     @staticmethod
     def toString1(o,s):
@@ -1900,115 +1892,40 @@ class src_ASTWalker:
 src_ASTWalker._hx_class = src_ASTWalker
 
 
-class src_Function:
-    _hx_class_name = "src.Function"
-    __slots__ = ("name", "params", "body")
-    _hx_fields = ["name", "params", "body"]
-    _hx_methods = ["toString", "call"]
-
-    def __init__(self,name,params,body):
-        self.name = name
-        self.params = params
-        self.body = body
-
-    def toString(self):
-        return (((("<Function " + HxOverrides.stringOrNull(self.name)) + ":") + Std.string(len(self.params))) + ">")
-
-    def call(self,args,interp):
-        previousEnv = interp.environment
-        interp.environment = src_Environment(previousEnv)
-        _g = 0
-        _g1 = len(self.params)
-        while (_g < _g1):
-            i = _g
-            _g = (_g + 1)
-            param = (self.params[i] if i >= 0 and i < len(self.params) else None)
-            value = None
-            if (i < len(args)):
-                value = (args[i] if i >= 0 and i < len(args) else None)
-            elif (param.defaultValue is not None):
-                value = interp.visitExpr(param.defaultValue)
-            else:
-                raise haxe_Exception.thrown((("Missing argument for parameter '" + HxOverrides.stringOrNull(param.name)) + "'"))
-            interp.environment.define(param.name,value)
-        interp.visitStmt(self.body)
-        interp.environment = previousEnv
-
-src_Function._hx_class = src_Function
-
-
-class src_NativeFunction:
-    _hx_class_name = "src.NativeFunction"
-    __slots__ = ("name", "params", "body")
-    _hx_fields = ["name", "params", "body"]
-    _hx_methods = ["toString", "call"]
-
-    def __init__(self,name,params,body):
-        self.name = name
-        self.params = params
-        self.body = body
-
-    def toString(self):
-        return (((("<Native function " + HxOverrides.stringOrNull(self.name)) + ":") + Std.string(len(self.params))) + ">")
-
-    def call(self,args,interp):
-        previousEnv = interp.environment
-        interp.environment = src_Environment(previousEnv)
-        _g = 0
-        _g1 = len(self.params)
-        while (_g < _g1):
-            i = _g
-            _g = (_g + 1)
-            param = (self.params[i] if i >= 0 and i < len(self.params) else None)
-            value = None
-            if (i < len(args)):
-                value = (args[i] if i >= 0 and i < len(args) else None)
-            elif (param.defaultValue is not None):
-                value = interp.visitExpr(param.defaultValue)
-            else:
-                raise haxe_Exception.thrown((("Missing argument for parameter '" + HxOverrides.stringOrNull(param.name)) + "'"))
-            interp.environment.define(param.name,value)
-        value = self.body(interp.environment)
-        interp.environment = previousEnv
-        return value
-
-src_NativeFunction._hx_class = src_NativeFunction
-
-
 class src_Environment:
     _hx_class_name = "src.Environment"
-    __slots__ = ("values", "enclosing")
-    _hx_fields = ["values", "enclosing"]
-    _hx_methods = ["define", "get", "assign", "exists"]
+    __slots__ = ("values", "parent")
+    _hx_fields = ["values", "parent"]
+    _hx_methods = ["define", "assign", "get", "exists"]
 
-    def __init__(self,enclosing = None):
+    def __init__(self,parent = None):
+        self.parent = parent
         self.values = haxe_ds_StringMap()
-        self.enclosing = enclosing
 
     def define(self,name,value):
         self.values.h[name] = value
-
-    def get(self,name):
-        if (name in self.values.h):
-            return self.values.h.get(name,None)
-        if (self.enclosing is not None):
-            return self.enclosing.get(name)
-        raise haxe_Exception.thrown((("Undefined variable '" + ("null" if name is None else name)) + "'"))
 
     def assign(self,name,value):
         if (name in self.values.h):
             self.values.h[name] = value
             return
-        if (self.enclosing is not None):
-            self.enclosing.assign(name,value)
+        if (self.parent is not None):
+            self.parent.assign(name,value)
             return
+        raise haxe_Exception.thrown((("Undefined variable '" + ("null" if name is None else name)) + "'"))
+
+    def get(self,name):
+        if (name in self.values.h):
+            return self.values.h.get(name,None)
+        if (self.parent is not None):
+            return self.parent.get(name)
         raise haxe_Exception.thrown((("Undefined variable '" + ("null" if name is None else name)) + "'"))
 
     def exists(self,name):
         if (name in self.values.h):
             return True
-        if (self.enclosing is not None):
-            return self.enclosing.exists(name)
+        if (self.parent is not None):
+            return self.parent.exists(name)
         return False
 
 src_Environment._hx_class = src_Environment
@@ -2040,106 +1957,19 @@ class src_Interpreter(src_ASTWalker):
     _hx_class_name = "src.Interpreter"
     __slots__ = ("environment",)
     _hx_fields = ["environment"]
-    _hx_methods = ["visit", "visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitWhileStmt", "visitForeachStmt", "visitBlockStmt", "visitExprStmt", "visitReturnStmt", "visitFunctionStmt", "visitStmt", "visitExpr", "visitUnaryExpr", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitStringExpr", "visitCallExpr", "visitNullExpr", "visitBooleanExpr", "visitArrayExpr", "visitIndexExpr", "visitMapExpr", "visitFunctionExpr"]
+    _hx_methods = ["visit", "visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitWhileStmt", "visitForeachStmt", "visitBlockStmt", "visitExprStmt", "visitReturnStmt", "visitFunctionStmt", "visitStmt", "visitExpr", "visitUnaryExpr", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitStringExpr", "visitCallExpr", "visitNullExpr", "visitBooleanExpr", "visitArrayExpr", "visitIndexExpr", "visitMapExpr", "visitFunctionExpr", "loadFunctions"]
     _hx_statics = []
     _hx_interfaces = []
     _hx_super = src_ASTWalker
 
 
     def __init__(self):
-        self.environment = None
-        _gthis = self
         self.environment = src_Environment()
-        self.environment.define("pi",Math.PI)
-        self.environment.define("e",(0.0 if ((1 == Math.NEGATIVE_INFINITY)) else (Math.POSITIVE_INFINITY if ((1 == Math.POSITIVE_INFINITY)) else Reflect.field(Math,"exp")(1))))
-        self.environment.define("inf",Math.POSITIVE_INFINITY)
-        self.environment.define("nan",Math.NaN)
-        def _hx_local_0(env):
-            return python_lib_Time.time()
-        self.environment.define("clock",src_NativeFunction("clock",[],_hx_local_0))
-        def _hx_local_1(env):
-            item = env.get("item")
-            if Std.isOfType(item,str):
-                return len(item)
-            elif Std.isOfType(item,list):
-                return len(item)
-            else:
-                raise haxe_Exception.thrown("length() argument must be a string or array")
-        self.environment.define("length",src_NativeFunction("length",[src_ast_Parameter("item",None,0,0)],_hx_local_1))
-        def _hx_local_2(env):
-            item = env.get("item")
-            if (item is None):
-                return "null"
-            if Std.isOfType(item,Bool):
-                return "bool"
-            if (Std.isOfType(item,Int) or Std.isOfType(item,Float)):
-                return "number"
-            if Std.isOfType(item,str):
-                return "string"
-            if Std.isOfType(item,list):
-                return "array"
-            if (Std.isOfType(item,src_Function) or Std.isOfType(item,src_NativeFunction)):
-                return "function"
-            return "object"
-        self.environment.define("typeof",src_NativeFunction("typeof",[src_ast_Parameter("item",None,0,0)],_hx_local_2))
-        def _hx_local_5(env):
-            start = env.get("start")
-            end = env.get("end")
-            step = env.get("step")
-            if (((not Std.isOfType(start,Int)) or (not Std.isOfType(end,Int))) or (not Std.isOfType(step,Int))):
-                raise haxe_Exception.thrown("range() arguments must be integers")
-            result = []
-            i = start
-            if (step == 0):
-                raise haxe_Exception.thrown("range() step argument must not be zero")
-            if (step > 0):
-                while (i < end):
-                    result.append(i)
-                    i = (i + step)
-            else:
-                while (i > end):
-                    result.append(i)
-                    i = (i + step)
-            return result
-        self.environment.define("range",src_NativeFunction("range",[src_ast_Parameter("start",None,0,0), src_ast_Parameter("end",None,0,0), src_ast_Parameter("step",src_ast_NumberExpr(1,0,0),0,0)],_hx_local_5))
-        def _hx_local_6(env):
-            _this = Sys.systemName().lower()
-            startIndex = None
-            if (((_this.find("windows") if ((startIndex is None)) else HxString.indexOfImpl(_this,"windows",startIndex))) != -1):
-                Sys.command("cls")
-            else:
-                Sys.command("clear")
-            return None
-        self.environment.define("clear",src_NativeFunction("clear",[],_hx_local_6))
-        def _hx_local_8(env):
-            array = env.get("array")
-            func = env.get("func")
-            if (not Std.isOfType(array,list)):
-                raise haxe_Exception.thrown("map() first argument must be an array")
-            if (not ((Std.isOfType(func,src_Function) or Std.isOfType(func,src_NativeFunction)))):
-                raise haxe_Exception.thrown("map() second argument must be a function")
-            result = []
-            _g = 0
-            _g1 = array
-            while (_g < len(_g1)):
-                item = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
-                _g = (_g + 1)
-                if Std.isOfType(func,src_Function):
-                    try:
-                        func.call([item],_gthis)
-                    except BaseException as _g2:
-                        _g3 = haxe_Exception.caught(_g2)
-                        if Std.isOfType(_g3,src_Return):
-                            e = _g3
-                            x = e.value
-                            result.append(x)
-                        else:
-                            raise _g2
-                elif Std.isOfType(func,src_NativeFunction):
-                    x1 = func.call([item],_gthis)
-                    result.append(x1)
-            return result
-        self.environment.define("map",src_NativeFunction("map",[src_ast_Parameter("array",None,0,0), src_ast_Parameter("func",None,0,0)],_hx_local_8))
+        self.environment.define("pi",src_types_Value.VNumber(Math.PI))
+        self.environment.define("e",src_types_Value.VNumber((0.0 if ((1 == Math.NEGATIVE_INFINITY)) else (Math.POSITIVE_INFINITY if ((1 == Math.POSITIVE_INFINITY)) else Reflect.field(Math,"exp")(1)))))
+        self.environment.define("inf",src_types_Value.VNumber(Math.POSITIVE_INFINITY))
+        self.environment.define("nan",src_types_Value.VNumber(Math.NaN))
+        self.loadFunctions()
 
     def visit(self,ast):
         _g = 0
@@ -2156,7 +1986,7 @@ class src_Interpreter(src_ASTWalker):
     def visitInputStmt(self,stmt):
         input = Sys.stdin().readLine()
         num = Std.parseFloat(input)
-        final_val = (input if ((num == Math.NaN)) else num)
+        final_val = (src_types_Value.VString(input) if ((num == Math.NaN)) else src_types_Value.VNumber(num))
         self.environment.define(stmt.target.name,final_val)
 
     def visitLetStmt(self,stmt):
@@ -2172,14 +2002,14 @@ class src_Interpreter(src_ASTWalker):
 
     def visitIfStmt(self,stmt):
         condition = self.visitExpr(stmt.condition)
-        if condition:
+        if src_types_V.isTruthy(condition):
             self.visitBlockStmt(stmt.thenBranch)
         elif (stmt.elseBranch is not None):
             self.visitBlockStmt(stmt.elseBranch)
 
     def visitWhileStmt(self,stmt):
         condition = self.visitExpr(stmt.condition)
-        while condition:
+        while src_types_V.isTruthy(condition):
             self.visitBlockStmt(stmt.body)
             condition = self.visitExpr(stmt.condition)
 
@@ -2188,7 +2018,7 @@ class src_Interpreter(src_ASTWalker):
         varName = stmt.variable.name
         if Std.isOfType(iterable,list):
             _g = 0
-            _g1 = iterable
+            _g1 = src_types_V.toArray(iterable)
             while (_g < len(_g1)):
                 item = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
                 _g = (_g + 1)
@@ -2196,12 +2026,13 @@ class src_Interpreter(src_ASTWalker):
                 self.visitStmt(stmt.body)
         elif Std.isOfType(iterable,str):
             _g = 0
-            _g1 = len(iterable)
+            _g1 = len(src_types_V.toString(iterable))
             while (_g < _g1):
                 i = _g
                 _g = (_g + 1)
-                _this = iterable
-                self.environment.define(varName,("" if (((i < 0) or ((i >= len(_this))))) else _this[i]))
+                tmp = self.environment
+                _this = src_types_V.toString(iterable)
+                tmp.define(varName,src_types_Value.VString(("" if (((i < 0) or ((i >= len(_this))))) else _this[i])))
                 self.visitStmt(stmt.body)
         else:
             raise haxe_Exception.thrown(((((("Foreach target" + Std.string(iterable)) + " must be an array or string at line ") + Std.string(stmt.line)) + ", column ") + Std.string(stmt.column)))
@@ -2224,8 +2055,8 @@ class src_Interpreter(src_ASTWalker):
         raise src_Return(value)
 
     def visitFunctionStmt(self,stmt):
-        functionObj = src_Function(stmt.name,stmt.params,stmt.body)
-        self.environment.define(stmt.name,functionObj)
+        functionObj = src_types_Function(stmt.name,stmt.params,stmt.body)
+        self.environment.define(stmt.name,src_types_Value.VFunc(functionObj))
 
     def visitStmt(self,stmt):
         if Std.isOfType(stmt,src_ast_PrintStmt):
@@ -2283,9 +2114,9 @@ class src_Interpreter(src_ASTWalker):
         right = self.visitExpr(expr.right)
         tmp = expr.oper.type.index
         if (tmp == 5):
-            return -right
-        elif (tmp == 24):
-            return (not right)
+            return src_types_Value.VNumber(-src_types_V.toNumber(right))
+        elif (tmp == 25):
+            return src_types_Value.VBool((not src_types_V.isTruthy(right)))
         else:
             raise haxe_Exception.thrown(((((("Unknown unary operator " + HxOverrides.stringOrNull((("null" if ((expr.oper.value is None)) else Std.string(expr.oper.value))))) + " at line ") + Std.string(expr.oper.line)) + ", column ") + Std.string(expr.oper.column)))
 
@@ -2295,49 +2126,47 @@ class src_Interpreter(src_ASTWalker):
         tmp = expr.oper.type.index
         if (tmp == 4):
             if (Std.isOfType(left,list) and Std.isOfType(right,list)):
-                return (left + right)
+                return src_types_Value.VArray((src_types_V.toArray(left) + src_types_V.toArray(right)))
             elif (Std.isOfType(left,haxe_ds_StringMap) and Std.isOfType(right,haxe_ds_StringMap)):
                 result = haxe_ds_StringMap()
-                key = left.keys()
+                key = src_types_V.toMap(left).keys()
                 while key.hasNext():
                     key1 = key.next()
-                    value = left.h.get(key1,None)
+                    value = src_types_V.toMap(left).h.get(key1,None)
                     result.h[key1] = value
-                key = right.keys()
+                key = src_types_V.toMap(right).keys()
                 while key.hasNext():
                     key1 = key.next()
-                    value = right.h.get(key1,None)
+                    value = src_types_V.toMap(right).h.get(key1,None)
                     result.h[key1] = value
-                return result
+                return src_types_Value.VMap(result)
             elif (Std.isOfType(left,str) or Std.isOfType(right,str)):
-                return (Std.string(left) + Std.string(right))
+                return src_types_Value.VString((Std.string(left) + Std.string(right)))
             else:
-                return python_Boot._add_dynamic(left,right)
+                return src_types_Value.VNumber((src_types_V.toNumber(left) + src_types_V.toNumber(right)))
         elif (tmp == 5):
-            return (left - right)
+            return src_types_Value.VNumber((src_types_V.toNumber(left) - src_types_V.toNumber(right)))
         elif (tmp == 6):
-            return (left * right)
+            return src_types_Value.VNumber((src_types_V.toNumber(left) * src_types_V.toNumber(right)))
         elif (tmp == 7):
-            return (left / right)
-        elif (tmp == 18):
-            return HxOverrides.eq(left,right)
+            return src_types_Value.VNumber((src_types_V.toNumber(left) / src_types_V.toNumber(right)))
         elif (tmp == 19):
-            return not HxOverrides.eq(left,right)
+            return src_types_Value.VBool((src_types_V.toNumber(left) == src_types_V.toNumber(right)))
         elif (tmp == 20):
-            return (left > right)
+            return src_types_Value.VBool((src_types_V.toNumber(left) != src_types_V.toNumber(right)))
         elif (tmp == 21):
-            return (left >= right)
+            return src_types_Value.VBool((src_types_V.toNumber(left) > src_types_V.toNumber(right)))
         elif (tmp == 22):
-            return (left < right)
+            return src_types_Value.VBool((src_types_V.toNumber(left) >= src_types_V.toNumber(right)))
         elif (tmp == 23):
-            return (left <= right)
+            return src_types_Value.VBool((src_types_V.toNumber(left) < src_types_V.toNumber(right)))
         elif (tmp == 24):
-            return (not left)
+            return src_types_Value.VBool((src_types_V.toNumber(left) <= src_types_V.toNumber(right)))
         else:
             raise haxe_Exception.thrown(((((("Unknown operator " + HxOverrides.stringOrNull((("null" if ((expr.oper.value is None)) else Std.string(expr.oper.value))))) + " at line ") + Std.string(expr.oper.line)) + ", column ") + Std.string(expr.oper.column)))
 
     def visitNumberExpr(self,expr):
-        return expr.value
+        return src_types_Value.VNumber(expr.value)
 
     def visitVariableExpr(self,expr):
         if self.environment.exists(expr.name):
@@ -2345,7 +2174,7 @@ class src_Interpreter(src_ASTWalker):
         raise haxe_Exception.thrown(((((("Undefined variable '" + HxOverrides.stringOrNull(expr.name)) + "' at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
 
     def visitStringExpr(self,expr):
-        return expr.value
+        return src_types_Value.VString(expr.value)
 
     def visitCallExpr(self,expr):
         callee = self.visitExpr(expr.callee)
@@ -2357,9 +2186,11 @@ class src_Interpreter(src_ASTWalker):
             _g = (_g + 1)
             x = self.visitExpr(arg)
             args.append(x)
-        if Std.isOfType(callee,src_Function):
+        tmp = callee.index
+        if (tmp == 6):
+            func = callee.params[0]
             try:
-                callee.call(args,self)
+                func.call(args,self)
             except BaseException as _g:
                 _g1 = haxe_Exception.caught(_g)
                 if Std.isOfType(_g1,src_Return):
@@ -2368,16 +2199,17 @@ class src_Interpreter(src_ASTWalker):
                 else:
                     raise _g
             return None
-        elif Std.isOfType(callee,src_NativeFunction):
-            return callee.call(args,self)
+        elif (tmp == 7):
+            func = callee.params[0]
+            return func.call(args,self)
         else:
             raise haxe_Exception.thrown(((((("Attempted to call non-function object " + Std.string(callee)) + " at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
 
     def visitNullExpr(self,expr):
-        return None
+        return src_types_Value.VNull
 
     def visitBooleanExpr(self,expr):
-        return expr.value
+        return src_types_Value.VBool(expr.value)
 
     def visitArrayExpr(self,expr):
         elements = []
@@ -2388,15 +2220,32 @@ class src_Interpreter(src_ASTWalker):
             _g = (_g + 1)
             x = self.visitExpr(el)
             elements.append(x)
-        return elements
+        return src_types_Value.VArray(elements)
 
     def visitIndexExpr(self,expr):
         target = self.visitExpr(expr.target)
         index = self.visitExpr(expr.index)
-        if Std.isOfType(target,list):
-            if Std.isOfType(index,Int):
-                arr = target
-                idx = index
+        tmp = target.index
+        if (tmp == 3):
+            _hx_str = target.params[0]
+            if (index.index == 0):
+                idx = index.params[0]
+                if ((idx < 0) or ((idx >= len(_hx_str)))):
+                    raise haxe_Exception.thrown(((((("String index " + Std.string(idx)) + " out of bounds at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+                index1 = None
+                try:
+                    index1 = int(idx)
+                except BaseException as _g:
+                    None
+                    index1 = None
+                index2 = index1
+                return src_types_Value.VString(("" if (((index2 < 0) or ((index2 >= len(_hx_str))))) else _hx_str[index2]))
+            else:
+                raise haxe_Exception.thrown(((((("String index " + Std.string(index)) + " must be an integer at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
+        elif (tmp == 4):
+            arr = target.params[0]
+            if (index.index == 0):
+                idx = index.params[0]
                 if ((idx < 0) or ((idx >= len(arr)))):
                     raise haxe_Exception.thrown(((((("Array index " + Std.string(idx)) + " out of bounds at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
                 tmp = None
@@ -2408,22 +2257,10 @@ class src_Interpreter(src_ASTWalker):
                 return python_internal_ArrayImpl._get(arr, tmp)
             else:
                 raise haxe_Exception.thrown(((((("Array index " + Std.string(index)) + " must be an integer at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
-        elif Std.isOfType(target,str):
-            if Std.isOfType(index,Int):
-                _hx_str = target
-                idx = index
-                if ((idx < 0) or ((idx >= len(_hx_str)))):
-                    raise haxe_Exception.thrown(((((("String index " + Std.string(idx)) + " out of bounds at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
-                if ((idx < 0) or ((idx >= len(_hx_str)))):
-                    return ""
-                else:
-                    return _hx_str[idx]
-            else:
-                raise haxe_Exception.thrown(((((("String index " + Std.string(index)) + " must be an integer at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
-        elif Std.isOfType(target,haxe_ds_StringMap):
-            if Std.isOfType(index,str):
-                _hx_map = target
-                key = index
+        elif (tmp == 5):
+            _hx_map = target.params[0]
+            if (index.index == 3):
+                key = index.params[0]
                 if (not (key in _hx_map.h)):
                     raise haxe_Exception.thrown(((((("Map key '" + ("null" if key is None else key)) + "' does not exist at line ") + Std.string(expr.line)) + ", column ") + Std.string(expr.column)))
                 return _hx_map.h.get(key,None)
@@ -2442,10 +2279,117 @@ class src_Interpreter(src_ASTWalker):
             key = pair.key
             value = self.visitExpr(pair.value)
             result.h[key] = value
-        return result
+        return src_types_Value.VMap(result)
 
     def visitFunctionExpr(self,expr):
-        return src_Function(expr.name,expr.params,expr.body)
+        return src_types_Value.VFunc(src_types_Function(expr.name,expr.params,expr.body))
+
+    def loadFunctions(self):
+        _gthis = self
+        def _hx_local_0(env):
+            return python_lib_Time.time()
+        self.environment.define("clock",src_types_Value.VNative(src_types_NativeFunction("clock",[],_hx_local_0)))
+        def _hx_local_2(env):
+            item = env.get("item")
+            if Std.isOfType(item,str):
+                return src_types_Value.VNumber(len(src_types_V.toString(item)))
+            elif Std.isOfType(item,list):
+                return src_types_Value.VNumber(len(src_types_V.toArray(item)))
+            elif Std.isOfType(item,haxe_ds_StringMap):
+                count = 0
+                key = src_types_V.toMap(item).keys()
+                while key.hasNext():
+                    key1 = key.next()
+                    count = (count + 1)
+                return src_types_Value.VNumber(count)
+            elif Std.isOfType(item,src_types_Function):
+                return src_types_Value.VNumber(len(src_types_V.toFunc(item).params))
+            elif Std.isOfType(item,src_types_NativeFunction):
+                return src_types_Value.VNumber(len(src_types_V.toNativeFunc(item).params))
+            else:
+                raise haxe_Exception.thrown("length() argument must be a string, array, map or function")
+        self.environment.define("length",src_types_Value.VNative(src_types_NativeFunction("length",[src_ast_Parameter("item",None,0,0)],_hx_local_2)))
+        def _hx_local_3(env):
+            item = env.get("item")
+            if (item is None):
+                return src_types_Value.VString("null")
+            if Std.isOfType(item,Bool):
+                return src_types_Value.VString("bool")
+            if (Std.isOfType(item,Int) or Std.isOfType(item,Float)):
+                return src_types_Value.VString("number")
+            if Std.isOfType(item,str):
+                return src_types_Value.VString("string")
+            if Std.isOfType(item,list):
+                return src_types_Value.VString("array")
+            if (Std.isOfType(item,src_types_Function) or Std.isOfType(item,src_types_NativeFunction)):
+                return src_types_Value.VString("function")
+            return src_types_Value.VString("object")
+        self.environment.define("typeof",src_types_Value.VNative(src_types_NativeFunction("typeof",[src_ast_Parameter("item",None,0,0)],_hx_local_3)))
+        def _hx_local_6(env):
+            start = env.get("start")
+            end = env.get("end")
+            step = env.get("step")
+            if (((not Std.isOfType(start,Float)) or (not Std.isOfType(end,Float))) or (not Std.isOfType(step,Float))):
+                raise haxe_Exception.thrown("range() arguments must be numbers")
+            result = []
+            i = src_types_V.toNumber(start)
+            if (src_types_V.toNumber(step) == 0):
+                raise haxe_Exception.thrown("range() step argument must not be zero")
+            if (src_types_V.toNumber(step) > 0):
+                while (i < src_types_V.toNumber(end)):
+                    result.append(src_types_Value.VNumber(i))
+                    i = (i + src_types_V.toNumber(step))
+            else:
+                while (i > src_types_V.toNumber(end)):
+                    result.append(src_types_Value.VNumber(i))
+                    i = (i + src_types_V.toNumber(step))
+            return src_types_Value.VArray(result)
+        self.environment.define("range",src_types_Value.VNative(src_types_NativeFunction("range",[src_ast_Parameter("start",None,0,0), src_ast_Parameter("end",None,0,0), src_ast_Parameter("step",src_ast_NumberExpr(1,0,0),0,0)],_hx_local_6)))
+        def _hx_local_7(env):
+            _this = Sys.systemName().lower()
+            startIndex = None
+            if (((_this.find("windows") if ((startIndex is None)) else HxString.indexOfImpl(_this,"windows",startIndex))) != -1):
+                Sys.command("cls")
+            else:
+                Sys.command("clear")
+            return None
+        self.environment.define("clear",src_types_Value.VNative(src_types_NativeFunction("clear",[],_hx_local_7)))
+        def _hx_local_9(env):
+            arr = env.get("arr")
+            func = env.get("func")
+            if (not Std.isOfType(arr,list)):
+                raise haxe_Exception.thrown("map() first argument must be an array")
+            if (not ((Std.isOfType(func,src_types_Function) or Std.isOfType(func,src_types_NativeFunction)))):
+                raise haxe_Exception.thrown("map() second argument must be a function")
+            result = []
+            _g = 0
+            _g1 = src_types_V.toArray(arr)
+            while (_g < len(_g1)):
+                item = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+                _g = (_g + 1)
+                if Std.isOfType(func,src_types_Function):
+                    try:
+                        src_types_V.toFunc(func).call([item],_gthis)
+                    except BaseException as _g2:
+                        _g3 = haxe_Exception.caught(_g2)
+                        if Std.isOfType(_g3,src_Return):
+                            e = _g3
+                            x = e.value
+                            result.append(x)
+                        else:
+                            raise _g2
+                elif Std.isOfType(func,src_types_NativeFunction):
+                    x1 = src_types_V.toNativeFunc(func).call([item],_gthis)
+                    result.append(x1)
+            return src_types_Value.VArray(result)
+        self.environment.define("map_arr",src_types_Value.VNative(src_types_NativeFunction("map",[src_ast_Parameter("arr",None,0,0), src_ast_Parameter("func",None,0,0)],_hx_local_9)))
+        self.environment.define("math",src_types_Value.VMap(haxe_ds_StringMap()))
+        _this = src_types_V.toMap(self.environment.get("math"))
+        def _hx_local_10(env):
+            v = src_types_V.toNumber(env.get("num"))
+            return src_types_Value.VNumber((Math.NaN if ((v < 0)) else python_lib_Math.sqrt(v)))
+        value = src_types_Value.VNative(src_types_NativeFunction("sqrt",[src_ast_Parameter("num",None,0,0)],_hx_local_10))
+        _this.h["sqrt"] = value
 
 src_Interpreter._hx_class = src_Interpreter
 
@@ -2564,62 +2508,66 @@ class src_Lexer:
                 x8 = src_Token(src_TokenType.MINUS,self.current,self.line,self.column)
                 tokens.append(x8)
                 self.advance()
-            elif (_g == "/"):
-                x9 = src_Token(src_TokenType.SLASH,self.current,self.line,self.column)
+            elif (_g == "."):
+                x9 = src_Token(src_TokenType.PERIOD,self.current,self.line,self.column)
                 tokens.append(x9)
                 self.advance()
-            elif (_g == ";"):
-                x10 = src_Token(src_TokenType.SEMICOLON,self.current,self.line,self.column)
+            elif (_g == "/"):
+                x10 = src_Token(src_TokenType.SLASH,self.current,self.line,self.column)
                 tokens.append(x10)
+                self.advance()
+            elif (_g == ";"):
+                x11 = src_Token(src_TokenType.SEMICOLON,self.current,self.line,self.column)
+                tokens.append(x11)
                 self.advance()
             elif (_g == "<"):
                 if (self.peek() == "="):
-                    x11 = src_Token(src_TokenType.LTEQ,"<=",self.line,self.column)
-                    tokens.append(x11)
+                    x12 = src_Token(src_TokenType.LTEQ,"<=",self.line,self.column)
+                    tokens.append(x12)
                     self.advance()
                     self.advance()
                 else:
-                    x12 = src_Token(src_TokenType.LT,self.current,self.line,self.column)
-                    tokens.append(x12)
+                    x13 = src_Token(src_TokenType.LT,self.current,self.line,self.column)
+                    tokens.append(x13)
                     self.advance()
             elif (_g == "="):
                 self.advance()
                 if (self.peek() == "="):
-                    x13 = src_Token(src_TokenType.EQEQ,"==",self.line,self.column)
-                    tokens.append(x13)
-                    self.advance()
-                elif (self.peek() == ">"):
-                    x14 = src_Token(src_TokenType.ARROW,"=>",self.line,self.column)
+                    x14 = src_Token(src_TokenType.EQEQ,"==",self.line,self.column)
                     tokens.append(x14)
                     self.advance()
-                else:
-                    x15 = src_Token(src_TokenType.EQUALS,self.current,self.line,self.column)
+                elif (self.peek() == ">"):
+                    x15 = src_Token(src_TokenType.ARROW,"=>",self.line,self.column)
                     tokens.append(x15)
+                    self.advance()
+                else:
+                    x16 = src_Token(src_TokenType.EQUALS,self.current,self.line,self.column)
+                    tokens.append(x16)
             elif (_g == ">"):
                 if (self.peek() == "="):
-                    x16 = src_Token(src_TokenType.GTEQ,">=",self.line,self.column)
-                    tokens.append(x16)
+                    x17 = src_Token(src_TokenType.GTEQ,">=",self.line,self.column)
+                    tokens.append(x17)
                     self.advance()
                     self.advance()
                 else:
-                    x17 = src_Token(src_TokenType.GT,self.current,self.line,self.column)
-                    tokens.append(x17)
+                    x18 = src_Token(src_TokenType.GT,self.current,self.line,self.column)
+                    tokens.append(x18)
                     self.advance()
             elif (_g == "["):
-                x18 = src_Token(src_TokenType.LBRACK,self.current,self.line,self.column)
-                tokens.append(x18)
-                self.advance()
-            elif (_g == "]"):
-                x19 = src_Token(src_TokenType.RBRACK,self.current,self.line,self.column)
+                x19 = src_Token(src_TokenType.LBRACK,self.current,self.line,self.column)
                 tokens.append(x19)
                 self.advance()
-            elif (_g == "{"):
-                x20 = src_Token(src_TokenType.LBRACE,self.current,self.line,self.column)
+            elif (_g == "]"):
+                x20 = src_Token(src_TokenType.RBRACK,self.current,self.line,self.column)
                 tokens.append(x20)
                 self.advance()
-            elif (_g == "}"):
-                x21 = src_Token(src_TokenType.RBRACE,self.current,self.line,self.column)
+            elif (_g == "{"):
+                x21 = src_Token(src_TokenType.LBRACE,self.current,self.line,self.column)
                 tokens.append(x21)
+                self.advance()
+            elif (_g == "}"):
+                x22 = src_Token(src_TokenType.RBRACE,self.current,self.line,self.column)
+                tokens.append(x22)
                 self.advance()
             else:
                 _this = EReg("[a-zA-Z_$$]","")
@@ -2639,8 +2587,8 @@ class src_Lexer:
                         self.advance()
                     identifier = HxString.substring(self.source,start1,self.position)
                     _hx_type = (src_TokenType.KEYWORD if (self.isKeyword(identifier)) else src_TokenType.IDENTIFIER)
-                    x22 = src_Token(_hx_type,identifier,self.line,self.column)
-                    tokens.append(x22)
+                    x23 = src_Token(_hx_type,identifier,self.line,self.column)
+                    tokens.append(x23)
                 else:
                     _this2 = EReg("[0-9]","")
                     _this2.matchObj = python_lib_Re.search(_this2.pattern,self.current)
@@ -2657,15 +2605,28 @@ class src_Lexer:
                             if (not tmp1):
                                 break
                             self.advance()
+                        if (self.current == "."):
+                            self.advance()
+                            while True:
+                                tmp2 = None
+                                if (not self.isEof()):
+                                    _this4 = EReg("[0-9]","")
+                                    _this4.matchObj = python_lib_Re.search(_this4.pattern,self.current)
+                                    tmp2 = (_this4.matchObj is not None)
+                                else:
+                                    tmp2 = False
+                                if (not tmp2):
+                                    break
+                                self.advance()
                         numberStr = HxString.substring(self.source,start2,self.position)
-                        x23 = src_Token(src_TokenType.NUMBER,numberStr,self.line,(self.column - ((self.position - start2))))
-                        tokens.append(x23)
+                        x24 = src_Token(src_TokenType.NUMBER,numberStr,self.line,(self.column - ((self.position - start2))))
+                        tokens.append(x24)
                     else:
                         raise haxe_Exception.thrown(((((("Unknown character: " + HxOverrides.stringOrNull(self.current)) + " at line ") + Std.string(self.line)) + ", column ") + Std.string(self.column)))
         return tokens
 
     def isKeyword(self,identifier):
-        keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec", "func", "return", "null", "for", "in"]
+        keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec", "func", "return", "null", "for", "in", "as", "number", "string", "bool", "array", "map"]
         return (python_internal_ArrayImpl.indexOf(keywords,identifier.lower(),None) != -1)
 
 src_Lexer._hx_class = src_Lexer
@@ -2963,6 +2924,9 @@ class src_Parser:
                 indexExpr = self.comparison()
                 rbrack = self.consume(src_TokenType.RBRACK,"Expected ']' after array index.")
                 expr = src_ast_IndexExpr(expr,indexExpr,rbrack.line,rbrack.column)
+            elif self.match(src_TokenType.PERIOD):
+                name = self.consume(src_TokenType.IDENTIFIER,"Expected identifier after period.")
+                expr = src_ast_IndexExpr(expr,src_ast_StringExpr(("null" if ((name.value is None)) else Std.string(name.value)),name.line,name.column),name.line,name.column)
             else:
                 break
         return expr
@@ -3088,7 +3052,7 @@ src_Token._hx_class = src_Token
 class src_TokenType(Enum):
     __slots__ = ()
     _hx_class_name = "src.TokenType"
-    _hx_constructs = ["IDENTIFIER", "KEYWORD", "NUMBER", "STRING", "PLUS", "MINUS", "STAR", "SLASH", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "LBRACE", "RBRACE", "SEMICOLON", "EQUALS", "COMMA", "ARROW", "EQEQ", "NOTEQ", "GT", "GTEQ", "LT", "LTEQ", "BANG"]
+    _hx_constructs = ["IDENTIFIER", "KEYWORD", "NUMBER", "STRING", "PLUS", "MINUS", "STAR", "SLASH", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "LBRACE", "RBRACE", "SEMICOLON", "EQUALS", "COMMA", "PERIOD", "ARROW", "EQEQ", "NOTEQ", "GT", "GTEQ", "LT", "LTEQ", "BANG"]
 src_TokenType.IDENTIFIER = src_TokenType("IDENTIFIER", 0, ())
 src_TokenType.KEYWORD = src_TokenType("KEYWORD", 1, ())
 src_TokenType.NUMBER = src_TokenType("NUMBER", 2, ())
@@ -3106,14 +3070,15 @@ src_TokenType.RBRACE = src_TokenType("RBRACE", 13, ())
 src_TokenType.SEMICOLON = src_TokenType("SEMICOLON", 14, ())
 src_TokenType.EQUALS = src_TokenType("EQUALS", 15, ())
 src_TokenType.COMMA = src_TokenType("COMMA", 16, ())
-src_TokenType.ARROW = src_TokenType("ARROW", 17, ())
-src_TokenType.EQEQ = src_TokenType("EQEQ", 18, ())
-src_TokenType.NOTEQ = src_TokenType("NOTEQ", 19, ())
-src_TokenType.GT = src_TokenType("GT", 20, ())
-src_TokenType.GTEQ = src_TokenType("GTEQ", 21, ())
-src_TokenType.LT = src_TokenType("LT", 22, ())
-src_TokenType.LTEQ = src_TokenType("LTEQ", 23, ())
-src_TokenType.BANG = src_TokenType("BANG", 24, ())
+src_TokenType.PERIOD = src_TokenType("PERIOD", 17, ())
+src_TokenType.ARROW = src_TokenType("ARROW", 18, ())
+src_TokenType.EQEQ = src_TokenType("EQEQ", 19, ())
+src_TokenType.NOTEQ = src_TokenType("NOTEQ", 20, ())
+src_TokenType.GT = src_TokenType("GT", 21, ())
+src_TokenType.GTEQ = src_TokenType("GTEQ", 22, ())
+src_TokenType.LT = src_TokenType("LT", 23, ())
+src_TokenType.LTEQ = src_TokenType("LTEQ", 24, ())
+src_TokenType.BANG = src_TokenType("BANG", 25, ())
 src_TokenType._hx_class = src_TokenType
 
 
@@ -3126,20 +3091,28 @@ class src_Utils:
     def print(value,writeNewLine = None):
         if (writeNewLine is None):
             writeNewLine = True
-        Sys.stdout().write(haxe_io_Bytes.ofString((Std.string(value) + HxOverrides.stringOrNull((("\n" if writeNewLine else ""))))))
+        Sys.stdout().write(haxe_io_Bytes.ofString((("null" if value is None else value) + HxOverrides.stringOrNull((("\n" if writeNewLine else ""))))))
 
     @staticmethod
     def stringify(value):
-        if (value is None):
+        tmp = value.index
+        if (tmp == 0):
+            n = value.params[0]
+            return Std.string(n)
+        elif (tmp == 1):
+            b = value.params[0]
+            return Std.string(b)
+        elif (tmp == 2):
             return "null"
-        elif Std.isOfType(value,str):
-            return value
-        elif Std.isOfType(value,list):
-            arr = value
+        elif (tmp == 3):
+            s = value.params[0]
+            return s
+        elif (tmp == 4):
+            arr = value.params[0]
             _this = list(map(src_Utils.stringify,arr))
             return (("[" + HxOverrides.stringOrNull(", ".join([python_Boot.toString1(x1,'') for x1 in _this]))) + "]")
-        elif Std.isOfType(value,haxe_ds_StringMap):
-            _hx_map = value
+        elif (tmp == 5):
+            _hx_map = value.params[0]
             items = []
             key = _hx_map.keys()
             while key.hasNext():
@@ -3147,8 +3120,14 @@ class src_Utils:
                 x = ((("null" if key1 is None else key1) + " => ") + HxOverrides.stringOrNull(src_Utils.stringify(_hx_map.h.get(key1,None))))
                 items.append(x)
             return (("{" + HxOverrides.stringOrNull(", ".join([python_Boot.toString1(x1,'') for x1 in items]))) + "}")
+        elif (tmp == 6):
+            fn = value.params[0]
+            return Std.string(fn)
+        elif (tmp == 7):
+            fn = value.params[0]
+            return Std.string(fn)
         else:
-            return Std.string(value)
+            pass
 src_Utils._hx_class = src_Utils
 
 
@@ -3726,6 +3705,243 @@ class src_ast_WhileStmt(src_ast_Stmt):
         return (((("While(condition=" + HxOverrides.stringOrNull(self.condition.toString())) + ", body=") + HxOverrides.stringOrNull(self.body.toString())) + ")")
 
 src_ast_WhileStmt._hx_class = src_ast_WhileStmt
+
+
+class src_types_Function:
+    _hx_class_name = "src.types.Function"
+    __slots__ = ("name", "params", "body")
+    _hx_fields = ["name", "params", "body"]
+    _hx_methods = ["toString", "call"]
+
+    def __init__(self,name,params,body):
+        self.name = name
+        self.params = params
+        self.body = body
+
+    def toString(self):
+        return (((("<Function " + HxOverrides.stringOrNull(self.name)) + ":") + Std.string(len(self.params))) + ">")
+
+    def call(self,args,interp):
+        previousEnv = interp.environment
+        interp.environment = src_Environment(previousEnv)
+        _g = 0
+        _g1 = len(self.params)
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            param = (self.params[i] if i >= 0 and i < len(self.params) else None)
+            value = None
+            if (i < len(args)):
+                value = (args[i] if i >= 0 and i < len(args) else None)
+            elif (param.defaultValue is not None):
+                value = interp.visitExpr(param.defaultValue)
+            else:
+                raise haxe_Exception.thrown((("Missing argument for parameter '" + HxOverrides.stringOrNull(param.name)) + "'"))
+            interp.environment.define(param.name,value)
+        interp.visitStmt(self.body)
+        interp.environment = previousEnv
+
+src_types_Function._hx_class = src_types_Function
+
+
+class src_types_NativeFunction:
+    _hx_class_name = "src.types.NativeFunction"
+    __slots__ = ("name", "params", "body")
+    _hx_fields = ["name", "params", "body"]
+    _hx_methods = ["toString", "call"]
+
+    def __init__(self,name,params,body):
+        self.name = name
+        self.params = params
+        self.body = body
+
+    def toString(self):
+        return (((("<Native function " + HxOverrides.stringOrNull(self.name)) + ":") + Std.string(len(self.params))) + ">")
+
+    def call(self,args,interp):
+        previousEnv = interp.environment
+        interp.environment = src_Environment(previousEnv)
+        _g = 0
+        _g1 = len(self.params)
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            param = (self.params[i] if i >= 0 and i < len(self.params) else None)
+            value = None
+            if (i < len(args)):
+                value = (args[i] if i >= 0 and i < len(args) else None)
+            elif (param.defaultValue is not None):
+                value = interp.visitExpr(param.defaultValue)
+            else:
+                raise haxe_Exception.thrown((("Missing argument for parameter '" + HxOverrides.stringOrNull(param.name)) + "'"))
+            interp.environment.define(param.name,value)
+        value = self.body(interp.environment)
+        interp.environment = previousEnv
+        return value
+
+src_types_NativeFunction._hx_class = src_types_NativeFunction
+
+
+class src_types_V:
+    _hx_class_name = "src.types.V"
+    __slots__ = ()
+    _hx_statics = ["toNumber", "isTruthy", "toString", "toArray", "toMap", "toFunc", "toNativeFunc"]
+
+    @staticmethod
+    def toNumber(v):
+        tmp = v.index
+        if (tmp == 0):
+            x = v.params[0]
+            return x
+        elif (tmp == 1):
+            b = v.params[0]
+            if b:
+                return 1.0
+            else:
+                return 0.0
+        elif (tmp == 2):
+            return 0.0
+        elif (tmp == 3):
+            s = v.params[0]
+            return Std.parseFloat(s)
+        else:
+            raise haxe_Exception.thrown(("Cannot convert to number: " + Std.string(v)))
+
+    @staticmethod
+    def isTruthy(v):
+        tmp = v.index
+        if (tmp == 0):
+            n = v.params[0]
+            return (n != 0)
+        elif (tmp == 1):
+            b = v.params[0]
+            return b
+        elif (tmp == 2):
+            return False
+        elif (tmp == 3):
+            s = v.params[0]
+            return (len(s) > 0)
+        elif (tmp == 4):
+            a = v.params[0]
+            return (len(a) > 0)
+        elif (tmp == 5):
+            m = v.params[0]
+            return m.keys().hasNext()
+        else:
+            return True
+
+    @staticmethod
+    def toString(v):
+        tmp = v.index
+        if (tmp == 0):
+            n = v.params[0]
+            return Std.string(n)
+        elif (tmp == 1):
+            b = v.params[0]
+            if b:
+                return "true"
+            else:
+                return "false"
+        elif (tmp == 2):
+            return "null"
+        elif (tmp == 3):
+            s = v.params[0]
+            return s
+        elif (tmp == 4):
+            a = v.params[0]
+            parts = []
+            _g = 0
+            while (_g < len(a)):
+                x = (a[_g] if _g >= 0 and _g < len(a) else None)
+                _g = (_g + 1)
+                x1 = src_types_V.toString(x)
+                parts.append(x1)
+            return (("[" + HxOverrides.stringOrNull(", ".join([python_Boot.toString1(x1,'') for x1 in parts]))) + "]")
+        elif (tmp == 5):
+            m = v.params[0]
+            parts = []
+            k = m.keys()
+            while k.hasNext():
+                k1 = k.next()
+                x = ((("null" if k1 is None else k1) + ":") + HxOverrides.stringOrNull(src_types_V.toString(m.h.get(k1,None))))
+                parts.append(x)
+            return (("{" + HxOverrides.stringOrNull(", ".join([python_Boot.toString1(x1,'') for x1 in parts]))) + "}")
+        elif (tmp == 6):
+            f = v.params[0]
+            return (("<fn " + HxOverrides.stringOrNull(f.name)) + ">")
+        elif (tmp == 7):
+            n = v.params[0]
+            return (("<native " + HxOverrides.stringOrNull(n.name)) + ">")
+        else:
+            pass
+
+    @staticmethod
+    def toArray(v):
+        if (v.index == 4):
+            a = v.params[0]
+            return a
+        else:
+            raise haxe_Exception.thrown(("Cannot convert to array: " + Std.string(v)))
+
+    @staticmethod
+    def toMap(v):
+        if (v.index == 5):
+            m = v.params[0]
+            return m
+        else:
+            raise haxe_Exception.thrown(("Cannot convert to map: " + Std.string(v)))
+
+    @staticmethod
+    def toFunc(v):
+        if (v.index == 6):
+            f = v.params[0]
+            return f
+        else:
+            raise haxe_Exception.thrown(("Cannot convert to map: " + Std.string(v)))
+
+    @staticmethod
+    def toNativeFunc(v):
+        if (v.index == 7):
+            f = v.params[0]
+            return f
+        else:
+            raise haxe_Exception.thrown(("Cannot convert to map: " + Std.string(v)))
+src_types_V._hx_class = src_types_V
+
+class src_types_Value(Enum):
+    __slots__ = ()
+    _hx_class_name = "src.types.Value"
+    _hx_constructs = ["VNumber", "VBool", "VNull", "VString", "VArray", "VMap", "VFunc", "VNative"]
+
+    @staticmethod
+    def VNumber(value):
+        return src_types_Value("VNumber", 0, (value,))
+
+    @staticmethod
+    def VBool(value):
+        return src_types_Value("VBool", 1, (value,))
+
+    @staticmethod
+    def VString(value):
+        return src_types_Value("VString", 3, (value,))
+
+    @staticmethod
+    def VArray(items):
+        return src_types_Value("VArray", 4, (items,))
+
+    @staticmethod
+    def VMap(map):
+        return src_types_Value("VMap", 5, (map,))
+
+    @staticmethod
+    def VFunc(fn):
+        return src_types_Value("VFunc", 6, (fn,))
+
+    @staticmethod
+    def VNative(native):
+        return src_types_Value("VNative", 7, (native,))
+src_types_Value.VNull = src_types_Value("VNull", 2, ())
+src_types_Value._hx_class = src_types_Value
 
 
 class sys_io_File:

@@ -39,7 +39,7 @@ class Parser {
         return new PrintStmt(expr, previous().line, previous().column);
     }
 
-    /// input <identifier> ;
+    /// input <identifier> (as <type>)? ;
     function parseInputStatement():InputStmt {
         advance(); // consume 'input'
         var name = consume(TokenType.IDENTIFIER, "Expected variable after 'input'.");
@@ -178,7 +178,7 @@ class Parser {
         return new FunctionStmt(name, params, body, nameToken.line, nameToken.column);
     }
 
-    /// (id (= expr)? (, id (= expr)?)* )
+    /// (<id (= <expr>? (, <id (= <expr>?)* )
     function parseParameters():Array<Parameter> {
         var params:Array<Parameter> = [];
 
@@ -286,6 +286,9 @@ class Parser {
                 var indexExpr = comparison();
                 var rbrack = consume(TokenType.RBRACK, "Expected ']' after array index.");
                 expr = new IndexExpr(expr, indexExpr, rbrack.line, rbrack.column);
+            } else if (match(TokenType.PERIOD)) {
+                var name = consume(TokenType.IDENTIFIER, "Expected identifier after period.");
+                expr = new IndexExpr(expr, new StringExpr(Std.string(name.value), name.line, name.column), name.line, name.column);
             } else {
                 break;
             }

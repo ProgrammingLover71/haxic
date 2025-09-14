@@ -1,0 +1,31 @@
+let t0 = clock();
+
+let a = 5;
+let b = [23.1, 74.259, -284.2];
+let c = "hi!";
+let d = { foo => true };
+let e = false;
+let f = null;
+let g = func(x, y) return math.sqrt(x) * y; end;
+
+print typeof(a);
+print typeof(b);
+print typeof(c);
+print typeof(d);
+print typeof(e);
+print typeof(f);
+print typeof(g);
+
+print length(b);
+print length(d);
+print length(g);
+
+print map_arr(b, func(arg)
+    return math.sqrt(arg);
+end);
+
+print range(1, 7, 2);
+print range(-15.1, 17.8, 0.5);
+
+let t1 = clock();
+print "Execution time = " + (t1 - t0) * 1000 + "ms";

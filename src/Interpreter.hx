@@ -1,146 +1,57 @@
 package src;
 
+import sys.ssl.Key;
 import haxe.ds.StringMap;
 import src.ast.*;
-
-
-
-class Function {
-    public var name:String;
-    public var params:Array<Parameter>;
-    public var body:Stmt;
-
-    public function new(name:String, params:Array<Parameter>, body:Stmt) {
-        this.name = name;
-        this.params = params;
-        this.body = body;
-    }
-
-    public function toString():String {
-        return "<Function " + name + ":" + params.length + ">";
-    }
-
-    public function call(args:Array<Dynamic>, interp:Interpreter):Void {
-        // Create a new environment for the function call
-        var previousEnv = interp.environment;
-        interp.environment = new Environment(previousEnv);
-        for (i in 0...params.length) {
-            var param = params[i];
-            var value:Dynamic = null;
-
-            if (i < args.length) {
-                value = args[i]; // provided by caller
-            } else if (param.defaultValue != null) {
-                value = interp.visitExpr(param.defaultValue); // evaluate default at call time
-            } else {
-                throw "Missing argument for parameter '" + param.name + "'";
-            }
-            
-            interp.environment.define(param.name, value);
-        }
-        // Execute the function body
-        interp.visitStmt(body);
-        // Restore the previous environment
-        interp.environment = previousEnv;
-    }
-}
-
-
-
-class NativeFunction {
-    public var name:String;
-    public var params:Array<Parameter>;
-    public var body:((Environment) -> Dynamic);
-
-    public function new(name:String, params:Array<Parameter>, body:((Environment) -> Dynamic)) {
-        this.name = name;
-        this.params = params;
-        this.body = body;
-    }
-
-    public function toString():String {
-        return "<Native function " + name + ":" + params.length + ">";
-    }
-
-    public function call(args:Array<Dynamic>, interp:Interpreter):Dynamic {
-        // Create a new environment for the function call
-        var previousEnv = interp.environment;
-        interp.environment = new Environment(previousEnv);
-        for (i in 0...params.length) {
-            var param = params[i];
-            var value:Dynamic = null;
-
-            if (i < args.length) {
-                value = args[i]; // provided by caller
-            } else if (param.defaultValue != null) {
-                value = interp.visitExpr(param.defaultValue); // evaluate default at call time
-            } else {
-                throw "Missing argument for parameter '" + param.name + "'";
-            }
-            
-            interp.environment.define(param.name, value);
-        }
-        // Throw a Return exception to unwind the stack and return the value
-        var value:Dynamic = body(interp.environment);
-        interp.environment = previousEnv;
-        return value;
-    }
-}
+import src.types.*;
 
 
 
 class Environment {
-    public var values:Map<String, Dynamic>;
-    public var enclosing:Environment;
+    public var values:haxe.ds.StringMap<Value>;
+    public var parent:Environment;
 
-    public function new(enclosing:Environment = null) {
-        values = new Map();
-        this.enclosing = enclosing;
+    public function new(parent:Environment = null) {
+        this.parent = parent;
+        this.values = new haxe.ds.StringMap<Value>();
     }
 
-    public function define(name:String, value:Dynamic) {
+    public function define(name:String, value:Value):Void {
         values.set(name, value);
     }
 
-    public function get(name:String):Dynamic {
-        if (values.exists(name)) {
-            return values.get(name);
-        }
-        if (enclosing != null) {
-            return enclosing.get(name);
-        }
-        throw "Undefined variable '" + name + "'";
-    }
-
-    public function assign(name:String, value:Dynamic) {
+    public function assign(name:String, value:Value):Void {
         if (values.exists(name)) {
             values.set(name, value);
             return;
         }
-        if (enclosing != null) {
-            enclosing.assign(name, value);
+        if (parent != null) {
+            parent.assign(name, value);
             return;
         }
         throw "Undefined variable '" + name + "'";
     }
 
+    public function get(name:String):Value {
+        if (values.exists(name)) return values.get(name);
+        if (parent != null) return parent.get(name);
+        throw "Undefined variable '" + name + "'";
+    }
+
     public function exists(name:String):Bool {
-        if (values.exists(name)) {
-            return true;
-        }
-        if (enclosing != null) {
-            return enclosing.exists(name);
-        }
+        if (values.exists(name)) return true;
+        if (parent != null) return parent.exists(name);
         return false;
     }
 }
 
 
 
-class Return extends haxe.Exception {
-    public var value:Dynamic;
 
-    public function new(value:Dynamic) {
+class Return extends haxe.Exception {
+    public var value:Value;
+
+    public function new(value:Value) {
         super("Return");
         this.value = value;
     }
@@ -153,95 +64,12 @@ class Interpreter extends ASTWalker {
 
     public function new() {
         environment = new Environment();
-        environment.define("pi", Math.PI);
-        environment.define("e", Math.exp(1));
-        environment.define("inf", Math.POSITIVE_INFINITY);
-        environment.define("nan", Math.NaN);
+        environment.define("pi", Value.VNumber(Math.PI));
+        environment.define("e", Value.VNumber(Math.exp(1)));
+        environment.define("inf", Value.VNumber(Math.POSITIVE_INFINITY));
+        environment.define("nan", Value.VNumber(Math.NaN));
 
-        environment.define("clock", new NativeFunction("clock", [], function(env) {
-            return Sys.time();
-        }));
-        environment.define("length", new NativeFunction("length", [new Parameter("item", null, 0, 0)], function(env) {
-            var item:Dynamic = env.get("item");
-            if (Std.isOfType(item, String)) {
-                return (item : String).length;
-            } else if (Std.isOfType(item, Array)) {
-                return (item : Array<Dynamic>).length;
-            } else {
-                throw "length() argument must be a string or array";
-            }
-        }));
-        environment.define("typeof", new NativeFunction("typeof", [new Parameter("item", null, 0, 0)], function(env) {
-            var item:Dynamic = env.get("item");
-            if (item == null) return "null";
-            if (Std.isOfType(item, Bool)) return "bool";
-            if (Std.isOfType(item, Int) || Std.isOfType(item, Float)) return "number";
-            if (Std.isOfType(item, String)) return "string";
-            if (Std.isOfType(item, Array)) return "array";
-            if (Std.isOfType(item, Function) || Std.isOfType(item, NativeFunction)) return "function";
-            return "object";
-        }));
-        environment.define("range", new NativeFunction("range", [
-            new Parameter("start", null, 0, 0), 
-            new Parameter("end", null, 0, 0), 
-            new Parameter("step", new NumberExpr(1, 0, 0), 0, 0)
-        ], function(env) {
-            var start:Dynamic = env.get("start");
-            var end:Dynamic = env.get("end");
-            var step:Dynamic = env.get("step");
-            if (!Std.isOfType(start, Int) || !Std.isOfType(end, Int) || !Std.isOfType(step, Int)) {
-                throw "range() arguments must be integers";
-            }
-            var result:Array<Int> = [];
-            var i = (start : Int);
-            if (step == 0) throw "range() step argument must not be zero";
-            if (step > 0) {
-                while (i < (end : Int)) {
-                    result.push(i);
-                    i += (step : Int);
-                }
-            } else {
-                while (i > (end : Int)) {
-                    result.push(i);
-                    i += (step : Int);
-                }
-            }
-            return result;
-        }));
-        environment.define("clear", new NativeFunction("clear", [], function(env) {
-            if (Sys.systemName().toLowerCase().indexOf("windows") != -1) {
-                Sys.command("cls");
-            } else {
-                Sys.command("clear");
-            }
-            return null;
-        }));
-        environment.define("map", new NativeFunction("map", [
-            new Parameter("array", null, 0, 0), 
-            new Parameter("func", null, 0, 0)
-        ], function(env) {
-            var array:Dynamic = env.get("array");
-            var func:Dynamic = env.get("func");
-            if (!Std.isOfType(array, Array)) {
-                throw "map() first argument must be an array";
-            }
-            if (!(Std.isOfType(func, Function) || Std.isOfType(func, NativeFunction))) {
-                throw "map() second argument must be a function";
-            }
-            var result:Array<Dynamic> = [];
-            for (item in (array : Array<Dynamic>)) {
-                if (Std.isOfType(func, Function)) {
-                    try {
-                        (func : Function).call([item], this);
-                    } catch (e:Return) {
-                        result.push(e.value);
-                    }
-                } else if (Std.isOfType(func, NativeFunction)) {
-                    result.push((func : NativeFunction).call([item], this));
-                }
-            }
-            return result;
-        }));
+        loadFunctions();
     }
 
     public function visit(ast:Array<Stmt>) {
@@ -252,7 +80,7 @@ class Interpreter extends ASTWalker {
 
 
     public function visitPrintStmt(stmt:PrintStmt) {
-        var value:Dynamic = visitExpr(stmt.expr);
+        var value:Value = visitExpr(stmt.expr);
         // Use Sys.stdout().write() instead of trace() for a cleaner output and to avoid showing the file and line number
         Utils.print(Utils.stringify(value));
     }
@@ -261,13 +89,13 @@ class Interpreter extends ASTWalker {
     public function visitInputStmt(stmt:InputStmt) {
         var input:String = Sys.stdin().readLine();
         var num:Float = Std.parseFloat(input);
-        var final_val:Dynamic = if (num == Math.NaN) input else num;
+        var final_val:Value = if (num == Math.NaN) VString(input) else VNumber(num);
         environment.define(stmt.target.name, final_val);
     }
 
 
     public function visitLetStmt(stmt:LetStmt) {
-        var value:Dynamic = null;
+        var value:Value = null;
         if (stmt.value != null) {
             value = visitExpr(stmt.value);
         }
@@ -278,8 +106,8 @@ class Interpreter extends ASTWalker {
 
 
     public function visitIfStmt(stmt:IfStmt) {
-        var condition:Dynamic = visitExpr(stmt.condition);
-        if (condition) {
+        var condition:Value = visitExpr(stmt.condition);
+        if (V.isTruthy(condition)) {
             visitBlockStmt(stmt.thenBranch);
         } else if (stmt.elseBranch != null) {
             visitBlockStmt(stmt.elseBranch);
@@ -288,24 +116,24 @@ class Interpreter extends ASTWalker {
 
 
     public function visitWhileStmt(stmt:WhileStmt) {
-        var condition:Dynamic = visitExpr(stmt.condition);
-        while (condition) {
+        var condition:Value = visitExpr(stmt.condition);
+        while (V.isTruthy(condition)) {
             visitBlockStmt(stmt.body);
             condition = visitExpr(stmt.condition);
         }
     }
 
     public function visitForeachStmt(stmt:ForeachStmt) {
-        var iterable:Dynamic = visitExpr(stmt.target);
+        var iterable:Value = visitExpr(stmt.target);
         var varName = stmt.variable.name;
         if (Std.isOfType(iterable, Array)) {
-            for (item in (iterable : Array<Dynamic>)) {
+            for (item in V.toArray(iterable)) {
                 environment.define(varName, item);
                 visitStmt(stmt.body);
             }
         } else if (Std.isOfType(iterable, String)) {
-            for (i in 0...((iterable : String).length)) {
-                environment.define(varName, (iterable : String).charAt(i));
+            for (i in 0...V.toString(iterable).length) {
+                environment.define(varName, VString(V.toString(iterable).charAt(i)));
                 visitStmt(stmt.body);
             }
         } else {
@@ -327,7 +155,7 @@ class Interpreter extends ASTWalker {
 
 
     public function visitReturnStmt(stmt:ReturnStmt) {
-        var value:Dynamic = null;
+        var value:Value = null;
         if (stmt.value != null) {
             value = visitExpr(stmt.value);
         }
@@ -337,7 +165,7 @@ class Interpreter extends ASTWalker {
 
     public function visitFunctionStmt(stmt:FunctionStmt) {
         var functionObj = new Function(stmt.name, stmt.params, stmt.body);
-        environment.define(stmt.name, functionObj);
+        environment.define(stmt.name, VFunc(functionObj));
     }
 
 
@@ -369,7 +197,7 @@ class Interpreter extends ASTWalker {
 
     //=================================================================//
 
-    public function visitExpr(expr:Expr):Dynamic {
+    public function visitExpr(expr:Expr):Value {
         if (Std.isOfType(expr, BinaryExpr)) {
             return visitBinaryExpr(cast expr);
         } else if (Std.isOfType(expr, NumberExpr)) {
@@ -400,161 +228,287 @@ class Interpreter extends ASTWalker {
     }
 
 
-    public function visitUnaryExpr(expr:UnaryExpr):Dynamic {
-        var right:Dynamic = visitExpr(expr.right);
+    public function visitUnaryExpr(expr:UnaryExpr):Value {
+        var right:Value = visitExpr(expr.right);
         switch (expr.oper.type) {
             case TokenType.MINUS:
-                return -right;
+                return Value.VNumber(-V.toNumber(right));
             case TokenType.BANG:
-                return !right;
+                return Value.VBool(!V.isTruthy(right));
             default:
                 throw "Unknown unary operator " + expr.oper.value + " at line " + expr.oper.line + ", column " + expr.oper.column;
         }
     }
 
 
-    public function visitBinaryExpr(expr:BinaryExpr):Dynamic {
-        var left:Dynamic = visitExpr(expr.left);
-        var right:Dynamic = visitExpr(expr.right);
+    public function visitBinaryExpr(expr:BinaryExpr):Value {
+        var left:Value = visitExpr(expr.left);
+        var right:Value = visitExpr(expr.right);
         switch (expr.oper.type) {
             case TokenType.PLUS:
                 // Handle string concatenation, array merging, map merging and keep numeric addition
                 if (Std.isOfType(left, Array) && Std.isOfType(right, Array)) {
-                    return (left : Array<Dynamic>).concat((right : Array<Dynamic>));
+                    return Value.VArray(V.toArray(left).concat(V.toArray(right)));
                 } else if (Std.isOfType(left, StringMap) && Std.isOfType(right, StringMap)) {
-                    var result:StringMap<Dynamic> = new StringMap();
-                    for (key in (left : StringMap<Dynamic>).keys()) {
-                        result.set(key, (left:StringMap<Dynamic>).get(key));
+                    var result:StringMap<Value> = new StringMap();
+                    for (key in V.toMap(left).keys()) {
+                        result.set(key, V.toMap(left).get(key));
                     }
-                    for (key in (right : StringMap<Dynamic>).keys()) {
-                        result.set(key, (right:StringMap<Dynamic>).get(key));
+                    for (key in V.toMap(right).keys()) {
+                        result.set(key, V.toMap(right).get(key));
                     }
-                    return result;
+                    return Value.VMap(result);
                 } else if (Std.isOfType(left, String) || Std.isOfType(right, String)) {
-                    return Std.string(left) + Std.string(right);
+                    return Value.VString(Std.string(left) + Std.string(right));
                 } else {
-                    return left + right;
+                    return Value.VNumber(V.toNumber(left) + V.toNumber(right));
                 }
             case TokenType.MINUS:
-                return left - right;
+                return Value.VNumber(V.toNumber(left) - V.toNumber(right));
             case TokenType.STAR:
-                return left * right;
+                return Value.VNumber(V.toNumber(left) * V.toNumber(right));
             case TokenType.SLASH:
-                return left / right;
+                return Value.VNumber(V.toNumber(left) / V.toNumber(right));
             case TokenType.GT:
-                return left > right;
+                return Value.VBool(V.toNumber(left) > V.toNumber(right));
             case TokenType.GTEQ:
-                return left >= right;
+                return Value.VBool(V.toNumber(left) >= V.toNumber(right));
             case TokenType.LT:
-                return left < right;
+                return Value.VBool(V.toNumber(left) < V.toNumber(right));
             case TokenType.LTEQ:
-                return left <= right;
+                return Value.VBool(V.toNumber(left) <= V.toNumber(right));
             case TokenType.EQEQ:
-                return left == right;
+                return Value.VBool(V.toNumber(left) == V.toNumber(right));
             case TokenType.NOTEQ:
-                return left != right;
-            case TokenType.BANG:
-                return !left;
+                return Value.VBool(V.toNumber(left) != V.toNumber(right));
             default:
                 throw "Unknown operator " + expr.oper.value + " at line " + expr.oper.line + ", column " + expr.oper.column;
         }
     }
 
 
-    public function visitNumberExpr(expr:NumberExpr):Float {
-        return expr.value;
+    public function visitNumberExpr(expr:NumberExpr):Value {
+        return Value.VNumber(expr.value);
     }
 
 
-    public function visitVariableExpr(expr:VariableExpr):Dynamic {
+    public function visitVariableExpr(expr:VariableExpr):Value {
         if (environment.exists(expr.name)) return environment.get(expr.name);
         throw "Undefined variable '" + expr.name + "' at line " + expr.line + ", column " + expr.column;
     }
     
 
-    public function visitStringExpr(expr:StringExpr):String {
-        return expr.value;
+    public function visitStringExpr(expr:StringExpr):Value {
+        return Value.VString(expr.value);
     }
 
 
-    public function visitCallExpr(expr:CallExpr):Dynamic {
-        var callee:Dynamic = visitExpr(expr.callee);
-        var args:Array<Dynamic> = [];
+    public function visitCallExpr(expr:CallExpr):Value {
+        var callee:Value = visitExpr(expr.callee);
+        var args:Array<Value> = [];
         for (arg in expr.arguments) {
             args.push(visitExpr(arg));
         }
-        if (Std.isOfType(callee, Function)) {
-            try {
-                (callee : Function).call(args, this);
-            } catch (e:Return) {
-                return e.value;
-            }
-            return null;
-        } else if (Std.isOfType(callee, NativeFunction)) {
-            return (callee : NativeFunction).call(args, this);
-        } else {
-            throw "Attempted to call non-function object " + callee + " at line " + expr.line + ", column " + expr.column;
+        switch (callee) {
+            case VFunc(func):
+                try {
+                    func.call(args, this);
+                } catch (e:Return) {
+                    return e.value;
+                }
+                return null;
+            case VNative(func):
+                return func.call(args, this);
+            default:
+                throw "Attempted to call non-function object " + callee + " at line " + expr.line + ", column " + expr.column;
         }
     }
 
     
-    public function visitNullExpr(expr:NullExpr):Dynamic {
-        return null;
+    public function visitNullExpr(expr:NullExpr):Value {
+        return Value.VNull;
     }
 
 
-    public function visitBooleanExpr(expr:BooleanExpr):Bool {
-        return expr.value;
+    public function visitBooleanExpr(expr:BooleanExpr):Value {
+        return Value.VBool(expr.value);
     }
 
 
-    public function visitArrayExpr(expr:ArrayExpr):Array<Dynamic> {
-        var elements:Array<Dynamic> = [];
+    public function visitArrayExpr(expr:ArrayExpr):Value {
+        var elements:Array<Value> = [];
         for (el in expr.elements) {
             elements.push(visitExpr(el));
         }
-        return elements;
+        return Value.VArray(elements);
     }
 
 
-    public function visitIndexExpr(expr:IndexExpr):Dynamic {
-        var target:Dynamic = visitExpr(expr.target);
-        var index:Dynamic = visitExpr(expr.index);
-        if (Std.isOfType(target, Array)) {
-            if (Std.isOfType(index, Int)) {
-                var arr = (target : Array<Dynamic>);
-                var idx = (index : Int);
-                if (idx < 0 || idx >= arr.length) throw "Array index " + idx + " out of bounds at line " + expr.line + ", column " + expr.column;
-                return arr[Std.int(idx)];
-            } else throw "Array index " + index + " must be an integer at line " + expr.line + ", column " + expr.column;
-        } else if (Std.isOfType(target, String)) {
-            if (Std.isOfType(index, Int)) {
-                var str = (target : String);
-                var idx = (index : Int);
-                if (idx < 0 || idx >= str.length) throw "String index " + idx + " out of bounds at line " + expr.line + ", column " + expr.column;
-                return str.charAt(idx);
-            } else throw "String index " + index + " must be an integer at line " + expr.line + ", column " + expr.column;
-        } else if (Std.isOfType(target, StringMap)) {
-            if (Std.isOfType(index, String)) {
-                var map = (target : StringMap<Dynamic>);
-                var key = (index : String);
-                if (!map.exists(key)) throw "Map key '" + key + "' does not exist at line " + expr.line + ", column " + expr.column;
-                return map.get(key);
-            } else throw "Map key " + index + " must be a string at line " + expr.line + ", column " + expr.column;
-        } else throw "Attempted to index non-iterable " + target + " at line " + expr.line + ", column " + expr.column;
+    public function visitIndexExpr(expr:IndexExpr):Value {
+        var target:Value = visitExpr(expr.target);
+        var index:Value = visitExpr(expr.index);
+        switch (target) {
+            case Value.VArray(arr):
+                switch (index) {
+                    case VNumber(idx):
+                        if (idx < 0 || idx >= arr.length) throw "Array index " + idx + " out of bounds at line " + expr.line + ", column " + expr.column;
+                        return arr[Std.int(idx)];
+                    default: throw "Array index " + index + " must be an integer at line " + expr.line + ", column " + expr.column;
+                }
+            
+            case Value.VString(str):
+                switch (index) {
+                    case VNumber(idx):
+                        if (idx < 0 || idx >= str.length) throw "String index " + idx + " out of bounds at line " + expr.line + ", column " + expr.column;
+                        return Value.VString(str.charAt(Std.int(idx)));
+                    default: throw "String index " + index + " must be an integer at line " + expr.line + ", column " + expr.column;
+                }
+            
+            case Value.VMap(map):
+                switch (index) {
+                    case Value.VString(key):
+                        if (!map.exists(key)) throw "Map key '" + key + "' does not exist at line " + expr.line + ", column " + expr.column;
+                        return map.get(key);
+                    default: throw "Map key " + index + " must be a string at line " + expr.line + ", column " + expr.column;
+                }
+            
+            default: throw "Attempted to index non-iterable " + target + " at line " + expr.line + ", column " + expr.column;
+        }
     }
 
-    public function visitMapExpr(expr:MapExpr):StringMap<Dynamic> {
-        var result:StringMap<Dynamic> = new StringMap();
+    public function visitMapExpr(expr:MapExpr):Value {
+        var result:StringMap<Value> = new StringMap();
         for (pair in expr.pairs) {
             var key = pair.key;
             var value = visitExpr(pair.value);
             result.set(key, value);
         }
-        return result;
+        return Value.VMap(result);
     }
 
-    public function visitFunctionExpr(expr:FunctionExpr):Function {
-        return new Function(expr.name, expr.params, expr.body);
+    public function visitFunctionExpr(expr:FunctionExpr):Value {
+        return Value.VFunc(new Function(expr.name, expr.params, expr.body));
+    }
+
+
+
+    // ======== Runtime init stuff :) ======== //
+
+
+
+    function loadFunctions() {
+        // clock: () => number
+        environment.define("clock", Value.VNative(new NativeFunction("clock", [], function(env) {
+            return Sys.time();
+        })));
+
+        // length: (any) => number
+        environment.define("length", Value.VNative(new NativeFunction("length", [new Parameter("item", null, 0, 0)], function(env) {
+            var item:Value = env.get("item");
+            if (Std.isOfType(item, String)) {
+                return Value.VNumber(V.toString(item).length);
+            } else if (Std.isOfType(item, Array)) {
+                return Value.VNumber(V.toArray(item).length);
+            } else if (Std.isOfType(item, StringMap)) {
+                var count:Int = 0;
+                for (key in V.toMap(item).keys()) count++;
+                return Value.VNumber(count);
+            } else if (Std.isOfType(item, Function)) {
+                return Value.VNumber(V.toFunc(item).params.length);
+            } else if (Std.isOfType(item, NativeFunction)) {
+                return Value.VNumber(V.toNativeFunc(item).params.length);
+            } else {
+                throw "length() argument must be a string, array, map or function";
+            }
+        })));
+
+        // typeof: (any) => string
+        environment.define("typeof", Value.VNative(new NativeFunction("typeof", [new Parameter("item", null, 0, 0)], function(env) {
+            var item:Value = env.get("item");
+            if (item == null) return Value.VString("null");
+            if (Std.isOfType(item, Bool)) return Value.VString("bool");
+            if (Std.isOfType(item, Int) || Std.isOfType(item, Float)) return Value.VString("number");
+            if (Std.isOfType(item, String)) return Value.VString("string");
+            if (Std.isOfType(item, Array)) return Value.VString("array");
+            if (Std.isOfType(item, Function) || Std.isOfType(item, NativeFunction)) return Value.VString("function");
+            return Value.VString("object");
+        })));
+
+        // range: (number, number, number) => array
+        environment.define("range", Value.VNative(new NativeFunction("range", [
+            new Parameter("start", null, 0, 0), 
+            new Parameter("end", null, 0, 0), 
+            new Parameter("step", new NumberExpr(1, 0, 0), 0, 0)
+        ], function(env) {
+            var start:Value = env.get("start");
+            var end:Value = env.get("end");
+            var step:Value = env.get("step");
+            if (!Std.isOfType(start, Float) || !Std.isOfType(end, Float) || !Std.isOfType(step, Float)) {
+                throw "range() arguments must be numbers";
+            }
+            var result:Array<Value> = [];
+            var i = V.toNumber(start);
+            if (V.toNumber(step) == 0) throw "range() step argument must not be zero";
+            if (V.toNumber(step) > 0) {
+                while (i < V.toNumber(end)) {
+                    result.push(Value.VNumber(i));
+                    i += V.toNumber(step);
+                }
+            } else {
+                while (i > V.toNumber(end)) {
+                    result.push(Value.VNumber(i));
+                    i += V.toNumber(step);
+                }
+            }
+            return Value.VArray(result);
+        })));
+
+        // clear: () => null
+        environment.define("clear", Value.VNative(new NativeFunction("clear", [], function(env) {
+            if (Sys.systemName().toLowerCase().indexOf("windows") != -1) {
+                Sys.command("cls");
+            } else {
+                Sys.command("clear");
+            }
+            return null;
+        })));
+
+        // map_arr: (array, func) => array
+        environment.define("map_arr", Value.VNative(new NativeFunction("map", [
+            new Parameter("arr", null, 0, 0), 
+            new Parameter("func", null, 0, 0)
+        ], function(env) {
+            var arr:Value = env.get("arr");
+            var func:Value = env.get("func");
+            if (!Std.isOfType(arr, Array)) {
+                throw "map() first argument must be an array";
+            }
+            if (!(Std.isOfType(func, Function) || Std.isOfType(func, NativeFunction))) {
+                throw "map() second argument must be a function";
+            }
+            var result:Array<Value> = [];
+            for (item in V.toArray(arr)) {
+                if (Std.isOfType(func, Function)) {
+                    try {
+                        V.toFunc(func).call([item], this);
+                    } catch (e:Return) {
+                        result.push(e.value);
+                    }
+                } else if (Std.isOfType(func, NativeFunction)) {
+                    result.push(V.toNativeFunc(func).call([item], this));
+                }
+            }
+            return Value.VArray(result);
+        })));
+
+
+        environment.define("math", Value.VMap(new StringMap<Value>()));
+
+        // math.sqrt: (number) => number
+        V.toMap(environment.get("math")).set("sqrt", Value.VNative(new NativeFunction("sqrt", [
+            new Parameter("num", null, 0, 0)
+        ], function(env) {
+            return Value.VNumber(Math.sqrt(V.toNumber(env.get("num"))));
+        })));
     }
 }

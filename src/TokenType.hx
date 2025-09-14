@@ -21,6 +21,7 @@ enum TokenType {
     SEMICOLON;
     EQUALS;
     COMMA;
+    PERIOD;
     ARROW;
 
     EQEQ;

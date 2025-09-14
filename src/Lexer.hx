@@ -141,6 +141,9 @@ class Lexer {
                 case ',':
                     tokens.push(new Token(TokenType.COMMA, current, line, column));
                     advance();
+                case '.':
+                    tokens.push(new Token(TokenType.PERIOD, current, line, column));
+                    advance();
                 case '"':
                     // String literal
                     var start = position + 1;
@@ -167,6 +170,12 @@ class Lexer {
                         while (!isEof() && ~/[0-9]/.match(current)) {
                             advance();
                         }
+                        if (current == '.') {
+                            advance();
+                            while (!isEof() && ~/[0-9]/.match(current)) {
+                                advance();
+                            }
+                        }
                         var numberStr = source.substring(start, position);
                         tokens.push(new Token(TokenType.NUMBER, numberStr, line, column - (position - start)));
                     } else {
@@ -179,7 +188,8 @@ class Lexer {
     }
 
     function isKeyword(identifier:String):Bool {
-        var keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec", "func", "return", "null", "for", "in"];
+        var keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec", "func", "return", "null", "for", "in", "as", 
+                        "number", "string", "bool", "array", "map"];
         return keywords.indexOf(identifier.toLowerCase()) != -1;
     }
 }
