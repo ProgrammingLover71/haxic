@@ -17,7 +17,7 @@
    * [Running files](#running-files)
 6. [Usage](#usage)
 
-   * [Writing code in Haxix](#writing-code-in-haxic)
+   * [Writing code in Haxic](#writing-code-in-haxic)
    * [Examples](#examples)
 7. [Folder Structure](#folder-structure)
 8. [Contributing](#contributing)
@@ -104,7 +104,7 @@ out/cpp/haxic <file> # Omit file for REPL
 
 ## Usage
 
-### Writing Haxic code
+### Writing code in Haxic
 
 Write `.hxc` files using BASIC-style syntax. Example:
 
