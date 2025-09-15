@@ -14,10 +14,10 @@
 
    * [Prerequisites](#prerequisites)
    * [Installation](#installation)
-   * [Build & Run](#build--run)
+   * [Running files](#running-files)
 6. [Usage](#usage)
 
-   * [Writing BASIC code](#writing-basic-code)
+   * [Writing code in Haxix](#writing-code-in-haxic)
    * [Examples](#examples)
 7. [Folder Structure](#folder-structure)
 8. [Contributing](#contributing)
@@ -29,18 +29,18 @@
 
 ## Introduction
 
-Haxic is a project that implements a modern reinterpretation of the BASIC programming language using **Haxe**. It aims to bring together simplicity, nostalgia, and modern programming conveniences. Users can write BASIC-style code, which Haxic will process (interpret / compile / transpile) it using Haxe tooling. ([github.com](https://github.com/ProgrammingLover71/haxic))
+Haxic is a project that implements a modern reinterpretation of the BASIC programming language using *Haxe*. It aims to bring together simplicity, nostalgia, and modern programming conveniences. Users can write code in a simple BASIC-inspired syntax, which Haxic will process (interpret / compile / transpile) it using Haxe tooling. ([github.com](https://github.com/ProgrammingLover71/haxic))
 
 ---
 
 ## Features
 
-* A heavily BASIC-inspired syntax for writing programs
+* A mainly BASIC-inspired syntax for writing programs
+* Modern syntax features, such as arrays, maps, lambda functions (function expressions) ans closures
 * Parsing and interpreting or compiling that code using Haxe
-* Cross-platform support via Haxe targets
+* Cross-platform support via compilation targets (the Haxic compiler is WIP)
 * Example programs shipped with the repo for demonstration
-* Simple command-line interface / tool to execute BASIC scripts
-* (Optionally) ability to transpile Haxic code to another target or generate Haxe / JavaScript / etc.
+* A simple, straightforward REPL and a way to execute scripts
 
 ---
 
@@ -61,7 +61,7 @@ Why build Haxic?
 * **Examples** are in `examples/`
 * Output or build artifacts may go into `out/` (e.g. `out/py`)
 * A build script (`build.bat`) is present for Windows users
-* Implemented in Haxe; code is parsed and either interpreted or compiled to a target backend
+* Implemented in Haxe; the source code is precompiled to Python/C++
 
 ---
 
@@ -80,17 +80,24 @@ git clone https://github.com/ProgrammingLover71/haxic.git
 cd haxic
 
 # Build / compile
-./build.bat   # on Windows
+# On Windows:
+./build.bat
+
+# On Unix systems
+haxe -main src/Main.hx -py out/py/haxic.py
+haxe -main src/Main.hx -cpp out/cpp
 ```
 
-### Build & Run
+### Running files
+
+Haxic has a REPL and a compiler/interpreter, both of which can be run as follows:
 
 ```bash
-# Run the interpreter
-haxic <path-to-file>
+# Python build:
+py out/py/haxic.py <file> # Omit file for REPL
 
-# Or, via Haxe directly
-haxe -main src/Main.x --interp -run <your-basic-file.bas>
+# C++ build:
+out/cpp/haxic <file> # Omit file for REPL
 ```
 
 ---
@@ -103,7 +110,7 @@ Write `.hxc` files using BASIC-style syntax. Example:
 
 ```haxic
 print "Hello!";
-input a as num;
+input a;
 if a > 10 then
     print "A is large";
 else
@@ -113,7 +120,7 @@ end
 
 ### Examples
 
-See the `examples/` folder for sample programs.
+See the `examples/` folder for sample programs. These programs also act as langyage feature tests.
 
 ---
 
@@ -122,8 +129,8 @@ See the `examples/` folder for sample programs.
 | Path             | Description                                  |
 | ---------------- | -------------------------------------------- |
 | `src/`           | Main source code (parser, interpreter, etc.) |
-| `examples/`      | Example BASIC programs                       |
-| `out/py/`        | Output directory (Python target, etc.)       |
+| `examples/`      | Example Haxic programs                       |
+| `out/`           | Output directories (Python target, etc.)       |
 | `build.bat`      | Windows build script                         |
 | `.gitattributes` | Git settings (line endings, etc.)            |
 | `LICENSE`        | Project license (MIT)                        |
@@ -149,9 +156,13 @@ Haxic is licensed under the **MIT License**.
 ## Roadmap
 
 * Improved error messages
-* More target backends (JavaScript, Python, etc.)
+* More target backends for the compiler/interpreter (JavaScript, etc.)
 * Optimizations for compilation
 * Packaging & distribution
+* Modules
+* OOP Features
+* A larger standard library
+* Haxic compiler
 
 ---
 
