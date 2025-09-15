@@ -1,6 +1,5 @@
 package src;
 
-import sys.ssl.Key;
 import haxe.ds.StringMap;
 import src.ast.*;
 import src.types.*;
