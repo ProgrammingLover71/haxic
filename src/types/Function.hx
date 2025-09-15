@@ -19,7 +19,7 @@ class Function {
         return "<Function " + name + ":" + params.length + ">";
     }
 
-    public function call(args:Array<Dynamic>, interp:Interpreter):Void {
+    public function call(args:Array<Value>, interp:Interpreter):Void {
         // Create a new environment for the function call
         var previousEnv = interp.environment;
         interp.environment = new Environment(previousEnv);
