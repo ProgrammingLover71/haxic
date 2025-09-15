@@ -12,15 +12,17 @@ abstract class ASTWalker {
     abstract public function visitBlockStmt(stmt:BlockStmt):Void;
     abstract public function visitExprStmt(stmt:ExprStmt):Void;
     // Expressions
-    abstract public function visitBinaryExpr(expr:BinaryExpr):Dynamic;
-    abstract public function visitNumberExpr(expr:NumberExpr):Dynamic;
-    abstract public function visitVariableExpr(expr:VariableExpr):Dynamic;
-    abstract public function visitUnaryExpr(expr:UnaryExpr):Dynamic;
-    abstract public function visitStringExpr(expr:StringExpr):Dynamic;
+    abstract public function visitBinaryExpr(expr:BinaryExpr):Value;
+    abstract public function visitNumberExpr(expr:NumberExpr):Value;
+    abstract public function visitVariableExpr(expr:VariableExpr):Value;
+    abstract public function visitUnaryExpr(expr:UnaryExpr):Value;
+    abstract public function visitStringExpr(expr:StringExpr):Value;
     abstract public function visitExpr(expr:Expr):Dynamic;
-    abstract public function visitArrayExpr(expr:ArrayExpr):Dynamic;
-    abstract public function visitIndexExpr(expr:IndexExpr):Dynamic;
-    abstract public function visitCallExpr(expr:CallExpr):Dynamic;
-    abstract public function visitBooleanExpr(expr:BooleanExpr):Dynamic;
-    abstract public function visitNullExpr(expr:NullExpr):Dynamic;
+    abstract public function visitArrayExpr(expr:ArrayExpr):Value;
+    abstract public function visitIndexExpr(expr:IndexExpr):Value;
+    abstract public function visitCallExpr(expr:CallExpr):Value;
+    abstract public function visitBooleanExpr(expr:BooleanExpr):Value;
+    abstract public function visitNullExpr(expr:NullExpr):Value;
+    abstract public function visitFunctionExpr(expr:FunctionExpr):Value;
+    abstract pulbuc function visitMapExpr(expr:MapExpr):Value;
 }
