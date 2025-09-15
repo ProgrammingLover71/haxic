@@ -130,7 +130,7 @@ See the `examples/` folder for sample programs. These programs also act as langu
 | ---------------- | -------------------------------------------- |
 | `src/`           | Main source code (parser, interpreter, etc.) |
 | `examples/`      | Example Haxic programs                       |
-| `out/`           | Output directories (Python target, etc.)       |
+| `out/`           | Output directories (Python, C++, etc.)       |
 | `build.bat`      | Windows build script                         |
 | `.gitattributes` | Git settings (line endings, etc.)            |
 | `LICENSE`        | Project license (MIT)                        |
