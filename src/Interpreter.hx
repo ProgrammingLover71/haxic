@@ -399,7 +399,7 @@ class Interpreter extends ASTWalker {
     function loadFunctions() {
         // clock: () => number
         environment.define("clock", Value.VNative(new NativeFunction("clock", [], function(env) {
-            return Sys.time();
+            return Value.VNumber(Sys.time());
         })));
 
         // length: (any) => number
