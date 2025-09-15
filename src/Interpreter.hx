@@ -469,7 +469,7 @@ class Interpreter extends ASTWalker {
             } else {
                 Sys.command("clear");
             }
-            return null;
+            return Value.VNull;
         })));
 
         // map_arr: (array, func) => array
