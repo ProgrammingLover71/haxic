@@ -7,9 +7,9 @@ import src.Interpreter;
 class NativeFunction {
     public var name:String;
     public var params:Array<Parameter>;
-    public var body:((Environment) -> Dynamic);
+    public var body:((Environment) -> Value);
 
-    public function new(name:String, params:Array<Parameter>, body:((Environment) -> Dynamic)) {
+    public function new(name:String, params:Array<Parameter>, body:((Environment) -> Value)) {
         this.name = name;
         this.params = params;
         this.body = body;
@@ -19,7 +19,7 @@ class NativeFunction {
         return "<Native function " + name + ":" + params.length + ">";
     }
 
-    public function call(args:Array<Dynamic>, interp:Interpreter):Dynamic {
+    public function call(args:Array<Value>, interp:Interpreter):Dynamic {
         // Create a new environment for the function call
         var previousEnv = interp.environment;
         interp.environment = new Environment(previousEnv);
@@ -37,8 +37,8 @@ class NativeFunction {
             
             interp.environment.define(param.name, value);
         }
-        // Throw a Return exception to unwind the stack and return the value
-        var value:Dynamic = body(interp.environment);
+        
+        var value:Value = body(interp.environment);
         interp.environment = previousEnv;
         return value;
     }
