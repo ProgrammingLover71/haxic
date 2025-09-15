@@ -424,12 +424,12 @@ class Interpreter extends ASTWalker {
         // typeof: (any) => string
         environment.define("typeof", Value.VNative(new NativeFunction("typeof", [new Parameter("item", null, 0, 0)], function(env) {
             var item:Value = env.get("item");
-            if (item == null) return Value.VString("null");
-            if (Std.isOfType(item, Bool)) return Value.VString("bool");
-            if (Std.isOfType(item, Int) || Std.isOfType(item, Float)) return Value.VString("number");
-            if (Std.isOfType(item, String)) return Value.VString("string");
-            if (Std.isOfType(item, Array)) return Value.VString("array");
-            if (Std.isOfType(item, Function) || Std.isOfType(item, NativeFunction)) return Value.VString("function");
+            if (item == Value.VNull) return Value.VString("null");
+            if (Std.isOfType(item, Value.VBool)) return Value.VString("bool");
+            if (Std.isOfType(item, Value.VNumber)) return Value.VString("number");
+            if (Std.isOfType(item, Value.VString)) return Value.VString("string");
+            if (Std.isOfType(item, Value.VArray)) return Value.VString("array");
+            if (Std.isOfType(item, Value.VFunc) || Std.isOfType(item, NativeFunction)) return Value.VString("function");
             return Value.VString("object");
         })));
 
@@ -498,6 +498,12 @@ class Interpreter extends ASTWalker {
                 }
             }
             return Value.VArray(result);
+        })));
+
+        // toString: (any) => string
+        environment.define("toString", Value.VNative(new NativeFunction("toString", [new Parameter("item", null, 0, 0)], function(env) {
+            var item:Value = env.get("item");
+            return Value.VString(Utils.stringify(item));
         })));
 
 

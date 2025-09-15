@@ -8,5 +8,5 @@ while i < 100000 do
 end
 
 let endt = clock();
-print "Sum = " + sum;
-print "Elapsed: " + (endt - start) * 1000 + "ms";
+print "Sum = " + toString(sum);
+print "Elapsed: " + toString((endt - start) * 1000) + "ms";

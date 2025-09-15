@@ -167,10 +167,11 @@ HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_425_loadFunctions,"src.Interpreter
 HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_441_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",441,0xb37cc36f)
 HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_466_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",466,0xb37cc36f)
 HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_479_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",479,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_510_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",510,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_517_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",517,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_524_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",524,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_532_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",532,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_506_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",506,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_516_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",516,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_523_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",523,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_530_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",530,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_538_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",538,0xb37cc36f)
 HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_398_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",398,0xb37cc36f)
 namespace src{
 
@@ -871,36 +872,29 @@ HXLINE( 407)			return null();
             		 ::src::types::Value _hx_run( ::src::Environment env){
             			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_425_loadFunctions)
 HXLINE( 426)			 ::src::types::Value item = env->get(HX_("item",13,c5,bf,45));
-HXLINE( 427)			if (::hx::IsNull( item )) {
+HXLINE( 427)			if (::hx::IsPointerEq( item,::src::types::Value_obj::VNull_dyn() )) {
 HXLINE( 427)				return ::src::types::Value_obj::VString(HX_("null",87,9e,0e,49));
             			}
-HXLINE( 428)			if (::Std_obj::isOfType(item,::hx::ClassOf< bool >())) {
+HXLINE( 428)			if (::Std_obj::isOfType(item,::src::types::Value_obj::VBool_dyn())) {
 HXLINE( 428)				return ::src::types::Value_obj::VString(HX_("bool",2a,84,1b,41));
             			}
-HXLINE( 429)			bool _hx_tmp;
-HXDLIN( 429)			if (!(::Std_obj::isOfType(item,::hx::ClassOf< int >()))) {
-HXLINE( 429)				_hx_tmp = ::Std_obj::isOfType(item,::hx::ClassOf< ::Float >());
-            			}
-            			else {
-HXLINE( 429)				_hx_tmp = true;
-            			}
-HXDLIN( 429)			if (_hx_tmp) {
+HXLINE( 429)			if (::Std_obj::isOfType(item,::src::types::Value_obj::VNumber_dyn())) {
 HXLINE( 429)				return ::src::types::Value_obj::VString(HX_("number",c9,86,7a,a1));
             			}
-HXLINE( 430)			if (::Std_obj::isOfType(item,::hx::ClassOf< ::String >())) {
+HXLINE( 430)			if (::Std_obj::isOfType(item,::src::types::Value_obj::VString_dyn())) {
 HXLINE( 430)				return ::src::types::Value_obj::VString(HX_("string",d1,28,30,11));
             			}
-HXLINE( 431)			if (::Std_obj::isOfType(item,::hx::ArrayBase::__mClass)) {
+HXLINE( 431)			if (::Std_obj::isOfType(item,::src::types::Value_obj::VArray_dyn())) {
 HXLINE( 431)				return ::src::types::Value_obj::VString(HX_("array",99,6d,8f,25));
             			}
-HXLINE( 432)			bool _hx_tmp1;
-HXDLIN( 432)			if (!(::Std_obj::isOfType(item,::hx::ClassOf< ::src::types::Function >()))) {
-HXLINE( 432)				_hx_tmp1 = ::Std_obj::isOfType(item,::hx::ClassOf< ::src::types::NativeFunction >());
+HXLINE( 432)			bool _hx_tmp;
+HXDLIN( 432)			if (!(::Std_obj::isOfType(item,::src::types::Value_obj::VFunc_dyn()))) {
+HXLINE( 432)				_hx_tmp = ::Std_obj::isOfType(item,::hx::ClassOf< ::src::types::NativeFunction >());
             			}
             			else {
-HXLINE( 432)				_hx_tmp1 = true;
+HXLINE( 432)				_hx_tmp = true;
             			}
-HXDLIN( 432)			if (_hx_tmp1) {
+HXDLIN( 432)			if (_hx_tmp) {
 HXLINE( 432)				return ::src::types::Value_obj::VString(HX_("function",18,ab,52,14));
             			}
 HXLINE( 433)			return ::src::types::Value_obj::VString(HX_("object",bf,7e,3f,15));
@@ -1017,30 +1011,37 @@ HXLINE( 500)			return ::src::types::Value_obj::VArray(result);
 
             		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_6) HXARGC(1)
             		 ::src::types::Value _hx_run( ::src::Environment env){
-            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_510_loadFunctions)
-HXLINE( 510)			return ::src::types::Value_obj::VNumber(::Math_obj::sqrt(::src::types::V_obj::toNumber(env->get(HX_("num",46,de,53,00)))));
+            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_506_loadFunctions)
+HXLINE( 506)			return ::src::types::Value_obj::VString(::src::Utils_obj::stringify(env->get(HX_("item",13,c5,bf,45))));
             		}
             		HX_END_LOCAL_FUNC1(return)
 
             		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_7) HXARGC(1)
             		 ::src::types::Value _hx_run( ::src::Environment env){
-            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_517_loadFunctions)
-HXLINE( 517)			return ::src::types::Value_obj::VNumber(::Math_obj::cos(::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)))));
+            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_516_loadFunctions)
+HXLINE( 516)			return ::src::types::Value_obj::VNumber(::Math_obj::sqrt(::src::types::V_obj::toNumber(env->get(HX_("num",46,de,53,00)))));
             		}
             		HX_END_LOCAL_FUNC1(return)
 
             		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_8) HXARGC(1)
             		 ::src::types::Value _hx_run( ::src::Environment env){
-            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_524_loadFunctions)
-HXLINE( 524)			return ::src::types::Value_obj::VNumber(::Math_obj::tan(::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)))));
+            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_523_loadFunctions)
+HXLINE( 523)			return ::src::types::Value_obj::VNumber(::Math_obj::cos(::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)))));
             		}
             		HX_END_LOCAL_FUNC1(return)
 
             		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_9) HXARGC(1)
             		 ::src::types::Value _hx_run( ::src::Environment env){
-            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_532_loadFunctions)
-HXLINE( 533)			Float _hx_tmp = ::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)));
-HXLINE( 532)			return ::src::types::Value_obj::VNumber(::Math_obj::pow(_hx_tmp,::src::types::V_obj::toNumber(env->get(HX_("y",79,00,00,00)))));
+            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_530_loadFunctions)
+HXLINE( 530)			return ::src::types::Value_obj::VNumber(::Math_obj::tan(::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)))));
+            		}
+            		HX_END_LOCAL_FUNC1(return)
+
+            		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_10) HXARGC(1)
+            		 ::src::types::Value _hx_run( ::src::Environment env){
+            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_538_loadFunctions)
+HXLINE( 539)			Float _hx_tmp = ::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)));
+HXLINE( 538)			return ::src::types::Value_obj::VNumber(::Math_obj::pow(_hx_tmp,::src::types::V_obj::toNumber(env->get(HX_("y",79,00,00,00)))));
             		}
             		HX_END_LOCAL_FUNC1(return)
 
@@ -1058,15 +1059,17 @@ HXLINE( 466)		 ::src::types::Value _hx_tmp4 = ::src::types::Value_obj::VNative( 
 HXDLIN( 466)		this->environment->define(HX_("clear",8d,71,5b,48),_hx_tmp4);
 HXLINE( 476)		 ::src::types::Value _hx_tmp5 = ::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("map",9c,0a,53,00),::Array_obj< ::Dynamic>::__new(2)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("arr",61,fe,49,00),null(),0,0))->init(1, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("func",44,eb,c4,43),null(),0,0)), ::Dynamic(new _hx_Closure_5(_gthis))));
 HXDLIN( 476)		this->environment->define(HX_("map",9c,0a,53,00),_hx_tmp5);
-HXLINE( 504)		this->environment->define(HX_("math",c8,41,56,48),::src::types::Value_obj::VMap( ::haxe::ds::StringMap_obj::__alloc( HX_CTX )));
-HXLINE( 507)		 ::haxe::ds::StringMap _hx_tmp6 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
-HXDLIN( 507)		_hx_tmp6->set(HX_("sqrt",e0,ab,59,4c),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("sqrt",e0,ab,59,4c),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("num",46,de,53,00),null(),0,0)), ::Dynamic(new _hx_Closure_6()))));
-HXLINE( 514)		 ::haxe::ds::StringMap _hx_tmp7 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
-HXDLIN( 514)		_hx_tmp7->set(HX_("cos",47,80,4b,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("cos",47,80,4b,00),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0)), ::Dynamic(new _hx_Closure_7()))));
-HXLINE( 521)		 ::haxe::ds::StringMap _hx_tmp8 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
-HXDLIN( 521)		_hx_tmp8->set(HX_("tan",61,5a,58,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("tan",61,5a,58,00),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0)), ::Dynamic(new _hx_Closure_8()))));
-HXLINE( 528)		 ::haxe::ds::StringMap _hx_tmp9 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
-HXDLIN( 528)		_hx_tmp9->set(HX_("pow",98,5d,55,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("pow",98,5d,55,00),::Array_obj< ::Dynamic>::__new(2)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0))->init(1, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("y",79,00,00,00), ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,( (Float)(1) ),0,0),0,0)), ::Dynamic(new _hx_Closure_9()))));
+HXLINE( 504)		 ::src::types::Value _hx_tmp6 = ::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("toString",ac,d0,6e,38),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("item",13,c5,bf,45),null(),0,0)), ::Dynamic(new _hx_Closure_6())));
+HXDLIN( 504)		this->environment->define(HX_("toString",ac,d0,6e,38),_hx_tmp6);
+HXLINE( 510)		this->environment->define(HX_("math",c8,41,56,48),::src::types::Value_obj::VMap( ::haxe::ds::StringMap_obj::__alloc( HX_CTX )));
+HXLINE( 513)		 ::haxe::ds::StringMap _hx_tmp7 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
+HXDLIN( 513)		_hx_tmp7->set(HX_("sqrt",e0,ab,59,4c),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("sqrt",e0,ab,59,4c),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("num",46,de,53,00),null(),0,0)), ::Dynamic(new _hx_Closure_7()))));
+HXLINE( 520)		 ::haxe::ds::StringMap _hx_tmp8 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
+HXDLIN( 520)		_hx_tmp8->set(HX_("cos",47,80,4b,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("cos",47,80,4b,00),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0)), ::Dynamic(new _hx_Closure_8()))));
+HXLINE( 527)		 ::haxe::ds::StringMap _hx_tmp9 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
+HXDLIN( 527)		_hx_tmp9->set(HX_("tan",61,5a,58,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("tan",61,5a,58,00),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0)), ::Dynamic(new _hx_Closure_9()))));
+HXLINE( 534)		 ::haxe::ds::StringMap _hx_tmp10 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
+HXDLIN( 534)		_hx_tmp10->set(HX_("pow",98,5d,55,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("pow",98,5d,55,00),::Array_obj< ::Dynamic>::__new(2)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0))->init(1, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("y",79,00,00,00), ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,( (Float)(1) ),0,0),0,0)), ::Dynamic(new _hx_Closure_10()))));
             	}
 
 

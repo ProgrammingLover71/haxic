@@ -2311,17 +2311,17 @@ class src_Interpreter(src_ASTWalker):
         self.environment.define("length",src_types_Value.VNative(src_types_NativeFunction("length",[src_ast_Parameter("item",None,0,0)],_hx_local_2)))
         def _hx_local_3(env):
             item = env.get("item")
-            if (item is None):
+            if (item == src_types_Value.VNull):
                 return src_types_Value.VString("null")
-            if Std.isOfType(item,Bool):
+            if Std.isOfType(item,src_types_Value.VBool):
                 return src_types_Value.VString("bool")
-            if (Std.isOfType(item,Int) or Std.isOfType(item,Float)):
+            if Std.isOfType(item,src_types_Value.VNumber):
                 return src_types_Value.VString("number")
-            if Std.isOfType(item,str):
+            if Std.isOfType(item,src_types_Value.VString):
                 return src_types_Value.VString("string")
-            if Std.isOfType(item,list):
+            if Std.isOfType(item,src_types_Value.VArray):
                 return src_types_Value.VString("array")
-            if (Std.isOfType(item,src_types_Function) or Std.isOfType(item,src_types_NativeFunction)):
+            if (Std.isOfType(item,src_types_Value.VFunc) or Std.isOfType(item,src_types_NativeFunction)):
                 return src_types_Value.VString("function")
             return src_types_Value.VString("object")
         self.environment.define("typeof",src_types_Value.VNative(src_types_NativeFunction("typeof",[src_ast_Parameter("item",None,0,0)],_hx_local_3)))
@@ -2383,28 +2383,32 @@ class src_Interpreter(src_ASTWalker):
                     result.append(x1)
             return src_types_Value.VArray(result)
         self.environment.define("map",src_types_Value.VNative(src_types_NativeFunction("map",[src_ast_Parameter("arr",None,0,0), src_ast_Parameter("func",None,0,0)],_hx_local_9)))
+        def _hx_local_10(env):
+            item = env.get("item")
+            return src_types_Value.VString(src_Utils.stringify(item))
+        self.environment.define("toString",src_types_Value.VNative(src_types_NativeFunction("toString",[src_ast_Parameter("item",None,0,0)],_hx_local_10)))
         self.environment.define("math",src_types_Value.VMap(haxe_ds_StringMap()))
         _this = src_types_V.toMap(self.environment.get("math"))
-        def _hx_local_10(env):
+        def _hx_local_11(env):
             v = src_types_V.toNumber(env.get("num"))
             return src_types_Value.VNumber((Math.NaN if ((v < 0)) else python_lib_Math.sqrt(v)))
-        value = src_types_Value.VNative(src_types_NativeFunction("sqrt",[src_ast_Parameter("num",None,0,0)],_hx_local_10))
+        value = src_types_Value.VNative(src_types_NativeFunction("sqrt",[src_ast_Parameter("num",None,0,0)],_hx_local_11))
         _this.h["sqrt"] = value
         _this = src_types_V.toMap(self.environment.get("math"))
-        def _hx_local_11(env):
+        def _hx_local_12(env):
             v = src_types_V.toNumber(env.get("x"))
             return src_types_Value.VNumber((Math.NaN if (((v == Math.POSITIVE_INFINITY) or ((v == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(v)))
-        value = src_types_Value.VNative(src_types_NativeFunction("cos",[src_ast_Parameter("x",None,0,0)],_hx_local_11))
+        value = src_types_Value.VNative(src_types_NativeFunction("cos",[src_ast_Parameter("x",None,0,0)],_hx_local_12))
         _this.h["cos"] = value
         _this = src_types_V.toMap(self.environment.get("math"))
-        def _hx_local_12(env):
+        def _hx_local_13(env):
             return src_types_Value.VNumber(Math.tan(src_types_V.toNumber(env.get("x"))))
-        value = src_types_Value.VNative(src_types_NativeFunction("tan",[src_ast_Parameter("x",None,0,0)],_hx_local_12))
+        value = src_types_Value.VNative(src_types_NativeFunction("tan",[src_ast_Parameter("x",None,0,0)],_hx_local_13))
         _this.h["tan"] = value
         _this = src_types_V.toMap(self.environment.get("math"))
-        def _hx_local_13(env):
+        def _hx_local_14(env):
             return src_types_Value.VNumber(Math.pow(src_types_V.toNumber(env.get("x")),src_types_V.toNumber(env.get("y"))))
-        value = src_types_Value.VNative(src_types_NativeFunction("pow",[src_ast_Parameter("x",None,0,0), src_ast_Parameter("y",src_ast_NumberExpr(1,0,0),0,0)],_hx_local_13))
+        value = src_types_Value.VNative(src_types_NativeFunction("pow",[src_ast_Parameter("x",None,0,0), src_ast_Parameter("y",src_ast_NumberExpr(1,0,0),0,0)],_hx_local_14))
         _this.h["pow"] = value
 
 src_Interpreter._hx_class = src_Interpreter

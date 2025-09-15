@@ -7,6 +7,7 @@
 #endif
 
 HX_DECLARE_CLASS1(src,Utils)
+HX_DECLARE_CLASS2(src,types,Value)
 
 namespace src{
 
@@ -53,7 +54,7 @@ class HXCPP_CLASS_ATTRIBUTES Utils_obj : public ::hx::Object
 		static void print(::String value,::hx::Null< bool >  writeNewLine);
 		static ::Dynamic print_dyn();
 
-		static ::String stringify( ::Dynamic value);
+		static ::String stringify( ::src::types::Value value);
 		static ::Dynamic stringify_dyn();
 
 };

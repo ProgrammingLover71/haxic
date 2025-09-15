@@ -1,7 +1,6 @@
 package src;
 
 import haxe.io.Bytes;
-import haxe.ds.StringMap;
 import src.types.*;
 
 class Utils {
@@ -9,7 +8,7 @@ class Utils {
         Sys.stdout().write(Bytes.ofString(value + (writeNewLine ? "\n" : "")));
     }
 
-    public static function stringify(value:Dynamic):String {
+    public static function stringify(value:Value):String {
         switch (value) {
             case Value.VNull: return "null";
             case Value.VString(s): return s;

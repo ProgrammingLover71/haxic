@@ -35,8 +35,8 @@
 #include <src/types/Value.h>
 #endif
 
-HX_LOCAL_STACK_FRAME(_hx_pos_e6004c8b90a03ef6_9_print,"src.Utils","print",0xd50c8d86,"src.Utils.print","src/Utils.hx",9,0x4f88ad18)
-HX_LOCAL_STACK_FRAME(_hx_pos_e6004c8b90a03ef6_13_stringify,"src.Utils","stringify",0x2437cba4,"src.Utils.stringify","src/Utils.hx",13,0x4f88ad18)
+HX_LOCAL_STACK_FRAME(_hx_pos_e6004c8b90a03ef6_8_print,"src.Utils","print",0xd50c8d86,"src.Utils.print","src/Utils.hx",8,0x4f88ad18)
+HX_LOCAL_STACK_FRAME(_hx_pos_e6004c8b90a03ef6_12_stringify,"src.Utils","stringify",0x2437cba4,"src.Utils.stringify","src/Utils.hx",12,0x4f88ad18)
 namespace src{
 
 void Utils_obj::__construct() { }
@@ -58,82 +58,82 @@ bool Utils_obj::_hx_isInstanceOf(int inClassId) {
 
 void Utils_obj::print(::String value,::hx::Null< bool >  __o_writeNewLine){
             		bool writeNewLine = __o_writeNewLine.Default(true);
-            	HX_STACKFRAME(&_hx_pos_e6004c8b90a03ef6_9_print)
-HXDLIN(   9)		 ::haxe::io::Output _hx_tmp = ::Sys_obj::_hx_stdout();
-HXDLIN(   9)		::String _hx_tmp1;
-HXDLIN(   9)		if (writeNewLine) {
-HXDLIN(   9)			_hx_tmp1 = HX_("\n",0a,00,00,00);
+            	HX_STACKFRAME(&_hx_pos_e6004c8b90a03ef6_8_print)
+HXDLIN(   8)		 ::haxe::io::Output _hx_tmp = ::Sys_obj::_hx_stdout();
+HXDLIN(   8)		::String _hx_tmp1;
+HXDLIN(   8)		if (writeNewLine) {
+HXDLIN(   8)			_hx_tmp1 = HX_("\n",0a,00,00,00);
             		}
             		else {
-HXDLIN(   9)			_hx_tmp1 = HX_("",00,00,00,00);
+HXDLIN(   8)			_hx_tmp1 = HX_("",00,00,00,00);
             		}
-HXDLIN(   9)		_hx_tmp->write(::haxe::io::Bytes_obj::ofString((value + _hx_tmp1),null()));
+HXDLIN(   8)		_hx_tmp->write(::haxe::io::Bytes_obj::ofString((value + _hx_tmp1),null()));
             	}
 
 
 STATIC_HX_DEFINE_DYNAMIC_FUNC2(Utils_obj,print,(void))
 
-::String Utils_obj::stringify( ::Dynamic value){
-            	HX_STACKFRAME(&_hx_pos_e6004c8b90a03ef6_13_stringify)
-HXDLIN(  13)		switch((int)(value.StaticCast< ::hx::EnumBase >()->_hx_getIndex())){
+::String Utils_obj::stringify( ::src::types::Value value){
+            	HX_STACKFRAME(&_hx_pos_e6004c8b90a03ef6_12_stringify)
+HXDLIN(  12)		switch((int)(value->_hx_getIndex())){
             			case (int)0: {
-HXLINE(  16)				return ::Std_obj::string(value.StaticCast< ::hx::EnumBase >()->_hx_getFloat(0));
+HXLINE(  15)				return ::Std_obj::string(value->_hx_getFloat(0));
             			}
             			break;
             			case (int)1: {
-HXLINE(  17)				return ::Std_obj::string(value.StaticCast< ::hx::EnumBase >()->_hx_getBool(0));
+HXLINE(  16)				return ::Std_obj::string(value->_hx_getBool(0));
             			}
             			break;
             			case (int)2: {
-HXLINE(  14)				return HX_("null",87,9e,0e,49);
+HXLINE(  13)				return HX_("null",87,9e,0e,49);
             			}
             			break;
             			case (int)3: {
-HXLINE(  15)				return value.StaticCast< ::hx::EnumBase >()->_hx_getString(0);
+HXLINE(  14)				return value->_hx_getString(0);
             			}
             			break;
             			case (int)4: {
-HXLINE(  18)				::Array< ::Dynamic> _g = value.StaticCast< ::hx::EnumBase >()->_hx_getObject(0).StaticCast< ::Array< ::Dynamic> >();
-HXDLIN(  18)				 ::Dynamic f = ::src::Utils_obj::stringify_dyn();
-HXDLIN(  18)				::Array< ::String > result = ::Array_obj< ::String >::__new(_g->length);
-HXDLIN(  18)				{
-HXLINE(  18)					int _g1 = 0;
-HXDLIN(  18)					int _g2 = _g->length;
-HXDLIN(  18)					while((_g1 < _g2)){
-HXLINE(  18)						_g1 = (_g1 + 1);
-HXDLIN(  18)						int i = (_g1 - 1);
-HXDLIN(  18)						{
-HXLINE(  18)							::String inValue = ( (::String)(f(_hx_array_unsafe_get(_g,i))) );
-HXDLIN(  18)							result->__unsafe_set(i,inValue);
+HXLINE(  17)				::Array< ::Dynamic> _g = value->_hx_getObject(0).StaticCast< ::Array< ::Dynamic> >();
+HXDLIN(  17)				 ::Dynamic f = ::src::Utils_obj::stringify_dyn();
+HXDLIN(  17)				::Array< ::String > result = ::Array_obj< ::String >::__new(_g->length);
+HXDLIN(  17)				{
+HXLINE(  17)					int _g1 = 0;
+HXDLIN(  17)					int _g2 = _g->length;
+HXDLIN(  17)					while((_g1 < _g2)){
+HXLINE(  17)						_g1 = (_g1 + 1);
+HXDLIN(  17)						int i = (_g1 - 1);
+HXDLIN(  17)						{
+HXLINE(  17)							::String inValue = ( (::String)(f(_hx_array_unsafe_get(_g,i))) );
+HXDLIN(  17)							result->__unsafe_set(i,inValue);
             						}
             					}
             				}
-HXDLIN(  18)				return ((HX_("[",5b,00,00,00) + result->join(HX_(", ",74,26,00,00))) + HX_("]",5d,00,00,00));
+HXDLIN(  17)				return ((HX_("[",5b,00,00,00) + result->join(HX_(", ",74,26,00,00))) + HX_("]",5d,00,00,00));
             			}
             			break;
             			case (int)5: {
-HXLINE(  19)				 ::haxe::ds::StringMap _g3 = value.StaticCast< ::hx::EnumBase >()->_hx_getObject(0).StaticCast<  ::haxe::ds::StringMap >();
-HXLINE(  20)				::Array< ::String > items = ::Array_obj< ::String >::__new(0);
-HXLINE(  21)				{
-HXLINE(  21)					 ::Dynamic key = _g3->keys();
-HXDLIN(  21)					while(( (bool)(key->__Field(HX_("hasNext",6d,a5,46,18),::hx::paccDynamic)()) )){
-HXLINE(  21)						::String key1 = ( (::String)(key->__Field(HX_("next",f3,84,02,49),::hx::paccDynamic)()) );
-HXLINE(  22)						items->push(((key1 + HX_(" => ",7f,53,55,15)) + ::src::Utils_obj::stringify(_g3->get(key1))));
+HXLINE(  18)				 ::haxe::ds::StringMap _g3 = value->_hx_getObject(0).StaticCast<  ::haxe::ds::StringMap >();
+HXLINE(  19)				::Array< ::String > items = ::Array_obj< ::String >::__new(0);
+HXLINE(  20)				{
+HXLINE(  20)					 ::Dynamic key = _g3->keys();
+HXDLIN(  20)					while(( (bool)(key->__Field(HX_("hasNext",6d,a5,46,18),::hx::paccDynamic)()) )){
+HXLINE(  20)						::String key1 = ( (::String)(key->__Field(HX_("next",f3,84,02,49),::hx::paccDynamic)()) );
+HXLINE(  21)						items->push(((key1 + HX_(" => ",7f,53,55,15)) + ::src::Utils_obj::stringify(_g3->get(key1))));
             					}
             				}
-HXLINE(  24)				return ((HX_("{",7b,00,00,00) + items->join(HX_(", ",74,26,00,00))) + HX_("}",7d,00,00,00));
+HXLINE(  23)				return ((HX_("{",7b,00,00,00) + items->join(HX_(", ",74,26,00,00))) + HX_("}",7d,00,00,00));
             			}
             			break;
             			case (int)6: {
-HXLINE(  25)				return ::Std_obj::string(value.StaticCast< ::hx::EnumBase >()->_hx_getObject(0).StaticCast<  ::src::types::Function >());
+HXLINE(  24)				return ::Std_obj::string(value->_hx_getObject(0).StaticCast<  ::src::types::Function >());
             			}
             			break;
             			case (int)7: {
-HXLINE(  26)				return ::Std_obj::string(value.StaticCast< ::hx::EnumBase >()->_hx_getObject(0).StaticCast<  ::src::types::NativeFunction >());
+HXLINE(  25)				return ::Std_obj::string(value->_hx_getObject(0).StaticCast<  ::src::types::NativeFunction >());
             			}
             			break;
             		}
-HXLINE(  13)		return null();
+HXLINE(  12)		return null();
             	}
 
 
