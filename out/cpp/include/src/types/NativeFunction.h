@@ -11,6 +11,7 @@ HX_DECLARE_CLASS1(src,Environment)
 HX_DECLARE_CLASS1(src,Interpreter)
 HX_DECLARE_CLASS2(src,ast,Parameter)
 HX_DECLARE_CLASS2(src,types,NativeFunction)
+HX_DECLARE_CLASS2(src,types,Value)
 
 namespace src{
 namespace types{
@@ -55,7 +56,7 @@ class HXCPP_CLASS_ATTRIBUTES NativeFunction_obj : public ::hx::Object
 		virtual ::String toString();
 		::Dynamic toString_dyn();
 
-		 ::Dynamic call(::cpp::VirtualArray args, ::src::Interpreter interp);
+		 ::Dynamic call(::Array< ::Dynamic> args, ::src::Interpreter interp);
 		::Dynamic call_dyn();
 
 };

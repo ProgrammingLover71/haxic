@@ -21,9 +21,9 @@ HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_42_isEof,"src.Lexer","isEof",0xa3c
 HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_46_skipWhitespace,"src.Lexer","skipWhitespace",0x2327c2e8,"src.Lexer.skipWhitespace","src/Lexer.hx",46,0xd3e3d81d)
 HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_52_skipComments,"src.Lexer","skipComments",0xf70a9ddf,"src.Lexer.skipComments","src/Lexer.hx",52,0xd3e3d81d)
 HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_60_tokenize,"src.Lexer","tokenize",0x0e129b07,"src.Lexer.tokenize","src/Lexer.hx",60,0xd3e3d81d)
-HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_193_isKeyword,"src.Lexer","isKeyword",0x42918993,"src.Lexer.isKeyword","src/Lexer.hx",193,0xd3e3d81d)
+HX_LOCAL_STACK_FRAME(_hx_pos_3dd68e9c2b948807_192_isKeyword,"src.Lexer","isKeyword",0x42918993,"src.Lexer.isKeyword","src/Lexer.hx",192,0xd3e3d81d)
 static const ::String _hx_array_data_b9b28ce2_16[] = {
-	HX_("print",2d,58,8b,c8),HX_("input",0a,c4,1d,be),HX_("let",db,4b,52,00),HX_("if",dd,5b,00,00),HX_("then",dd,02,fc,4c),HX_("else",b9,e4,14,43),HX_("while",b1,43,bd,c9),HX_("do",8b,57,00,00),HX_("end",db,03,4d,00),HX_("true",4e,a7,03,4d),HX_("false",a3,35,4f,fb),HX_("inc",de,0c,50,00),HX_("dec",c2,39,4c,00),HX_("func",44,eb,c4,43),HX_("return",b0,a4,2d,09),HX_("null",87,9e,0e,49),HX_("for",09,c7,4d,00),HX_("in",e5,5b,00,00),HX_("as",f2,54,00,00),HX_("number",c9,86,7a,a1),HX_("string",d1,28,30,11),HX_("bool",2a,84,1b,41),HX_("array",99,6d,8f,25),HX_("map",9c,0a,53,00),
+	HX_("print",2d,58,8b,c8),HX_("input",0a,c4,1d,be),HX_("let",db,4b,52,00),HX_("if",dd,5b,00,00),HX_("then",dd,02,fc,4c),HX_("else",b9,e4,14,43),HX_("while",b1,43,bd,c9),HX_("do",8b,57,00,00),HX_("end",db,03,4d,00),HX_("true",4e,a7,03,4d),HX_("false",a3,35,4f,fb),HX_("inc",de,0c,50,00),HX_("dec",c2,39,4c,00),HX_("func",44,eb,c4,43),HX_("return",b0,a4,2d,09),HX_("null",87,9e,0e,49),HX_("for",09,c7,4d,00),HX_("in",e5,5b,00,00),HX_("as",f2,54,00,00),
 };
 namespace src{
 
@@ -390,8 +390,8 @@ HXLINE( 187)		return tokens;
 HX_DEFINE_DYNAMIC_FUNC0(Lexer_obj,tokenize,return )
 
 bool Lexer_obj::isKeyword(::String identifier){
-            	HX_STACKFRAME(&_hx_pos_3dd68e9c2b948807_193_isKeyword)
-HXDLIN( 193)		return (::Array_obj< ::String >::fromData( _hx_array_data_b9b28ce2_16,24)->indexOf(identifier.toLowerCase(),null()) != -1);
+            	HX_STACKFRAME(&_hx_pos_3dd68e9c2b948807_192_isKeyword)
+HXDLIN( 192)		return (::Array_obj< ::String >::fromData( _hx_array_data_b9b28ce2_16,19)->indexOf(identifier.toLowerCase(),null()) != -1);
             	}
 
 

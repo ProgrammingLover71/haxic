@@ -1887,7 +1887,7 @@ python_io_IoTools._hx_class = python_io_IoTools
 class src_ASTWalker:
     _hx_class_name = "src.ASTWalker"
     __slots__ = ()
-    _hx_methods = ["visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitStmt", "visitBlockStmt", "visitExprStmt", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitUnaryExpr", "visitStringExpr", "visitExpr", "visitArrayExpr", "visitIndexExpr", "visitCallExpr", "visitBooleanExpr", "visitNullExpr"]
+    _hx_methods = ["visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitStmt", "visitBlockStmt", "visitExprStmt", "visitFunctionStmt", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitUnaryExpr", "visitStringExpr", "visitExpr", "visitArrayExpr", "visitIndexExpr", "visitCallExpr", "visitBooleanExpr", "visitNullExpr", "visitFunctionExpr", "visitMapExpr"]
 
 src_ASTWalker._hx_class = src_ASTWalker
 
@@ -2287,7 +2287,7 @@ class src_Interpreter(src_ASTWalker):
     def loadFunctions(self):
         _gthis = self
         def _hx_local_0(env):
-            return python_lib_Time.time()
+            return src_types_Value.VNumber(python_lib_Time.time())
         self.environment.define("clock",src_types_Value.VNative(src_types_NativeFunction("clock",[],_hx_local_0)))
         def _hx_local_2(env):
             item = env.get("item")
@@ -2352,7 +2352,7 @@ class src_Interpreter(src_ASTWalker):
                 Sys.command("cls")
             else:
                 Sys.command("clear")
-            return None
+            return src_types_Value.VNull
         self.environment.define("clear",src_types_Value.VNative(src_types_NativeFunction("clear",[],_hx_local_7)))
         def _hx_local_9(env):
             arr = env.get("arr")
@@ -2382,7 +2382,7 @@ class src_Interpreter(src_ASTWalker):
                     x1 = src_types_V.toNativeFunc(func).call([item],_gthis)
                     result.append(x1)
             return src_types_Value.VArray(result)
-        self.environment.define("map_arr",src_types_Value.VNative(src_types_NativeFunction("map",[src_ast_Parameter("arr",None,0,0), src_ast_Parameter("func",None,0,0)],_hx_local_9)))
+        self.environment.define("map",src_types_Value.VNative(src_types_NativeFunction("map",[src_ast_Parameter("arr",None,0,0), src_ast_Parameter("func",None,0,0)],_hx_local_9)))
         self.environment.define("math",src_types_Value.VMap(haxe_ds_StringMap()))
         _this = src_types_V.toMap(self.environment.get("math"))
         def _hx_local_10(env):
@@ -2390,6 +2390,22 @@ class src_Interpreter(src_ASTWalker):
             return src_types_Value.VNumber((Math.NaN if ((v < 0)) else python_lib_Math.sqrt(v)))
         value = src_types_Value.VNative(src_types_NativeFunction("sqrt",[src_ast_Parameter("num",None,0,0)],_hx_local_10))
         _this.h["sqrt"] = value
+        _this = src_types_V.toMap(self.environment.get("math"))
+        def _hx_local_11(env):
+            v = src_types_V.toNumber(env.get("x"))
+            return src_types_Value.VNumber((Math.NaN if (((v == Math.POSITIVE_INFINITY) or ((v == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(v)))
+        value = src_types_Value.VNative(src_types_NativeFunction("cos",[src_ast_Parameter("x",None,0,0)],_hx_local_11))
+        _this.h["cos"] = value
+        _this = src_types_V.toMap(self.environment.get("math"))
+        def _hx_local_12(env):
+            return src_types_Value.VNumber(Math.tan(src_types_V.toNumber(env.get("x"))))
+        value = src_types_Value.VNative(src_types_NativeFunction("tan",[src_ast_Parameter("x",None,0,0)],_hx_local_12))
+        _this.h["tan"] = value
+        _this = src_types_V.toMap(self.environment.get("math"))
+        def _hx_local_13(env):
+            return src_types_Value.VNumber(Math.pow(src_types_V.toNumber(env.get("x")),src_types_V.toNumber(env.get("y"))))
+        value = src_types_Value.VNative(src_types_NativeFunction("pow",[src_ast_Parameter("x",None,0,0), src_ast_Parameter("y",src_ast_NumberExpr(1,0,0),0,0)],_hx_local_13))
+        _this.h["pow"] = value
 
 src_Interpreter._hx_class = src_Interpreter
 
@@ -2626,7 +2642,7 @@ class src_Lexer:
         return tokens
 
     def isKeyword(self,identifier):
-        keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec", "func", "return", "null", "for", "in", "as", "number", "string", "bool", "array", "map"]
+        keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec", "func", "return", "null", "for", "in", "as"]
         return (python_internal_ArrayImpl.indexOf(keywords,identifier.lower(),None) != -1)
 
 src_Lexer._hx_class = src_Lexer
@@ -2653,7 +2669,7 @@ class src_Main:
             interpreter.visit(ast)
             return
         interpreter = src_Interpreter()
-        src_Utils.print("Haxic REPL v1.1, Haxic version 1.0 beta 2. Type Ctrl+C to exit.")
+        src_Utils.print("Haxic REPL v1.1, Haxic version 1.0 beta 3. Type Ctrl+C to exit.")
         while True:
             src_Utils.print("haxic >> ",False)
             Sys.stdout().flush()
@@ -3863,15 +3879,15 @@ class src_types_V:
             k = m.keys()
             while k.hasNext():
                 k1 = k.next()
-                x = ((("null" if k1 is None else k1) + ":") + HxOverrides.stringOrNull(src_types_V.toString(m.h.get(k1,None))))
+                x = ((("null" if k1 is None else k1) + " => ") + HxOverrides.stringOrNull(src_types_V.toString(m.h.get(k1,None))))
                 parts.append(x)
             return (("{" + HxOverrides.stringOrNull(", ".join([python_Boot.toString1(x1,'') for x1 in parts]))) + "}")
         elif (tmp == 6):
             f = v.params[0]
-            return (("<fn " + HxOverrides.stringOrNull(f.name)) + ">")
+            return (((("<Function " + HxOverrides.stringOrNull(f.name)) + ":") + Std.string(len(f.params))) + ">")
         elif (tmp == 7):
             n = v.params[0]
-            return (("<native " + HxOverrides.stringOrNull(n.name)) + ">")
+            return (((("<Native function " + HxOverrides.stringOrNull(n.name)) + ":") + Std.string(len(n.params))) + ">")
         else:
             pass
 

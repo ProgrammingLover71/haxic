@@ -14,10 +14,13 @@ HX_DECLARE_CLASS2(src,ast,BooleanExpr)
 HX_DECLARE_CLASS2(src,ast,CallExpr)
 HX_DECLARE_CLASS2(src,ast,Expr)
 HX_DECLARE_CLASS2(src,ast,ExprStmt)
+HX_DECLARE_CLASS2(src,ast,FunctionExpr)
+HX_DECLARE_CLASS2(src,ast,FunctionStmt)
 HX_DECLARE_CLASS2(src,ast,IfStmt)
 HX_DECLARE_CLASS2(src,ast,IndexExpr)
 HX_DECLARE_CLASS2(src,ast,InputStmt)
 HX_DECLARE_CLASS2(src,ast,LetStmt)
+HX_DECLARE_CLASS2(src,ast,MapExpr)
 HX_DECLARE_CLASS2(src,ast,Node)
 HX_DECLARE_CLASS2(src,ast,NullExpr)
 HX_DECLARE_CLASS2(src,ast,NumberExpr)
@@ -26,6 +29,7 @@ HX_DECLARE_CLASS2(src,ast,Stmt)
 HX_DECLARE_CLASS2(src,ast,StringExpr)
 HX_DECLARE_CLASS2(src,ast,UnaryExpr)
 HX_DECLARE_CLASS2(src,ast,VariableExpr)
+HX_DECLARE_CLASS2(src,types,Value)
 
 namespace src{
 
@@ -68,28 +72,34 @@ class HXCPP_CLASS_ATTRIBUTES ASTWalker_obj : public ::hx::Object
 		::Dynamic visitBlockStmt_dyn();
 		virtual void visitExprStmt( ::src::ast::ExprStmt stmt) {}
 		::Dynamic visitExprStmt_dyn();
-		virtual  ::Dynamic visitBinaryExpr( ::src::ast::BinaryExpr expr) { return 0; }
+		virtual void visitFunctionStmt( ::src::ast::FunctionStmt stmt) {}
+		::Dynamic visitFunctionStmt_dyn();
+		virtual  ::src::types::Value visitBinaryExpr( ::src::ast::BinaryExpr expr) { return 0; }
 		::Dynamic visitBinaryExpr_dyn();
-		virtual  ::Dynamic visitNumberExpr( ::src::ast::NumberExpr expr) { return 0; }
+		virtual  ::src::types::Value visitNumberExpr( ::src::ast::NumberExpr expr) { return 0; }
 		::Dynamic visitNumberExpr_dyn();
-		virtual  ::Dynamic visitVariableExpr( ::src::ast::VariableExpr expr) { return 0; }
+		virtual  ::src::types::Value visitVariableExpr( ::src::ast::VariableExpr expr) { return 0; }
 		::Dynamic visitVariableExpr_dyn();
-		virtual  ::Dynamic visitUnaryExpr( ::src::ast::UnaryExpr expr) { return 0; }
+		virtual  ::src::types::Value visitUnaryExpr( ::src::ast::UnaryExpr expr) { return 0; }
 		::Dynamic visitUnaryExpr_dyn();
-		virtual  ::Dynamic visitStringExpr( ::src::ast::StringExpr expr) { return 0; }
+		virtual  ::src::types::Value visitStringExpr( ::src::ast::StringExpr expr) { return 0; }
 		::Dynamic visitStringExpr_dyn();
 		virtual  ::Dynamic visitExpr( ::src::ast::Expr expr) { return 0; }
 		::Dynamic visitExpr_dyn();
-		virtual  ::Dynamic visitArrayExpr( ::src::ast::ArrayExpr expr) { return 0; }
+		virtual  ::src::types::Value visitArrayExpr( ::src::ast::ArrayExpr expr) { return 0; }
 		::Dynamic visitArrayExpr_dyn();
-		virtual  ::Dynamic visitIndexExpr( ::src::ast::IndexExpr expr) { return 0; }
+		virtual  ::src::types::Value visitIndexExpr( ::src::ast::IndexExpr expr) { return 0; }
 		::Dynamic visitIndexExpr_dyn();
-		virtual  ::Dynamic visitCallExpr( ::src::ast::CallExpr expr) { return 0; }
+		virtual  ::src::types::Value visitCallExpr( ::src::ast::CallExpr expr) { return 0; }
 		::Dynamic visitCallExpr_dyn();
-		virtual  ::Dynamic visitBooleanExpr( ::src::ast::BooleanExpr expr) { return 0; }
+		virtual  ::src::types::Value visitBooleanExpr( ::src::ast::BooleanExpr expr) { return 0; }
 		::Dynamic visitBooleanExpr_dyn();
-		virtual  ::Dynamic visitNullExpr( ::src::ast::NullExpr expr) { return 0; }
+		virtual  ::src::types::Value visitNullExpr( ::src::ast::NullExpr expr) { return 0; }
 		::Dynamic visitNullExpr_dyn();
+		virtual  ::src::types::Value visitFunctionExpr( ::src::ast::FunctionExpr expr) { return 0; }
+		::Dynamic visitFunctionExpr_dyn();
+		virtual  ::src::types::Value visitMapExpr( ::src::ast::MapExpr expr) { return 0; }
+		::Dynamic visitMapExpr_dyn();
 };
 
 } // end namespace src

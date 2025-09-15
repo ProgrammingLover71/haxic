@@ -25,6 +25,12 @@
 #ifndef INCLUDED_src_ast_ExprStmt
 #include <src/ast/ExprStmt.h>
 #endif
+#ifndef INCLUDED_src_ast_FunctionExpr
+#include <src/ast/FunctionExpr.h>
+#endif
+#ifndef INCLUDED_src_ast_FunctionStmt
+#include <src/ast/FunctionStmt.h>
+#endif
 #ifndef INCLUDED_src_ast_IfStmt
 #include <src/ast/IfStmt.h>
 #endif
@@ -36,6 +42,9 @@
 #endif
 #ifndef INCLUDED_src_ast_LetStmt
 #include <src/ast/LetStmt.h>
+#endif
+#ifndef INCLUDED_src_ast_MapExpr
+#include <src/ast/MapExpr.h>
 #endif
 #ifndef INCLUDED_src_ast_Node
 #include <src/ast/Node.h>
@@ -61,6 +70,9 @@
 #ifndef INCLUDED_src_ast_VariableExpr
 #include <src/ast/VariableExpr.h>
 #endif
+#ifndef INCLUDED_src_types_Value
+#include <src/types/Value.h>
+#endif
 
 namespace src{
 
@@ -84,6 +96,8 @@ HX_DEFINE_DYNAMIC_FUNC1(ASTWalker_obj,visitBlockStmt,(void))
 
 HX_DEFINE_DYNAMIC_FUNC1(ASTWalker_obj,visitExprStmt,(void))
 
+HX_DEFINE_DYNAMIC_FUNC1(ASTWalker_obj,visitFunctionStmt,(void))
+
 HX_DEFINE_DYNAMIC_FUNC1(ASTWalker_obj,visitBinaryExpr,return )
 
 HX_DEFINE_DYNAMIC_FUNC1(ASTWalker_obj,visitNumberExpr,return )
@@ -106,6 +120,10 @@ HX_DEFINE_DYNAMIC_FUNC1(ASTWalker_obj,visitBooleanExpr,return )
 
 HX_DEFINE_DYNAMIC_FUNC1(ASTWalker_obj,visitNullExpr,return )
 
+HX_DEFINE_DYNAMIC_FUNC1(ASTWalker_obj,visitFunctionExpr,return )
+
+HX_DEFINE_DYNAMIC_FUNC1(ASTWalker_obj,visitMapExpr,return )
+
 
 ASTWalker_obj::ASTWalker_obj()
 {
@@ -123,6 +141,7 @@ ASTWalker_obj::ASTWalker_obj()
 		break;
 	case 12:
 		if (HX_FIELD_EQ(inName,"visitLetStmt") ) { return ::hx::Val( visitLetStmt_dyn() ); }
+		if (HX_FIELD_EQ(inName,"visitMapExpr") ) { return ::hx::Val( visitMapExpr_dyn() ); }
 		break;
 	case 13:
 		if (HX_FIELD_EQ(inName,"visitExprStmt") ) { return ::hx::Val( visitExprStmt_dyn() ); }
@@ -146,7 +165,9 @@ ASTWalker_obj::ASTWalker_obj()
 		if (HX_FIELD_EQ(inName,"visitBooleanExpr") ) { return ::hx::Val( visitBooleanExpr_dyn() ); }
 		break;
 	case 17:
+		if (HX_FIELD_EQ(inName,"visitFunctionStmt") ) { return ::hx::Val( visitFunctionStmt_dyn() ); }
 		if (HX_FIELD_EQ(inName,"visitVariableExpr") ) { return ::hx::Val( visitVariableExpr_dyn() ); }
+		if (HX_FIELD_EQ(inName,"visitFunctionExpr") ) { return ::hx::Val( visitFunctionExpr_dyn() ); }
 	}
 	return super::__Field(inName,inCallProp);
 }
@@ -164,6 +185,7 @@ static ::String ASTWalker_obj_sMemberFields[] = {
 	HX_("visitStmt",b3,d5,44,5c),
 	HX_("visitBlockStmt",ea,0e,8c,d1),
 	HX_("visitExprStmt",08,cf,9a,01),
+	HX_("visitFunctionStmt",eb,fb,e5,6b),
 	HX_("visitBinaryExpr",81,43,80,12),
 	HX_("visitNumberExpr",49,12,40,af),
 	HX_("visitVariableExpr",fc,d3,8e,9c),
@@ -175,6 +197,8 @@ static ::String ASTWalker_obj_sMemberFields[] = {
 	HX_("visitCallExpr",de,61,b5,bb),
 	HX_("visitBooleanExpr",f2,33,2c,ac),
 	HX_("visitNullExpr",47,90,8d,70),
+	HX_("visitFunctionExpr",d8,0a,a8,62),
+	HX_("visitMapExpr",66,ff,34,f0),
 	::String(null()) };
 
 ::hx::Class ASTWalker_obj::__mClass;

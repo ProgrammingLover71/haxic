@@ -10,6 +10,9 @@
 #ifndef INCLUDED_haxe_ds_StringMap
 #include <haxe/ds/StringMap.h>
 #endif
+#ifndef INCLUDED_src_ast_Parameter
+#include <src/ast/Parameter.h>
+#endif
 #ifndef INCLUDED_src_types_Function
 #include <src/types/Function.h>
 #endif
@@ -166,18 +169,20 @@ HXLINE(  40)				{
 HXLINE(  40)					 ::Dynamic k = _g2->keys();
 HXDLIN(  40)					while(( (bool)(k->__Field(HX_("hasNext",6d,a5,46,18),::hx::paccDynamic)()) )){
 HXLINE(  40)						::String k1 = ( (::String)(k->__Field(HX_("next",f3,84,02,49),::hx::paccDynamic)()) );
-HXDLIN(  40)						parts1->push(((k1 + HX_(":",3a,00,00,00)) + ::src::types::V_obj::toString(_g2->get(k1))));
+HXDLIN(  40)						parts1->push(((k1 + HX_(" => ",7f,53,55,15)) + ::src::types::V_obj::toString(_g2->get(k1))));
             					}
             				}
 HXLINE(  41)				return ((HX_("{",7b,00,00,00) + parts1->join(HX_(", ",74,26,00,00))) + HX_("}",7d,00,00,00));
             			}
             			break;
             			case (int)6: {
-HXLINE(  42)				return ((HX_("<fn ",1c,93,f6,27) + v->_hx_getObject(0).StaticCast<  ::src::types::Function >()->name) + HX_(">",3e,00,00,00));
+HXLINE(  42)				 ::src::types::Function _g3 = v->_hx_getObject(0).StaticCast<  ::src::types::Function >();
+HXDLIN(  42)				return ((((HX_("<Function ",2c,02,4a,67) + _g3->name) + HX_(":",3a,00,00,00)) + _g3->params->length) + HX_(">",3e,00,00,00));
             			}
             			break;
             			case (int)7: {
-HXLINE(  43)				return ((HX_("<native ",ed,59,e6,1e) + v->_hx_getObject(0).StaticCast<  ::src::types::NativeFunction >()->name) + HX_(">",3e,00,00,00));
+HXLINE(  43)				 ::src::types::NativeFunction _g4 = v->_hx_getObject(0).StaticCast<  ::src::types::NativeFunction >();
+HXDLIN(  43)				return ((((HX_("<Native function ",9b,66,f5,8a) + _g4->name) + HX_(":",3a,00,00,00)) + _g4->params->length) + HX_(">",3e,00,00,00));
             			}
             			break;
             		}

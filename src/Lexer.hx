@@ -188,8 +188,7 @@ class Lexer {
     }
 
     function isKeyword(identifier:String):Bool {
-        var keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec", "func", "return", "null", "for", "in", "as", 
-                        "number", "string", "bool", "array", "map"];
+        var keywords = ["print", "input", "let", "if", "then", "else", "while", "do", "end", "true", "false", "inc", "dec", "func", "return", "null", "for", "in", "as"];
         return keywords.indexOf(identifier.toLowerCase()) != -1;
     }
 }

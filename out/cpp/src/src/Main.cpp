@@ -76,7 +76,7 @@ HXLINE(  21)			 ::src::Interpreter_obj::__alloc( HX_CTX )->visit(ast);
 HXLINE(  22)			return;
             		}
 HXLINE(  26)		 ::src::Interpreter interpreter =  ::src::Interpreter_obj::__alloc( HX_CTX );
-HXLINE(  27)		::src::Utils_obj::print(HX_("Haxic REPL v1.1, Haxic version 1.0 beta 2. Type Ctrl+C to exit.",4e,25,5c,3d),null());
+HXLINE(  27)		::src::Utils_obj::print(HX_("Haxic REPL v1.1, Haxic version 1.0 beta 3. Type Ctrl+C to exit.",0f,ee,8e,bd),null());
 HXLINE(  28)		while(true){
 HXLINE(  30)			::src::Utils_obj::print(HX_("haxic >> ",39,f7,b9,ed),false);
 HXLINE(  31)			::Sys_obj::_hx_stdout()->flush();

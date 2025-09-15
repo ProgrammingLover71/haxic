@@ -62,7 +62,7 @@ HXDLIN(  19)		return ((((HX_("<Native function ",9b,66,f5,8a) + this->name) + HX
 
 HX_DEFINE_DYNAMIC_FUNC0(NativeFunction_obj,toString,return )
 
- ::Dynamic NativeFunction_obj::call(::cpp::VirtualArray args, ::src::Interpreter interp){
+ ::Dynamic NativeFunction_obj::call(::Array< ::Dynamic> args, ::src::Interpreter interp){
             	HX_GC_STACKFRAME(&_hx_pos_868351b3f23a4d30_22_call)
 HXLINE(  24)		 ::src::Environment previousEnv = interp->environment;
 HXLINE(  25)		interp->environment =  ::src::Environment_obj::__alloc( HX_CTX ,previousEnv);
@@ -74,8 +74,8 @@ HXLINE(  26)				_g = (_g + 1);
 HXDLIN(  26)				int i = (_g - 1);
 HXLINE(  27)				 ::src::ast::Parameter param = this->params->__get(i).StaticCast<  ::src::ast::Parameter >();
 HXLINE(  28)				 ::Dynamic value = null();
-HXLINE(  30)				if ((i < args->get_length())) {
-HXLINE(  31)					value = args->__get(i);
+HXLINE(  30)				if ((i < args->length)) {
+HXLINE(  31)					value = args->__get(i).StaticCast<  ::src::types::Value >();
             				}
             				else {
 HXLINE(  32)					if (::hx::IsNotNull( param->defaultValue )) {
@@ -88,7 +88,7 @@ HXLINE(  35)						HX_STACK_DO_THROW(((HX_("Missing argument for parameter '",d0,
 HXLINE(  38)				interp->environment->define(param->name,value);
             			}
             		}
-HXLINE(  41)		 ::Dynamic value1 = this->body(interp->environment);
+HXLINE(  41)		 ::src::types::Value value1 = this->body(interp->environment);
 HXLINE(  42)		interp->environment = previousEnv;
 HXLINE(  43)		return value1;
             	}

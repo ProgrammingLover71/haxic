@@ -473,7 +473,7 @@ class Interpreter extends ASTWalker {
         })));
 
         // map_arr: (array, func) => array
-        environment.define("map_arr", Value.VNative(new NativeFunction("map", [
+        environment.define("map", Value.VNative(new NativeFunction("map", [
             new Parameter("arr", null, 0, 0), 
             new Parameter("func", null, 0, 0)
         ], function(env) {
@@ -508,6 +508,31 @@ class Interpreter extends ASTWalker {
             new Parameter("num", null, 0, 0)
         ], function(env) {
             return Value.VNumber(Math.sqrt(V.toNumber(env.get("num"))));
+        })));
+
+        // math.cos: (number) => number
+        V.toMap(environment.get("math")).set("cos", Value.VNative(new NativeFunction("cos", [
+            new Parameter("x", null, 0, 0)
+        ], function (env) {
+            return Value.VNumber(Math.cos(V.toNumber(env.get("x"))));
+        })));
+
+        // math.tan: (number) => number
+        V.toMap(environment.get("math")).set("tan", Value.VNative(new NativeFunction("tan", [
+            new Parameter("x", null, 0, 0)
+        ], function (env) {
+            return Value.VNumber(Math.tan(V.toNumber(env.get("x"))));
+        })));
+
+        // math.pow: (number, number) => number
+        V.toMap(environment.get("math")).set("pow", Value.VNative(new NativeFunction("pow", [
+            new Parameter("x", null, 0, 0),
+            new Parameter("y", new NumberExpr(1, 0, 0), 0, 0)
+        ], function (env) {
+            return Value.VNumber(Math.pow(
+                V.toNumber(env.get("x")), 
+                V.toNumber(env.get("y"))
+            ));
         })));
     }
 }

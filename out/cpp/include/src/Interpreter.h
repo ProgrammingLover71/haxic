@@ -100,37 +100,34 @@ class HXCPP_CLASS_ATTRIBUTES Interpreter_obj : public  ::src::ASTWalker_obj
 		::Dynamic visitReturnStmt_dyn();
 
 		void visitFunctionStmt( ::src::ast::FunctionStmt stmt);
-		::Dynamic visitFunctionStmt_dyn();
 
 		void visitStmt( ::src::ast::Stmt stmt);
 
 		 ::Dynamic visitExpr( ::src::ast::Expr expr);
 
-		 ::Dynamic visitUnaryExpr( ::src::ast::UnaryExpr expr);
+		 ::src::types::Value visitUnaryExpr( ::src::ast::UnaryExpr expr);
 
-		 ::Dynamic visitBinaryExpr( ::src::ast::BinaryExpr expr);
+		 ::src::types::Value visitBinaryExpr( ::src::ast::BinaryExpr expr);
 
-		 ::Dynamic visitNumberExpr( ::src::ast::NumberExpr expr);
+		 ::src::types::Value visitNumberExpr( ::src::ast::NumberExpr expr);
 
-		 ::Dynamic visitVariableExpr( ::src::ast::VariableExpr expr);
+		 ::src::types::Value visitVariableExpr( ::src::ast::VariableExpr expr);
 
-		 ::Dynamic visitStringExpr( ::src::ast::StringExpr expr);
+		 ::src::types::Value visitStringExpr( ::src::ast::StringExpr expr);
 
-		 ::Dynamic visitCallExpr( ::src::ast::CallExpr expr);
+		 ::src::types::Value visitCallExpr( ::src::ast::CallExpr expr);
 
-		 ::Dynamic visitNullExpr( ::src::ast::NullExpr expr);
+		 ::src::types::Value visitNullExpr( ::src::ast::NullExpr expr);
 
-		 ::Dynamic visitBooleanExpr( ::src::ast::BooleanExpr expr);
+		 ::src::types::Value visitBooleanExpr( ::src::ast::BooleanExpr expr);
 
-		 ::Dynamic visitArrayExpr( ::src::ast::ArrayExpr expr);
+		 ::src::types::Value visitArrayExpr( ::src::ast::ArrayExpr expr);
 
-		 ::Dynamic visitIndexExpr( ::src::ast::IndexExpr expr);
+		 ::src::types::Value visitIndexExpr( ::src::ast::IndexExpr expr);
 
 		 ::src::types::Value visitMapExpr( ::src::ast::MapExpr expr);
-		::Dynamic visitMapExpr_dyn();
 
 		 ::src::types::Value visitFunctionExpr( ::src::ast::FunctionExpr expr);
-		::Dynamic visitFunctionExpr_dyn();
 
 		void loadFunctions();
 		::Dynamic loadFunctions_dyn();

@@ -28,6 +28,7 @@
    <depend name="include/Std.h"/>
    <depend name="include/haxe/IMap.h"/>
    <depend name="include/haxe/ds/StringMap.h"/>
+   <depend name="include/src/ast/Parameter.h"/>
    <depend name="include/src/types/Function.h"/>
    <depend name="include/src/types/NativeFunction.h"/>
    <depend name="include/src/types/V.h"/>
@@ -349,10 +350,13 @@
    <depend name="include/src/ast/CallExpr.h"/>
    <depend name="include/src/ast/Expr.h"/>
    <depend name="include/src/ast/ExprStmt.h"/>
+   <depend name="include/src/ast/FunctionExpr.h"/>
+   <depend name="include/src/ast/FunctionStmt.h"/>
    <depend name="include/src/ast/IfStmt.h"/>
    <depend name="include/src/ast/IndexExpr.h"/>
    <depend name="include/src/ast/InputStmt.h"/>
    <depend name="include/src/ast/LetStmt.h"/>
+   <depend name="include/src/ast/MapExpr.h"/>
    <depend name="include/src/ast/Node.h"/>
    <depend name="include/src/ast/NullExpr.h"/>
    <depend name="include/src/ast/NumberExpr.h"/>
@@ -361,6 +365,7 @@
    <depend name="include/src/ast/StringExpr.h"/>
    <depend name="include/src/ast/UnaryExpr.h"/>
    <depend name="include/src/ast/VariableExpr.h"/>
+   <depend name="include/src/types/Value.h"/>
   </file>
   <file name="src/haxe/iterators/ArrayIterator.cpp" >
    <depend name="include/haxe/iterators/ArrayIterator.h"/>
@@ -516,7 +521,6 @@
 <include name="${HXCPP}/build-tool/BuildCommon.xml"/>
 <include name="${HXCPP}/src/hx/libs/regexp/Build.xml"/>
 <include name="${HXCPP}/src/hx/libs/std/Build.xml"/>
-<include name="${HXCPP}/src/hx/libs/ssl/Build.xml"/>
 <include name="${HXCPP}/src/hx/libs/std/Build.xml"/>
 <error value="Hxcpp is out of date - please update" unlessApi="430" />
 </xml>

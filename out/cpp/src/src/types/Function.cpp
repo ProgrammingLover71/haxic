@@ -65,7 +65,7 @@ HXDLIN(  19)		return ((((HX_("<Function ",2c,02,4a,67) + this->name) + HX_(":",3
 
 HX_DEFINE_DYNAMIC_FUNC0(Function_obj,toString,return )
 
-void Function_obj::call(::cpp::VirtualArray args, ::src::Interpreter interp){
+void Function_obj::call(::Array< ::Dynamic> args, ::src::Interpreter interp){
             	HX_GC_STACKFRAME(&_hx_pos_5964856d202acecd_22_call)
 HXLINE(  24)		 ::src::Environment previousEnv = interp->environment;
 HXLINE(  25)		interp->environment =  ::src::Environment_obj::__alloc( HX_CTX ,previousEnv);
@@ -77,8 +77,8 @@ HXLINE(  26)				_g = (_g + 1);
 HXDLIN(  26)				int i = (_g - 1);
 HXLINE(  27)				 ::src::ast::Parameter param = this->params->__get(i).StaticCast<  ::src::ast::Parameter >();
 HXLINE(  28)				 ::Dynamic value = null();
-HXLINE(  30)				if ((i < args->get_length())) {
-HXLINE(  31)					value = args->__get(i);
+HXLINE(  30)				if ((i < args->length)) {
+HXLINE(  31)					value = args->__get(i).StaticCast<  ::src::types::Value >();
             				}
             				else {
 HXLINE(  32)					if (::hx::IsNotNull( param->defaultValue )) {

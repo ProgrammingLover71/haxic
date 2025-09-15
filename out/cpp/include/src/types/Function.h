@@ -12,6 +12,7 @@ HX_DECLARE_CLASS2(src,ast,Node)
 HX_DECLARE_CLASS2(src,ast,Parameter)
 HX_DECLARE_CLASS2(src,ast,Stmt)
 HX_DECLARE_CLASS2(src,types,Function)
+HX_DECLARE_CLASS2(src,types,Value)
 
 namespace src{
 namespace types{
@@ -55,7 +56,7 @@ class HXCPP_CLASS_ATTRIBUTES Function_obj : public ::hx::Object
 		virtual ::String toString();
 		::Dynamic toString_dyn();
 
-		void call(::cpp::VirtualArray args, ::src::Interpreter interp);
+		void call(::Array< ::Dynamic> args, ::src::Interpreter interp);
 		::Dynamic call_dyn();
 
 };
