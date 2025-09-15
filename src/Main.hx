@@ -24,7 +24,7 @@ class Main {
         // Fall back to REPL mode
         // Create the interpreter here because we need the environment to persist across the entire session
         var interpreter = new Interpreter();
-        Utils.print("Haxic REPL v1.1, Haxic version 1.0 beta 2. Type Ctrl+C to exit.");
+        Utils.print("Haxic REPL v1.1, Haxic version 1.0 beta 3. Type Ctrl+C to exit.");
         while (true) {
             // Read the input
             Utils.print("haxic >> ", false);
