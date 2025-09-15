@@ -120,7 +120,7 @@ end
 
 ### Examples
 
-See the `examples/` folder for sample programs. These programs also act as langyage feature tests.
+See the `examples/` folder for sample programs. These programs also act as language feature tests.
 
 ---
 
