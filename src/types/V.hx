@@ -37,10 +37,10 @@ class V {
                 return "[" + parts.join(", ") + "]";
             case VMap(m):
                 var parts = [];
-                for (k in m.keys()) parts.push(k + ":" + toString(m.get(k)));
+                for (k in m.keys()) parts.push(k + " => " + toString(m.get(k)));
                 return "{" + parts.join(", ") + "}";
-            case VFunc(f): return "<fn " + f.name + ">";
-            case VNative(n): return "<native " + n.name + ">";
+            case VFunc(f): return "<Function " + f.name + ":" + n.arity + ">";
+            case VNative(n): return "<Native function " + n.name + ":" + n.arity + ">";
         }
     }
 
