@@ -84,8 +84,8 @@ cd haxic
 ./build.bat
 
 # On Unix systems
-haxe -main src/Main.hx -py out/py/haxic.py
-haxe -main src/Main.hx -cpp out/cpp
+haxe -main src/Main.hx -py out/py/haxic.py -D release -D analyzer-optimize
+haxe -main src/Main.hx -cpp out/cpp -D release -D analyzer-optimize
 ```
 
 ### Running files
