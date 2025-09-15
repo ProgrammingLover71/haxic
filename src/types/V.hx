@@ -39,8 +39,8 @@ class V {
                 var parts = [];
                 for (k in m.keys()) parts.push(k + " => " + toString(m.get(k)));
                 return "{" + parts.join(", ") + "}";
-            case VFunc(f): return "<Function " + f.name + ":" + n.arity + ">";
-            case VNative(n): return "<Native function " + n.name + ":" + n.arity + ">";
+            case VFunc(f): return "<Function " + f.name + ":" + n.params.length + ">";
+            case VNative(n): return "<Native function " + n.name + ":" + n.params.length + ">";
         }
     }
 
