@@ -4,7 +4,7 @@
 
 ---
 
-## Table of Contents
+## 📖 Table of Contents
 
 1. [Introduction](#introduction)
 2. [Features](#features)
@@ -27,13 +27,13 @@
 
 ---
 
-## Introduction
+## ⌨️ Introduction
 
 Haxic is a project that implements a modern reinterpretation of the BASIC programming language using *Haxe*. It aims to bring together simplicity, nostalgia, and modern programming conveniences. Users can write code in a simple BASIC-inspired syntax, which Haxic will process (interpret / compile / transpile) it using Haxe tooling. ([github.com](https://github.com/ProgrammingLover71/haxic))
 
 ---
 
-## Features
+## 📜 Features
 
 * A mainly BASIC-inspired syntax for writing programs
 * Modern syntax features, such as arrays, maps, lambda functions (function expressions) ans closures
@@ -44,18 +44,18 @@ Haxic is a project that implements a modern reinterpretation of the BASIC progra
 
 ---
 
-## Motivation
+## ❓️ Motivation
 
 Why build Haxic?
 
-* To revive and enjoy the simplicity of BASIC-like syntax, but on modern platforms
+* To revive and enjoy the simplicity and syntax that BASIC dialects had, but with modern features too
 * To leverage Haxe’s cross-platform capabilities so that Haxic programs can run in many environments
 * To learn & experiment with building interpreters / compilers in Haxe
 * To provide a lightweight educational tool for learning programming / language design
 
 ---
 
-## Architecture & Design
+## 📕 Architecture & Design
 
 * **Source code** is in `src/`
 * **Examples** are in `examples/`
@@ -65,14 +65,14 @@ Why build Haxic?
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
 * Haxe (latest stable version recommended)
 * On Windows: ability to run `.bat` scripts
 
-### Installation
+### 📦 Installation
 
 ```bash
 # Clone the repo
@@ -88,7 +88,7 @@ haxe -main src/Main.hx -py out/py/haxic.py -D release -D analyzer-optimize
 haxe -main src/Main.hx -cpp out/cpp -D release -D analyzer-optimize
 ```
 
-### Running files
+### 💾 Running files
 
 Haxic has a REPL and a compiler/interpreter, both of which can be run as follows:
 
@@ -102,9 +102,9 @@ out/cpp/haxic <file> # Omit file for REPL
 
 ---
 
-## Usage
+## 📌 Usage
 
-### Writing code in Haxic
+### ✒️ Writing code in Haxic
 
 Write `.hxc` files using BASIC-style syntax. Example:
 
@@ -118,13 +118,13 @@ else
 end
 ```
 
-### Examples
+### 🔬 Examples
 
 See the `examples/` folder for sample programs. These programs also act as language feature tests.
 
 ---
 
-## Folder Structure
+## 🏷 Folder Structure
 
 | Path             | Description                                  |
 | ---------------- | -------------------------------------------- |
@@ -135,25 +135,28 @@ See the `examples/` folder for sample programs. These programs also act as langu
 | `.gitattributes` | Git settings (line endings, etc.)            |
 | `LICENSE`        | Project license (MIT)                        |
 
----
+## 📊 Performance
 
-## Contributing
+On average, Haxic's C++ build features a performance similar to that of Python, if not greater. The Python build ia about 50x slower, but has a great performance for short programs.
 
+## ⭐️ Contributing
+
+All contributions are welcome! Here are some ways you could help out with development:
 1. Fork the project
-2. Create a branch for your feature / bugfix
+2. Create a branch for proposed features / bugfixes
 3. Add tests or examples if possible
-4. Ensure your code works across targets
+4. Ensure the source code works across targets
 5. Submit a pull request with a clear description
 
 ---
 
-## License
+## 🖨 License
 
 Haxic is licensed under the **MIT License**.
 
 ---
 
-## Roadmap
+## 📋 Roadmap
 
 * Improved error messages
 * More target backends for the compiler/interpreter (JavaScript, etc.)
@@ -166,7 +169,7 @@ Haxic is licensed under the **MIT License**.
 
 ---
 
-## Acknowledgments
+## 🙏 Special thanks to: 
 
 * The Haxe community
 * Feedback from any contributors & testers
