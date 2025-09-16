@@ -6,13 +6,13 @@
 
 ## 📖 Table of Contents
 
-1. [Introduction](#-introduction)
+1. [Introduction](#introduction)
 2. [Features](#-features)
 3. [Motivation](#-motivation)
 4. [Architecture & Design](#-architecture--design)
 5. [Getting Started](#-getting-started)
 
-   * [Prerequisites](#-prerequisites)
+   * [Prerequisites](#prerequisites)
    * [Installation](#-installation)
    * [Running files](#-running-files)
 6. [Usage](#usage)
