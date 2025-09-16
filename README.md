@@ -8,22 +8,22 @@
 
 1. [Introduction](#-introduction)
 2. [Features](#-features)
-3. [Motivation](#motivation)
-4. [Architecture & Design](#architecture--design)
-5. [Getting Started](#getting-started)
+3. [Motivation](#-motivation)
+4. [Architecture & Design](#-architecture--design)
+5. [Getting Started](#-getting-started)
 
-   * [Prerequisites](#prerequisites)
-   * [Installation](#installation)
-   * [Running files](#running-files)
+   * [Prerequisites](#-prerequisites)
+   * [Installation](#-installation)
+   * [Running files](#-running-files)
 6. [Usage](#usage)
 
-   * [Writing code in Haxic](#writing-code-in-haxic)
-   * [Examples](#examples)
-7. [Folder Structure](#folder-structure)
-8. [Contributing](#contributing)
-9. [License](#license)
-10. [Roadmap](#roadmap)
-11. [Acknowledgments](#acknowledgments)
+   * [Writing code in Haxic](#-writing-code-in-haxic)
+   * [Examples](#-examples)
+7. [Folder Structure](#-folder-structure)
+8. [Contributing](#-contributing)
+9. [License](#-license)
+10. [Roadmap](#-roadmap)
+11. [Special Thanks](#-special-thanks-to)
 
 ---
 
