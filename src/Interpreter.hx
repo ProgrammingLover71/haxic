@@ -516,6 +516,12 @@ class Interpreter extends ASTWalker {
             return Value.VNumber(Math.sqrt(V.toNumber(env.get("num"))));
         })));
 
+        V.toMap(environment.get("math")).set("sin", Value.VNative(new NativeFunction("sin", [
+            new Parameter("x", null, 0, 0)
+        ], function (env) {
+            return Value.VNumber(Math.cos(V.toNumber(env.get("x"))));
+        })));
+
         // math.cos: (number) => number
         V.toMap(environment.get("math")).set("cos", Value.VNative(new NativeFunction("cos", [
             new Parameter("x", null, 0, 0)
