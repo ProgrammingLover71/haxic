@@ -58,7 +58,7 @@ class Return extends haxe.Exception {
 
 
 
-class Interpreter extends ASTWalker {
+class Interpreter {
     public var environment:Environment;
 
     public function new() {
@@ -472,7 +472,7 @@ class Interpreter extends ASTWalker {
             return Value.VNull;
         })));
 
-        // map_arr: (array, func) => array
+        // map: (array, func) => array
         environment.define("map", Value.VNative(new NativeFunction("map", [
             new Parameter("arr", null, 0, 0), 
             new Parameter("func", null, 0, 0)
@@ -516,6 +516,7 @@ class Interpreter extends ASTWalker {
             return Value.VNumber(Math.sqrt(V.toNumber(env.get("num"))));
         })));
 
+        // math.sin: (number) => number
         V.toMap(environment.get("math")).set("sin", Value.VNative(new NativeFunction("sin", [
             new Parameter("x", null, 0, 0)
         ], function (env) {

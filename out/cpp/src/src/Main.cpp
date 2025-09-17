@@ -7,14 +7,14 @@
 #ifndef INCLUDED_haxe_Exception
 #include <haxe/Exception.h>
 #endif
+#ifndef INCLUDED_haxe_io_Encoding
+#include <haxe/io/Encoding.h>
+#endif
 #ifndef INCLUDED_haxe_io_Input
 #include <haxe/io/Input.h>
 #endif
 #ifndef INCLUDED_haxe_io_Output
 #include <haxe/io/Output.h>
-#endif
-#ifndef INCLUDED_src_ASTWalker
-#include <src/ASTWalker.h>
 #endif
 #ifndef INCLUDED_src_Interpreter
 #include <src/Interpreter.h>
@@ -40,11 +40,17 @@
 #ifndef INCLUDED_src_ast_Stmt
 #include <src/ast/Stmt.h>
 #endif
+#ifndef INCLUDED_src_compiler_PyCompiler
+#include <src/compiler/PyCompiler.h>
+#endif
 #ifndef INCLUDED_sys_io_File
 #include <sys/io/File.h>
 #endif
+#ifndef INCLUDED_sys_io_FileOutput
+#include <sys/io/FileOutput.h>
+#endif
 
-HX_LOCAL_STACK_FRAME(_hx_pos_00c4668d97320537_4_main,"src.Main","main",0xed2a5664,"src.Main.main","src/Main.hx",4,0xa1307a9a)
+HX_LOCAL_STACK_FRAME(_hx_pos_00c4668d97320537_7_main,"src.Main","main",0xed2a5664,"src.Main.main","src/Main.hx",7,0xa1307a9a)
 namespace src{
 
 void Main_obj::__construct() { }
@@ -65,33 +71,41 @@ bool Main_obj::_hx_isInstanceOf(int inClassId) {
 }
 
 void Main_obj::main(){
-            	HX_GC_STACKFRAME(&_hx_pos_00c4668d97320537_4_main)
-HXLINE(   6)		if ((::Sys_obj::args()->length > 1)) {
-HXLINE(   7)			::src::Utils_obj::print(HX_("Usage: haxic [<file>]",4a,32,40,bd),null());
-HXLINE(   8)			return;
-            		}
-HXLINE(  11)		if ((::Sys_obj::args()->length == 1)) {
-HXLINE(  19)			::Array< ::Dynamic> ast =  ::src::Parser_obj::__alloc( HX_CTX , ::src::Lexer_obj::__alloc( HX_CTX ,::sys::io::File_obj::getContent(::Sys_obj::args()->__get(0)))->tokenize())->parse();
-HXLINE(  21)			 ::src::Interpreter_obj::__alloc( HX_CTX )->visit(ast);
-HXLINE(  22)			return;
-            		}
-HXLINE(  26)		 ::src::Interpreter interpreter =  ::src::Interpreter_obj::__alloc( HX_CTX );
-HXLINE(  27)		::src::Utils_obj::print(HX_("Haxic REPL v1.1, Haxic version 1.0 beta 3. Type Ctrl+C to exit.",0f,ee,8e,bd),null());
-HXLINE(  28)		while(true){
-HXLINE(  30)			::src::Utils_obj::print(HX_("haxic >> ",39,f7,b9,ed),false);
-HXLINE(  31)			::Sys_obj::_hx_stdout()->flush();
-HXLINE(  32)			::String line = ::Sys_obj::_hx_stdin()->readLine();
-HXLINE(  33)			if (::hx::IsNull( line )) {
-HXLINE(  33)				continue;
+            	HX_GC_STACKFRAME(&_hx_pos_00c4668d97320537_7_main)
+HXLINE(   8)		if ((::Sys_obj::args()->length >= 1)) {
+HXLINE(  16)			::Array< ::Dynamic> ast =  ::src::Parser_obj::__alloc( HX_CTX , ::src::Lexer_obj::__alloc( HX_CTX ,::sys::io::File_obj::getContent(::Sys_obj::args()->__get(0)))->tokenize())->parse();
+HXLINE(  17)			if (::Sys_obj::args()->contains(HX_("-py",76,87,22,00))) {
+HXLINE(  18)				int out_idx = (::Sys_obj::args()->indexOf(HX_("-py",76,87,22,00),null()) + 1);
+HXLINE(  20)				 ::sys::io::FileOutput out_f = ::sys::io::File_obj::write(::Sys_obj::args()->__get(out_idx),null());
+HXLINE(  22)				 ::src::compiler::PyCompiler codegen =  ::src::compiler::PyCompiler_obj::__alloc( HX_CTX );
+HXLINE(  23)				codegen->visit(ast);
+HXLINE(  24)				out_f->writeString(codegen->getCode(),null());
+HXLINE(  25)				out_f->close();
             			}
-HXLINE(  35)			try {
+            			else {
+HXLINE(  28)				 ::src::Interpreter_obj::__alloc( HX_CTX )->visit(ast);
+            			}
+HXLINE(  30)			return;
+            		}
+HXLINE(  34)		 ::src::Interpreter interpreter =  ::src::Interpreter_obj::__alloc( HX_CTX );
+HXLINE(  35)		::src::Utils_obj::print(HX_("Haxic REPL v1.1, Haxic version 1.0 beta 3. Type Ctrl+C to exit.",0f,ee,8e,bd),null());
+HXLINE(  36)		while(true){
+HXLINE(  38)			::src::Utils_obj::print(HX_("haxic >> ",39,f7,b9,ed),false);
+HXLINE(  39)			::Sys_obj::_hx_stdout()->flush();
+HXLINE(  40)			::String line = ::Sys_obj::_hx_stdin()->readLine();
+HXLINE(  41)			if (::hx::IsNull( line )) {
+HXLINE(  41)				continue;
+            			}
+HXLINE(  43)			try {
             				HX_STACK_CATCHABLE( ::Dynamic, 0);
-HXLINE(  40)				interpreter->visit( ::src::Parser_obj::__alloc( HX_CTX , ::src::Lexer_obj::__alloc( HX_CTX ,line)->tokenize())->parse());
+HXLINE(  47)				::Array< ::Dynamic> ast1 =  ::src::Parser_obj::__alloc( HX_CTX , ::src::Lexer_obj::__alloc( HX_CTX ,line)->tokenize())->parse();
+HXLINE(  48)				 ::src::compiler::PyCompiler_obj::__alloc( HX_CTX );
+HXLINE(  49)				interpreter->visit(ast1);
             			} catch( ::Dynamic _hx_e) {
             				if (_hx_e.IsClass<  ::Dynamic >() ){
             					HX_STACK_BEGIN_CATCH
             					 ::Dynamic _g = _hx_e;
-HXLINE(  42)					::src::Utils_obj::print((HX_("Error: ",4e,a8,5b,b7) + ::haxe::Exception_obj::caught(_g)->details()),null());
+HXLINE(  51)					::src::Utils_obj::print((HX_("Error: ",4e,a8,5b,b7) + ::haxe::Exception_obj::caught(_g)->details()),null());
             				}
             				else {
             					HX_STACK_DO_THROW(_hx_e);

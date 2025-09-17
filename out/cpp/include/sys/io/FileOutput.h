@@ -56,6 +56,8 @@ class HXCPP_CLASS_ATTRIBUTES FileOutput_obj : public  ::haxe::io::Output_obj
 
 		void flush();
 
+		void close();
+
 };
 
 } // end namespace sys

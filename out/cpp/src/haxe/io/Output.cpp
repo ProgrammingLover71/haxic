@@ -13,6 +13,9 @@
 #ifndef INCLUDED_haxe_io_Bytes
 #include <haxe/io/Bytes.h>
 #endif
+#ifndef INCLUDED_haxe_io_Encoding
+#include <haxe/io/Encoding.h>
+#endif
 #ifndef INCLUDED_haxe_io_Error
 #include <haxe/io/Error.h>
 #endif
@@ -23,7 +26,10 @@
 HX_LOCAL_STACK_FRAME(_hx_pos_f6deb7e554df00ae_47_writeByte,"haxe.io.Output","writeByte",0xb4fe513a,"haxe.io.Output.writeByte","C:\\HaxeToolkit\\haxe\\std/haxe/io/Output.hx",47,0x05ec9a64)
 HX_LOCAL_STACK_FRAME(_hx_pos_f6deb7e554df00ae_57_writeBytes,"haxe.io.Output","writeBytes",0xa988c1f9,"haxe.io.Output.writeBytes","C:\\HaxeToolkit\\haxe\\std/haxe/io/Output.hx",57,0x05ec9a64)
 HX_LOCAL_STACK_FRAME(_hx_pos_f6deb7e554df00ae_85_flush,"haxe.io.Output","flush",0xa15f0af7,"haxe.io.Output.flush","C:\\HaxeToolkit\\haxe\\std/haxe/io/Output.hx",85,0x05ec9a64)
+HX_LOCAL_STACK_FRAME(_hx_pos_f6deb7e554df00ae_92_close,"haxe.io.Output","close",0xe726bfeb,"haxe.io.Output.close","C:\\HaxeToolkit\\haxe\\std/haxe/io/Output.hx",92,0x05ec9a64)
 HX_LOCAL_STACK_FRAME(_hx_pos_f6deb7e554df00ae_103_write,"haxe.io.Output","write",0x6f1d1512,"haxe.io.Output.write","C:\\HaxeToolkit\\haxe\\std/haxe/io/Output.hx",103,0x05ec9a64)
+HX_LOCAL_STACK_FRAME(_hx_pos_f6deb7e554df00ae_121_writeFullBytes,"haxe.io.Output","writeFullBytes",0xc2c420ea,"haxe.io.Output.writeFullBytes","C:\\HaxeToolkit\\haxe\\std/haxe/io/Output.hx",121,0x05ec9a64)
+HX_LOCAL_STACK_FRAME(_hx_pos_f6deb7e554df00ae_278_writeString,"haxe.io.Output","writeString",0x97e1cb83,"haxe.io.Output.writeString","C:\\HaxeToolkit\\haxe\\std/haxe/io/Output.hx",278,0x05ec9a64)
 namespace haxe{
 namespace io{
 
@@ -91,6 +97,13 @@ void Output_obj::flush(){
 
 HX_DEFINE_DYNAMIC_FUNC0(Output_obj,flush,(void))
 
+void Output_obj::close(){
+            	HX_STACKFRAME(&_hx_pos_f6deb7e554df00ae_92_close)
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC0(Output_obj,close,(void))
+
 void Output_obj::write( ::haxe::io::Bytes s){
             	HX_STACKFRAME(&_hx_pos_f6deb7e554df00ae_103_write)
 HXLINE( 104)		int l = s->length;
@@ -108,6 +121,27 @@ HXLINE( 111)			l = (l - k);
 
 HX_DEFINE_DYNAMIC_FUNC1(Output_obj,write,(void))
 
+void Output_obj::writeFullBytes( ::haxe::io::Bytes s,int pos,int len){
+            	HX_STACKFRAME(&_hx_pos_f6deb7e554df00ae_121_writeFullBytes)
+HXDLIN( 121)		while((len > 0)){
+HXLINE( 122)			int k = this->writeBytes(s,pos,len);
+HXLINE( 123)			pos = (pos + k);
+HXLINE( 124)			len = (len - k);
+            		}
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC3(Output_obj,writeFullBytes,(void))
+
+void Output_obj::writeString(::String s, ::haxe::io::Encoding encoding){
+            	HX_STACKFRAME(&_hx_pos_f6deb7e554df00ae_278_writeString)
+HXLINE( 282)		 ::haxe::io::Bytes b = ::haxe::io::Bytes_obj::ofString(s,encoding);
+HXLINE( 284)		this->writeFullBytes(b,0,b->length);
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC2(Output_obj,writeString,(void))
+
 
 Output_obj::Output_obj()
 {
@@ -118,6 +152,7 @@ Output_obj::Output_obj()
 	switch(inName.length) {
 	case 5:
 		if (HX_FIELD_EQ(inName,"flush") ) { return ::hx::Val( flush_dyn() ); }
+		if (HX_FIELD_EQ(inName,"close") ) { return ::hx::Val( close_dyn() ); }
 		if (HX_FIELD_EQ(inName,"write") ) { return ::hx::Val( write_dyn() ); }
 		break;
 	case 9:
@@ -125,6 +160,12 @@ Output_obj::Output_obj()
 		break;
 	case 10:
 		if (HX_FIELD_EQ(inName,"writeBytes") ) { return ::hx::Val( writeBytes_dyn() ); }
+		break;
+	case 11:
+		if (HX_FIELD_EQ(inName,"writeString") ) { return ::hx::Val( writeString_dyn() ); }
+		break;
+	case 14:
+		if (HX_FIELD_EQ(inName,"writeFullBytes") ) { return ::hx::Val( writeFullBytes_dyn() ); }
 	}
 	return super::__Field(inName,inCallProp);
 }
@@ -138,7 +179,10 @@ static ::String Output_obj_sMemberFields[] = {
 	HX_("writeByte",87,13,d7,49),
 	HX_("writeBytes",0c,03,5a,52),
 	HX_("flush",c4,62,9b,02),
+	HX_("close",b8,17,63,48),
 	HX_("write",df,6c,59,d0),
+	HX_("writeFullBytes",7d,e7,66,a4),
+	HX_("writeString",10,7b,29,a6),
 	::String(null()) };
 
 ::hx::Class Output_obj::__mClass;

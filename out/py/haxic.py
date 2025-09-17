@@ -900,7 +900,7 @@ class haxe_io_Output:
     _hx_class_name = "haxe.io.Output"
     __slots__ = ("bigEndian",)
     _hx_fields = ["bigEndian"]
-    _hx_methods = ["writeByte", "writeBytes", "flush", "set_bigEndian", "write"]
+    _hx_methods = ["writeByte", "writeBytes", "flush", "set_bigEndian", "write", "writeFullBytes", "writeString"]
 
     def writeByte(self,c):
         raise haxe_exceptions_NotImplementedException(None,None,_hx_AnonObject({'fileName': "haxe/io/Output.hx", 'lineNumber': 47, 'className': "haxe.io.Output", 'methodName': "writeByte"}))
@@ -932,6 +932,16 @@ class haxe_io_Output:
                 raise haxe_Exception.thrown(haxe_io_Error.Blocked)
             p = (p + k)
             l = (l - k)
+
+    def writeFullBytes(self,s,pos,_hx_len):
+        while (_hx_len > 0):
+            k = self.writeBytes(s,pos,_hx_len)
+            pos = (pos + k)
+            _hx_len = (_hx_len - k)
+
+    def writeString(self,s,encoding = None):
+        b = haxe_io_Bytes.ofString(s,encoding)
+        self.writeFullBytes(b,0,b.length)
 
 haxe_io_Output._hx_class = haxe_io_Output
 
@@ -1759,7 +1769,7 @@ class python_io_NativeOutput(haxe_io_Output):
     _hx_class_name = "python.io.NativeOutput"
     __slots__ = ("stream",)
     _hx_fields = ["stream"]
-    _hx_methods = ["flush"]
+    _hx_methods = ["close", "flush"]
     _hx_statics = []
     _hx_interfaces = []
     _hx_super = haxe_io_Output
@@ -1772,17 +1782,42 @@ class python_io_NativeOutput(haxe_io_Output):
         if (not stream.writable()):
             raise haxe_Exception.thrown("Read only stream")
 
+    def close(self):
+        self.stream.close()
+
     def flush(self):
         self.stream.flush()
 
 python_io_NativeOutput._hx_class = python_io_NativeOutput
 
 
+class python_io_NativeBytesOutput(python_io_NativeOutput):
+    _hx_class_name = "python.io.NativeBytesOutput"
+    __slots__ = ()
+    _hx_fields = []
+    _hx_methods = ["writeByte", "writeBytes"]
+    _hx_statics = []
+    _hx_interfaces = []
+    _hx_super = python_io_NativeOutput
+
+
+    def __init__(self,stream):
+        super().__init__(stream)
+
+    def writeByte(self,c):
+        self.stream.write(bytearray([c]))
+
+    def writeBytes(self,s,pos,_hx_len):
+        return self.stream.write(s.b[pos:(pos + _hx_len)])
+
+python_io_NativeBytesOutput._hx_class = python_io_NativeBytesOutput
+
+
 class python_io_IOutput:
     _hx_class_name = "python.io.IOutput"
     __slots__ = ("bigEndian",)
     _hx_fields = ["bigEndian"]
-    _hx_methods = ["set_bigEndian", "writeByte", "writeBytes", "flush", "write"]
+    _hx_methods = ["set_bigEndian", "writeByte", "writeBytes", "flush", "close", "write", "writeFullBytes", "writeString"]
 python_io_IOutput._hx_class = python_io_IOutput
 
 
@@ -1791,6 +1826,21 @@ class python_io_IFileOutput:
     __slots__ = ()
     _hx_interfaces = [python_io_IOutput]
 python_io_IFileOutput._hx_class = python_io_IFileOutput
+
+
+class python_io_FileBytesOutput(python_io_NativeBytesOutput):
+    _hx_class_name = "python.io.FileBytesOutput"
+    __slots__ = ()
+    _hx_fields = []
+    _hx_methods = []
+    _hx_statics = []
+    _hx_interfaces = [python_io_IFileOutput]
+    _hx_super = python_io_NativeBytesOutput
+
+
+    def __init__(self,stream):
+        super().__init__(stream)
+python_io_FileBytesOutput._hx_class = python_io_FileBytesOutput
 
 
 class python_io_NativeTextInput(python_io_NativeInput):
@@ -1872,7 +1922,7 @@ python_io_FileTextOutput._hx_class = python_io_FileTextOutput
 class python_io_IoTools:
     _hx_class_name = "python.io.IoTools"
     __slots__ = ()
-    _hx_statics = ["createFileInputFromText", "createFileOutputFromText"]
+    _hx_statics = ["createFileInputFromText", "createFileOutputFromText", "createFileOutputFromBytes"]
 
     @staticmethod
     def createFileInputFromText(t):
@@ -1881,15 +1931,11 @@ class python_io_IoTools:
     @staticmethod
     def createFileOutputFromText(t):
         return sys_io_FileOutput(python_io_FileTextOutput(t))
+
+    @staticmethod
+    def createFileOutputFromBytes(t):
+        return sys_io_FileOutput(python_io_FileBytesOutput(t))
 python_io_IoTools._hx_class = python_io_IoTools
-
-
-class src_ASTWalker:
-    _hx_class_name = "src.ASTWalker"
-    __slots__ = ()
-    _hx_methods = ["visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitStmt", "visitBlockStmt", "visitExprStmt", "visitFunctionStmt", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitUnaryExpr", "visitStringExpr", "visitExpr", "visitArrayExpr", "visitIndexExpr", "visitCallExpr", "visitBooleanExpr", "visitNullExpr", "visitFunctionExpr", "visitMapExpr"]
-
-src_ASTWalker._hx_class = src_ASTWalker
 
 
 class src_Environment:
@@ -1953,15 +1999,11 @@ class src_Return(haxe_Exception):
 src_Return._hx_class = src_Return
 
 
-class src_Interpreter(src_ASTWalker):
+class src_Interpreter:
     _hx_class_name = "src.Interpreter"
     __slots__ = ("environment",)
     _hx_fields = ["environment"]
     _hx_methods = ["visit", "visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitWhileStmt", "visitForeachStmt", "visitBlockStmt", "visitExprStmt", "visitReturnStmt", "visitFunctionStmt", "visitStmt", "visitExpr", "visitUnaryExpr", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitStringExpr", "visitCallExpr", "visitNullExpr", "visitBooleanExpr", "visitArrayExpr", "visitIndexExpr", "visitMapExpr", "visitFunctionExpr", "loadFunctions"]
-    _hx_statics = []
-    _hx_interfaces = []
-    _hx_super = src_ASTWalker
-
 
     def __init__(self):
         self.environment = src_Environment()
@@ -2398,17 +2440,23 @@ class src_Interpreter(src_ASTWalker):
         def _hx_local_12(env):
             v = src_types_V.toNumber(env.get("x"))
             return src_types_Value.VNumber((Math.NaN if (((v == Math.POSITIVE_INFINITY) or ((v == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(v)))
-        value = src_types_Value.VNative(src_types_NativeFunction("cos",[src_ast_Parameter("x",None,0,0)],_hx_local_12))
-        _this.h["cos"] = value
+        value = src_types_Value.VNative(src_types_NativeFunction("sin",[src_ast_Parameter("x",None,0,0)],_hx_local_12))
+        _this.h["sin"] = value
         _this = src_types_V.toMap(self.environment.get("math"))
         def _hx_local_13(env):
-            return src_types_Value.VNumber(Math.tan(src_types_V.toNumber(env.get("x"))))
-        value = src_types_Value.VNative(src_types_NativeFunction("tan",[src_ast_Parameter("x",None,0,0)],_hx_local_13))
-        _this.h["tan"] = value
+            v = src_types_V.toNumber(env.get("x"))
+            return src_types_Value.VNumber((Math.NaN if (((v == Math.POSITIVE_INFINITY) or ((v == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(v)))
+        value = src_types_Value.VNative(src_types_NativeFunction("cos",[src_ast_Parameter("x",None,0,0)],_hx_local_13))
+        _this.h["cos"] = value
         _this = src_types_V.toMap(self.environment.get("math"))
         def _hx_local_14(env):
+            return src_types_Value.VNumber(Math.tan(src_types_V.toNumber(env.get("x"))))
+        value = src_types_Value.VNative(src_types_NativeFunction("tan",[src_ast_Parameter("x",None,0,0)],_hx_local_14))
+        _this.h["tan"] = value
+        _this = src_types_V.toMap(self.environment.get("math"))
+        def _hx_local_15(env):
             return src_types_Value.VNumber(Math.pow(src_types_V.toNumber(env.get("x")),src_types_V.toNumber(env.get("y"))))
-        value = src_types_Value.VNative(src_types_NativeFunction("pow",[src_ast_Parameter("x",None,0,0), src_ast_Parameter("y",src_ast_NumberExpr(1,0,0),0,0)],_hx_local_14))
+        value = src_types_Value.VNative(src_types_NativeFunction("pow",[src_ast_Parameter("x",None,0,0), src_ast_Parameter("y",src_ast_NumberExpr(1,0,0),0,0)],_hx_local_15))
         _this.h["pow"] = value
 
 src_Interpreter._hx_class = src_Interpreter
@@ -2659,18 +2707,24 @@ class src_Main:
 
     @staticmethod
     def main():
-        if (len(Sys.args()) > 1):
-            src_Utils.print("Usage: haxic [<file>]")
-            return
-        if (len(Sys.args()) == 1):
+        if (len(Sys.args()) >= 1):
             filename = python_internal_ArrayImpl._get(Sys.args(), 0)
             content = sys_io_File.getContent(filename)
             lexer = src_Lexer(content)
             tokens = lexer.tokenize()
             parser = src_Parser(tokens)
             ast = parser.parse()
-            interpreter = src_Interpreter()
-            interpreter.visit(ast)
+            if ("-py" in Sys.args()):
+                out_idx = (python_internal_ArrayImpl.indexOf(Sys.args(),"-py",None) + 1)
+                filename = python_internal_ArrayImpl._get(Sys.args(), out_idx)
+                out_f = sys_io_File.write(filename)
+                codegen = src_compiler_PyCompiler()
+                codegen.visit(ast)
+                out_f.writeString(codegen.getCode())
+                out_f.close()
+            else:
+                interp = src_Interpreter()
+                interp.visit(ast)
             return
         interpreter = src_Interpreter()
         src_Utils.print("Haxic REPL v1.1, Haxic version 1.0 beta 3. Type Ctrl+C to exit.")
@@ -2685,6 +2739,7 @@ class src_Main:
                 tokens = lexer.tokenize()
                 parser = src_Parser(tokens)
                 ast = parser.parse()
+                compiler = src_compiler_PyCompiler()
                 interpreter.visit(ast)
             except BaseException as _g:
                 err = haxe_Exception.caught(_g)
@@ -3727,6 +3782,350 @@ class src_ast_WhileStmt(src_ast_Stmt):
 src_ast_WhileStmt._hx_class = src_ast_WhileStmt
 
 
+class src_compiler_PyCompiler:
+    _hx_class_name = "src.compiler.PyCompiler"
+    __slots__ = ("code", "head", "indent", "lambda_idx")
+    _hx_fields = ["code", "head", "indent", "lambda_idx"]
+    _hx_methods = ["new_lambda_id", "writeHeader", "writeIndent", "write", "write_head", "getCode", "visit", "visitStmt", "visitExpr", "visitPrintStmt", "visitInputStmt", "visitLetStmt", "visitIfStmt", "visitForeachStmt", "visitWhileStmt", "visitBlockStmt", "visitExprStmt", "visitFunctionStmt", "visitReturnStmt", "visitBinaryExpr", "visitNumberExpr", "visitVariableExpr", "visitUnaryExpr", "visitStringExpr", "visitArrayExpr", "visitIndexExpr", "visitCallExpr", "visitBooleanExpr", "visitNullExpr", "visitFunctionExpr", "visitMapExpr"]
+
+    def __init__(self):
+        self.code = ""
+        self.head = ""
+        self.indent = 0
+        self.lambda_idx = 0
+        self.writeHeader()
+
+    def new_lambda_id(self):
+        def _hx_local_3():
+            def _hx_local_2():
+                _hx_local_0 = self
+                _hx_local_1 = _hx_local_0.lambda_idx
+                _hx_local_0.lambda_idx = (_hx_local_1 + 1)
+                return _hx_local_1
+            return ("$lambda" + Std.string(_hx_local_2()))
+        return _hx_local_3()
+
+    def writeHeader(self):
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.head
+        _hx_local_0.head = (("null" if _hx_local_1 is None else _hx_local_1) + "import haxic_std\n\n")
+        _hx_local_0.head
+
+    def writeIndent(self):
+        _g = 0
+        _g1 = self.indent
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            self.write("\t")
+
+    def write(self,text):
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.code
+        _hx_local_0.code = (("null" if _hx_local_1 is None else _hx_local_1) + ("null" if text is None else text))
+        _hx_local_0.code
+
+    def write_head(self,text):
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.head
+        _hx_local_0.head = (("null" if _hx_local_1 is None else _hx_local_1) + ("null" if text is None else text))
+        _hx_local_0.head
+
+    def getCode(self):
+        return (HxOverrides.stringOrNull(self.head) + HxOverrides.stringOrNull(self.code))
+
+    def visit(self,ast):
+        _g = 0
+        while (_g < len(ast)):
+            stmt = (ast[_g] if _g >= 0 and _g < len(ast) else None)
+            _g = (_g + 1)
+            if (stmt is not None):
+                self.visitStmt(stmt)
+
+    def visitStmt(self,stmt):
+        self.writeIndent()
+        if Std.isOfType(stmt,src_ast_PrintStmt):
+            self.visitPrintStmt(stmt)
+        elif Std.isOfType(stmt,src_ast_InputStmt):
+            self.visitInputStmt(stmt)
+        elif Std.isOfType(stmt,src_ast_LetStmt):
+            self.visitLetStmt(stmt)
+        elif Std.isOfType(stmt,src_ast_IfStmt):
+            self.visitIfStmt(stmt)
+        elif Std.isOfType(stmt,src_ast_BlockStmt):
+            self.visitBlockStmt(stmt)
+        elif Std.isOfType(stmt,src_ast_ExprStmt):
+            self.visitExprStmt(stmt)
+        elif Std.isOfType(stmt,src_ast_WhileStmt):
+            self.visitWhileStmt(stmt)
+        elif Std.isOfType(stmt,src_ast_ForeachStmt):
+            self.visitForeachStmt(stmt)
+        elif Std.isOfType(stmt,src_ast_ReturnStmt):
+            self.visitReturnStmt(stmt)
+        elif Std.isOfType(stmt,src_ast_FunctionStmt):
+            self.visitFunctionStmt(stmt)
+        else:
+            raise haxe_Exception.thrown(("Unknown statement type: " + Std.string(stmt)))
+
+    def visitExpr(self,expr):
+        if Std.isOfType(expr,src_ast_BinaryExpr):
+            self.visitBinaryExpr(expr)
+        elif Std.isOfType(expr,src_ast_NumberExpr):
+            self.visitNumberExpr(expr)
+        elif Std.isOfType(expr,src_ast_VariableExpr):
+            self.visitVariableExpr(expr)
+        elif Std.isOfType(expr,src_ast_UnaryExpr):
+            self.visitUnaryExpr(expr)
+        elif Std.isOfType(expr,src_ast_StringExpr):
+            self.visitStringExpr(expr)
+        elif Std.isOfType(expr,src_ast_CallExpr):
+            self.visitCallExpr(expr)
+        elif Std.isOfType(expr,src_ast_BooleanExpr):
+            self.visitBooleanExpr(expr)
+        elif Std.isOfType(expr,src_ast_NullExpr):
+            self.visitNullExpr(expr)
+        elif Std.isOfType(expr,src_ast_ArrayExpr):
+            self.visitArrayExpr(expr)
+        elif Std.isOfType(expr,src_ast_IndexExpr):
+            self.visitIndexExpr(expr)
+        elif Std.isOfType(expr,src_ast_MapExpr):
+            self.visitMapExpr(expr)
+        elif Std.isOfType(expr,src_ast_FunctionExpr):
+            self.visitFunctionExpr(expr)
+        else:
+            raise haxe_Exception.thrown(("Unknown expression type: " + Std.string(expr)))
+
+    def visitPrintStmt(self,stmt):
+        self.write("print(")
+        self.visitExpr(stmt.expr)
+        self.write(")\n")
+
+    def visitInputStmt(self,stmt):
+        self.visitVariableExpr(stmt.target)
+        self.write(" = input()\ntry: ")
+        self.visitVariableExpr(stmt.target)
+        self.write(" = float(")
+        self.visitVariableExpr(stmt.target)
+        self.write(")\nexcept ValueError: pass\n")
+
+    def visitLetStmt(self,stmt):
+        bind_idx = 0
+        _g = 0
+        _g1 = stmt.bindings
+        while (_g < len(_g1)):
+            bind = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            self.visitVariableExpr(bind)
+            if (bind_idx < ((len(stmt.bindings) - 1))):
+                self.write(", ")
+        self.write(" = ")
+        self.visitExpr(stmt.value)
+        self.write("\n")
+
+    def visitIfStmt(self,stmt):
+        self.write("if ")
+        self.visitExpr(stmt.condition)
+        self.write(":\n")
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.indent
+        _hx_local_0.indent = (_hx_local_1 + 1)
+        _hx_local_1
+        self.visitStmt(stmt.thenBranch)
+        _hx_local_2 = self
+        _hx_local_3 = _hx_local_2.indent
+        _hx_local_2.indent = (_hx_local_3 - 1)
+        _hx_local_3
+        if (stmt.elseBranch is not None):
+            self.writeIndent()
+            self.write("else:")
+            _hx_local_4 = self
+            _hx_local_5 = _hx_local_4.indent
+            _hx_local_4.indent = (_hx_local_5 + 1)
+            _hx_local_5
+            self.visitStmt(stmt.elseBranch)
+            _hx_local_6 = self
+            _hx_local_7 = _hx_local_6.indent
+            _hx_local_6.indent = (_hx_local_7 - 1)
+            _hx_local_7
+
+    def visitForeachStmt(self,stmt):
+        self.write("for ")
+        self.visitVariableExpr(stmt.variable)
+        self.write(" in ")
+        self.visitExpr(stmt.target)
+        self.write(":\n")
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.indent
+        _hx_local_0.indent = (_hx_local_1 + 1)
+        _hx_local_1
+        self.visitStmt(stmt.body)
+        _hx_local_2 = self
+        _hx_local_3 = _hx_local_2.indent
+        _hx_local_2.indent = (_hx_local_3 - 1)
+        _hx_local_3
+
+    def visitWhileStmt(self,stmt):
+        self.write("while ")
+        self.visitExpr(stmt.condition)
+        self.write(":\n")
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.indent
+        _hx_local_0.indent = (_hx_local_1 + 1)
+        _hx_local_1
+        self.visitStmt(stmt.body)
+        _hx_local_2 = self
+        _hx_local_3 = _hx_local_2.indent
+        _hx_local_2.indent = (_hx_local_3 - 1)
+        _hx_local_3
+
+    def visitBlockStmt(self,stmt):
+        _g = 0
+        _g1 = stmt.statements
+        while (_g < len(_g1)):
+            st = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            self.visitStmt(st)
+
+    def visitExprStmt(self,stmt):
+        self.visitExpr(stmt.expr)
+        self.write("\n")
+
+    def visitFunctionStmt(self,stmt):
+        self.write((("def " + HxOverrides.stringOrNull(stmt.name)) + "("))
+        param_idx = 0
+        _g = 0
+        _g1 = stmt.params
+        while (_g < len(_g1)):
+            param = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            self.write(param.name)
+            if (param.defaultValue is not None):
+                self.write(" = ")
+                self.visitExpr(param.defaultValue)
+            if (param_idx < len(stmt.params)):
+                self.write(", ")
+        self.write("):\n")
+        _hx_local_1 = self
+        _hx_local_2 = _hx_local_1.indent
+        _hx_local_1.indent = (_hx_local_2 + 1)
+        _hx_local_2
+        self.visitStmt(stmt.body)
+        _hx_local_3 = self
+        _hx_local_4 = _hx_local_3.indent
+        _hx_local_3.indent = (_hx_local_4 - 1)
+        _hx_local_4
+
+    def visitReturnStmt(self,stmt):
+        self.write("return ")
+        self.visitExpr(stmt.value)
+        self.write("\n")
+
+    def visitBinaryExpr(self,expr):
+        self.write("(")
+        self.visitExpr(expr.left)
+        self.write(((" " + HxOverrides.stringOrNull((("null" if ((expr.oper.value is None)) else Std.string(expr.oper.value))))) + " "))
+        self.visitExpr(expr.right)
+        self.write(")")
+
+    def visitNumberExpr(self,expr):
+        self.write(Std.string(expr.value))
+
+    def visitVariableExpr(self,expr):
+        self.write(expr.name)
+
+    def visitUnaryExpr(self,expr):
+        self.write("(")
+        self.write(("null" if ((expr.oper.value is None)) else Std.string(expr.oper.value)))
+        self.visitExpr(expr.right)
+        self.write(")")
+
+    def visitStringExpr(self,expr):
+        self.write((("\"" + HxOverrides.stringOrNull(expr.value)) + "\""))
+
+    def visitArrayExpr(self,expr):
+        self.write("[")
+        expr_idx = 0
+        _g = 0
+        _g1 = expr.elements
+        while (_g < len(_g1)):
+            value = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            self.visitExpr(value)
+            if (expr_idx < ((len(expr.elements) - 1))):
+                self.write(", ")
+        self.write("]")
+
+    def visitIndexExpr(self,expr):
+        self.visitExpr(expr.target)
+        self.write("[")
+        self.visitExpr(expr.index)
+        self.write("]")
+
+    def visitCallExpr(self,expr):
+        self.visitExpr(expr.callee)
+        self.write("(")
+        expr_idx = 0
+        _g = 0
+        _g1 = expr.arguments
+        while (_g < len(_g1)):
+            value = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            self.visitExpr(value)
+            if (expr_idx < ((len(expr.arguments) - 1))):
+                self.write(", ")
+        self.write(")")
+
+    def visitBooleanExpr(self,expr):
+        self.write(("True" if (expr.value) else "False"))
+
+    def visitNullExpr(self,expr):
+        self.write("None")
+
+    def visitFunctionExpr(self,expr):
+        l_id = self.new_lambda_id()
+        self.write_head((("def " + ("null" if l_id is None else l_id)) + "("))
+        param_idx = 0
+        _g = 0
+        _g1 = expr.params
+        while (_g < len(_g1)):
+            param = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            self.write_head(param.name)
+            if (param.defaultValue is not None):
+                self.write_head(" = ")
+                self.visitExpr(param.defaultValue)
+            if (param_idx < len(expr.params)):
+                self.write_head(", ")
+        self.write_head("):\n")
+        _hx_local_1 = self
+        _hx_local_2 = _hx_local_1.indent
+        _hx_local_1.indent = (_hx_local_2 + 1)
+        _hx_local_2
+        self.visitStmt(expr.body)
+        _hx_local_3 = self
+        _hx_local_4 = _hx_local_3.indent
+        _hx_local_3.indent = (_hx_local_4 - 1)
+        _hx_local_4
+        self.write_head("\n")
+        self.write(l_id)
+
+    def visitMapExpr(self,expr):
+        self.write("{")
+        pair_idx = 0
+        _g = 0
+        _g1 = expr.pairs
+        while (_g < len(_g1)):
+            pair = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            self.write((HxOverrides.stringOrNull(pair.key) + ": "))
+            self.visitExpr(pair.value)
+            if (pair_idx < ((len(expr.pairs) - 1))):
+                self.write(", ")
+        self.write("}")
+
+src_compiler_PyCompiler._hx_class = src_compiler_PyCompiler
+
+
 class src_types_Function:
     _hx_class_name = "src.types.Function"
     __slots__ = ("name", "params", "body")
@@ -3967,7 +4366,7 @@ src_types_Value._hx_class = src_types_Value
 class sys_io_File:
     _hx_class_name = "sys.io.File"
     __slots__ = ()
-    _hx_statics = ["getContent"]
+    _hx_statics = ["getContent", "write"]
 
     @staticmethod
     def getContent(path):
@@ -3975,6 +4374,17 @@ class sys_io_File:
         content = f.read(-1)
         f.close()
         return content
+
+    @staticmethod
+    def write(path,binary = None):
+        if (binary is None):
+            binary = True
+        mode = ("wb" if binary else "w")
+        f = python_lib_Builtins.open(path,mode,-1,None,None,(None if binary else ""))
+        if binary:
+            return python_io_IoTools.createFileOutputFromBytes(f)
+        else:
+            return python_io_IoTools.createFileOutputFromText(f)
 sys_io_File._hx_class = sys_io_File
 
 
@@ -4007,7 +4417,7 @@ class sys_io_FileOutput(haxe_io_Output):
     _hx_class_name = "sys.io.FileOutput"
     __slots__ = ("impl",)
     _hx_fields = ["impl"]
-    _hx_methods = ["set_bigEndian", "writeByte", "writeBytes", "flush", "write"]
+    _hx_methods = ["set_bigEndian", "writeByte", "writeBytes", "flush", "close", "write", "writeFullBytes", "writeString"]
     _hx_statics = []
     _hx_interfaces = []
     _hx_super = haxe_io_Output
@@ -4028,8 +4438,17 @@ class sys_io_FileOutput(haxe_io_Output):
     def flush(self):
         self.impl.flush()
 
+    def close(self):
+        self.impl.close()
+
     def write(self,s):
         self.impl.write(s)
+
+    def writeFullBytes(self,s,pos,_hx_len):
+        self.impl.writeFullBytes(s,pos,_hx_len)
+
+    def writeString(self,s,encoding = None):
+        self.impl.writeString(s)
 
 sys_io_FileOutput._hx_class = sys_io_FileOutput
 

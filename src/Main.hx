@@ -1,24 +1,32 @@
 package src;
 
+import sys.io.File;
+import src.compiler.PyCompiler;
+
 class Main {
     static function main() {
-        // Check command line argument count
-        if (Sys.args().length > 1) {
-            Utils.print("Usage: haxic [<file>]");
-            return;
-        }
-        // If a filename is provided, run the file
-        if (Sys.args().length == 1) {
+        if (Sys.args().length >= 1) {
             // Get the filename and read its content
             var filename = Sys.args()[0];
             var content = sys.io.File.getContent(filename);
-            // Lex, parse, and interpret
+            // Lex and parse
             var lexer = new Lexer(content);
             var tokens = lexer.tokenize();
             var parser = new Parser(tokens);
             var ast = parser.parse();
-            var interpreter = new Interpreter();
-            interpreter.visit(ast);
+            if (Sys.args().contains("-py")) {
+                var out_idx = Sys.args().indexOf("-py") + 1;
+                var filename = Sys.args()[out_idx];
+                var out_f = File.write(filename);
+                // Compile the code
+                var codegen = new PyCompiler();
+                codegen.visit(ast);
+                out_f.writeString(codegen.getCode());
+                out_f.close();
+            } else {
+                var interp = new Interpreter();
+                interp.visit(ast);
+            }
             return;
         }
         // Fall back to REPL mode
@@ -37,6 +45,7 @@ class Main {
                 var tokens = lexer.tokenize();
                 var parser = new Parser(tokens);
                 var ast = parser.parse();
+                var compiler = new PyCompiler();
                 interpreter.visit(ast);
             } catch (err:haxe.Exception) {
                 Utils.print("Error: " + err.details());

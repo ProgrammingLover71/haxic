@@ -7,6 +7,7 @@
 #endif
 
 HX_DECLARE_CLASS2(haxe,io,Bytes)
+HX_DECLARE_CLASS2(haxe,io,Encoding)
 HX_DECLARE_CLASS2(haxe,io,Output)
 
 namespace haxe{
@@ -61,8 +62,17 @@ class HXCPP_CLASS_ATTRIBUTES Output_obj : public ::hx::Object
 		virtual void flush();
 		::Dynamic flush_dyn();
 
+		virtual void close();
+		::Dynamic close_dyn();
+
 		void write( ::haxe::io::Bytes s);
 		::Dynamic write_dyn();
+
+		void writeFullBytes( ::haxe::io::Bytes s,int pos,int len);
+		::Dynamic writeFullBytes_dyn();
+
+		void writeString(::String s, ::haxe::io::Encoding encoding);
+		::Dynamic writeString_dyn();
 
 };
 

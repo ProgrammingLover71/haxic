@@ -40,6 +40,9 @@
 #ifndef INCLUDED_src_types_Function
 #include <src/types/Function.h>
 #endif
+#ifndef INCLUDED_src_compiler_PyCompiler
+#include <src/compiler/PyCompiler.h>
+#endif
 #ifndef INCLUDED_src_ast_WhileStmt
 #include <src/ast/WhileStmt.h>
 #endif
@@ -142,9 +145,6 @@
 #ifndef INCLUDED_src_Environment
 #include <src/Environment.h>
 #endif
-#ifndef INCLUDED_src_ASTWalker
-#include <src/ASTWalker.h>
-#endif
 #ifndef INCLUDED_haxe_iterators_ArrayIterator
 #include <haxe/iterators/ArrayIterator.h>
 #endif
@@ -228,6 +228,7 @@ __files__boot();
 ::src::types::V_obj::__register();
 ::src::types::NativeFunction_obj::__register();
 ::src::types::Function_obj::__register();
+::src::compiler::PyCompiler_obj::__register();
 ::src::ast::WhileStmt_obj::__register();
 ::src::ast::VariableExpr_obj::__register();
 ::src::ast::UnaryExpr_obj::__register();
@@ -262,7 +263,6 @@ __files__boot();
 ::src::Interpreter_obj::__register();
 ::src::Return_obj::__register();
 ::src::Environment_obj::__register();
-::src::ASTWalker_obj::__register();
 ::haxe::iterators::ArrayIterator_obj::__register();
 ::haxe::io::Output_obj::__register();
 ::haxe::io::Input_obj::__register();

@@ -23,9 +23,6 @@
 #ifndef INCLUDED_haxe_io_Input
 #include <haxe/io/Input.h>
 #endif
-#ifndef INCLUDED_src_ASTWalker
-#include <src/ASTWalker.h>
-#endif
 #ifndef INCLUDED_src_Environment
 #include <src/Environment.h>
 #endif
@@ -171,7 +168,8 @@ HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_506_loadFunctions,"src.Interpreter
 HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_516_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",516,0xb37cc36f)
 HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_523_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",523,0xb37cc36f)
 HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_530_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",530,0xb37cc36f)
-HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_538_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",538,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_537_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",537,0xb37cc36f)
+HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_545_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",545,0xb37cc36f)
 HX_LOCAL_STACK_FRAME(_hx_pos_635dbbe2aac6a24c_398_loadFunctions,"src.Interpreter","loadFunctions",0xc9b2bb77,"src.Interpreter.loadFunctions","src/Interpreter.hx",398,0xb37cc36f)
 namespace src{
 
@@ -197,11 +195,7 @@ Dynamic Interpreter_obj::__Create(::hx::DynamicArray inArgs)
 }
 
 bool Interpreter_obj::_hx_isInstanceOf(int inClassId) {
-	if (inClassId<=(int)0x401b9214) {
-		return inClassId==(int)0x00000001 || inClassId==(int)0x401b9214;
-	} else {
-		return inClassId==(int)0x5d9adc36;
-	}
+	return inClassId==(int)0x00000001 || inClassId==(int)0x5d9adc36;
 }
 
 void Interpreter_obj::visit(::Array< ::Dynamic> ast){
@@ -225,6 +219,8 @@ HXDLIN(  84)		::src::Utils_obj::print(::src::Utils_obj::stringify(this->visitExp
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitPrintStmt,(void))
+
 void Interpreter_obj::visitInputStmt( ::src::ast::InputStmt stmt){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_88_visitInputStmt)
 HXLINE(  89)		::String input = ::Sys_obj::_hx_stdin()->readLine();
@@ -239,6 +235,8 @@ HXLINE(  91)			final_val = ::src::types::Value_obj::VNumber(num);
 HXLINE(  92)		this->environment->define(stmt->target->name,final_val);
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitInputStmt,(void))
 
 void Interpreter_obj::visitLetStmt( ::src::ast::LetStmt stmt){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_96_visitLetStmt)
@@ -258,6 +256,8 @@ HXLINE( 102)				this->environment->define(v->name,value);
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitLetStmt,(void))
+
 void Interpreter_obj::visitIfStmt( ::src::ast::IfStmt stmt){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_109_visitIfStmt)
 HXDLIN( 109)		if (::src::types::V_obj::isTruthy(this->visitExpr(stmt->condition))) {
@@ -270,6 +270,8 @@ HXLINE( 112)				this->visitBlockStmt(stmt->elseBranch);
             		}
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitIfStmt,(void))
 
 void Interpreter_obj::visitWhileStmt( ::src::ast::WhileStmt stmt){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_117_visitWhileStmt)
@@ -330,11 +332,15 @@ HXLINE( 146)			this->visitStmt(s);
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitBlockStmt,(void))
+
 void Interpreter_obj::visitExprStmt( ::src::ast::ExprStmt stmt){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_152_visitExprStmt)
 HXDLIN( 152)		this->visitExpr(stmt->expr);
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitExprStmt,(void))
 
 void Interpreter_obj::visitReturnStmt( ::src::ast::ReturnStmt stmt){
             	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_156_visitReturnStmt)
@@ -353,6 +359,8 @@ void Interpreter_obj::visitFunctionStmt( ::src::ast::FunctionStmt stmt){
 HXDLIN( 167)		this->environment->define(stmt->name,::src::types::Value_obj::VFunc( ::src::types::Function_obj::__alloc( HX_CTX ,stmt->name,stmt->params,stmt->body)));
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitFunctionStmt,(void))
 
 void Interpreter_obj::visitStmt( ::src::ast::Stmt stmt){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_172_visitStmt)
@@ -410,7 +418,9 @@ HXLINE( 193)												HX_STACK_DO_THROW((HX_("Unknown statement type: ",27,79,
             	}
 
 
- ::Dynamic Interpreter_obj::visitExpr( ::src::ast::Expr expr){
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitStmt,(void))
+
+ ::src::types::Value Interpreter_obj::visitExpr( ::src::ast::Expr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_200_visitExpr)
 HXDLIN( 200)		if (::Std_obj::isOfType(expr,::hx::ClassOf< ::src::ast::BinaryExpr >())) {
 HXLINE( 201)			return this->visitBinaryExpr(( ( ::src::ast::BinaryExpr)(expr) ));
@@ -477,6 +487,8 @@ HXLINE( 200)		return null();
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitExpr,return )
+
  ::src::types::Value Interpreter_obj::visitUnaryExpr( ::src::ast::UnaryExpr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_230_visitUnaryExpr)
 HXLINE( 231)		 ::src::types::Value right = this->visitExpr(expr->right);
@@ -503,6 +515,8 @@ HXDLIN( 238)				HX_STACK_DO_THROW((((((HX_("Unknown unary operator ",95,59,a9,99
 HXLINE( 232)		return null();
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitUnaryExpr,return )
 
  ::src::types::Value Interpreter_obj::visitBinaryExpr( ::src::ast::BinaryExpr expr){
             	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_243_visitBinaryExpr)
@@ -627,11 +641,15 @@ HXLINE( 246)		return null();
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitBinaryExpr,return )
+
  ::src::types::Value Interpreter_obj::visitNumberExpr( ::src::ast::NumberExpr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_290_visitNumberExpr)
 HXDLIN( 290)		return ::src::types::Value_obj::VNumber(expr->value);
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitNumberExpr,return )
 
  ::src::types::Value Interpreter_obj::visitVariableExpr( ::src::ast::VariableExpr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_294_visitVariableExpr)
@@ -643,11 +661,15 @@ HXDLIN( 296)		return null();
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitVariableExpr,return )
+
  ::src::types::Value Interpreter_obj::visitStringExpr( ::src::ast::StringExpr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_301_visitStringExpr)
 HXDLIN( 301)		return ::src::types::Value_obj::VString(expr->value);
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitStringExpr,return )
 
  ::src::types::Value Interpreter_obj::visitCallExpr( ::src::ast::CallExpr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_305_visitCallExpr)
@@ -694,17 +716,23 @@ HXLINE( 311)		return null();
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitCallExpr,return )
+
  ::src::types::Value Interpreter_obj::visitNullExpr( ::src::ast::NullExpr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_328_visitNullExpr)
 HXDLIN( 328)		return ::src::types::Value_obj::VNull_dyn();
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitNullExpr,return )
+
  ::src::types::Value Interpreter_obj::visitBooleanExpr( ::src::ast::BooleanExpr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_333_visitBooleanExpr)
 HXDLIN( 333)		return ::src::types::Value_obj::VBool(expr->value);
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitBooleanExpr,return )
 
  ::src::types::Value Interpreter_obj::visitArrayExpr( ::src::ast::ArrayExpr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_337_visitArrayExpr)
@@ -721,6 +749,8 @@ HXLINE( 340)				elements->push(this->visitExpr(el));
 HXLINE( 342)		return ::src::types::Value_obj::VArray(elements);
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitArrayExpr,return )
 
  ::src::types::Value Interpreter_obj::visitIndexExpr( ::src::ast::IndexExpr expr){
             	HX_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_346_visitIndexExpr)
@@ -795,6 +825,8 @@ HXLINE( 349)		return null();
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitIndexExpr,return )
+
  ::src::types::Value Interpreter_obj::visitMapExpr( ::src::ast::MapExpr expr){
             	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_378_visitMapExpr)
 HXLINE( 379)		 ::haxe::ds::StringMap result =  ::haxe::ds::StringMap_obj::__alloc( HX_CTX );
@@ -812,11 +844,15 @@ HXLINE( 385)		return ::src::types::Value_obj::VMap(result);
             	}
 
 
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitMapExpr,return )
+
  ::src::types::Value Interpreter_obj::visitFunctionExpr( ::src::ast::FunctionExpr expr){
             	HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_389_visitFunctionExpr)
 HXDLIN( 389)		return ::src::types::Value_obj::VFunc( ::src::types::Function_obj::__alloc( HX_CTX ,expr->name,expr->params,expr->body));
             	}
 
+
+HX_DEFINE_DYNAMIC_FUNC1(Interpreter_obj,visitFunctionExpr,return )
 
 void Interpreter_obj::loadFunctions(){
             		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_0) HXARGC(1)
@@ -1033,15 +1069,22 @@ HXLINE( 523)			return ::src::types::Value_obj::VNumber(::Math_obj::cos(::src::ty
             		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_9) HXARGC(1)
             		 ::src::types::Value _hx_run( ::src::Environment env){
             			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_530_loadFunctions)
-HXLINE( 530)			return ::src::types::Value_obj::VNumber(::Math_obj::tan(::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)))));
+HXLINE( 530)			return ::src::types::Value_obj::VNumber(::Math_obj::cos(::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)))));
             		}
             		HX_END_LOCAL_FUNC1(return)
 
             		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_10) HXARGC(1)
             		 ::src::types::Value _hx_run( ::src::Environment env){
-            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_538_loadFunctions)
-HXLINE( 539)			Float _hx_tmp = ::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)));
-HXLINE( 538)			return ::src::types::Value_obj::VNumber(::Math_obj::pow(_hx_tmp,::src::types::V_obj::toNumber(env->get(HX_("y",79,00,00,00)))));
+            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_537_loadFunctions)
+HXLINE( 537)			return ::src::types::Value_obj::VNumber(::Math_obj::tan(::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)))));
+            		}
+            		HX_END_LOCAL_FUNC1(return)
+
+            		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_11) HXARGC(1)
+            		 ::src::types::Value _hx_run( ::src::Environment env){
+            			HX_GC_STACKFRAME(&_hx_pos_635dbbe2aac6a24c_545_loadFunctions)
+HXLINE( 546)			Float _hx_tmp = ::src::types::V_obj::toNumber(env->get(HX_("x",78,00,00,00)));
+HXLINE( 545)			return ::src::types::Value_obj::VNumber(::Math_obj::pow(_hx_tmp,::src::types::V_obj::toNumber(env->get(HX_("y",79,00,00,00)))));
             		}
             		HX_END_LOCAL_FUNC1(return)
 
@@ -1065,11 +1108,13 @@ HXLINE( 510)		this->environment->define(HX_("math",c8,41,56,48),::src::types::Va
 HXLINE( 513)		 ::haxe::ds::StringMap _hx_tmp7 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
 HXDLIN( 513)		_hx_tmp7->set(HX_("sqrt",e0,ab,59,4c),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("sqrt",e0,ab,59,4c),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("num",46,de,53,00),null(),0,0)), ::Dynamic(new _hx_Closure_7()))));
 HXLINE( 520)		 ::haxe::ds::StringMap _hx_tmp8 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
-HXDLIN( 520)		_hx_tmp8->set(HX_("cos",47,80,4b,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("cos",47,80,4b,00),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0)), ::Dynamic(new _hx_Closure_8()))));
+HXDLIN( 520)		_hx_tmp8->set(HX_("sin",18,9f,57,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("sin",18,9f,57,00),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0)), ::Dynamic(new _hx_Closure_8()))));
 HXLINE( 527)		 ::haxe::ds::StringMap _hx_tmp9 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
-HXDLIN( 527)		_hx_tmp9->set(HX_("tan",61,5a,58,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("tan",61,5a,58,00),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0)), ::Dynamic(new _hx_Closure_9()))));
+HXDLIN( 527)		_hx_tmp9->set(HX_("cos",47,80,4b,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("cos",47,80,4b,00),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0)), ::Dynamic(new _hx_Closure_9()))));
 HXLINE( 534)		 ::haxe::ds::StringMap _hx_tmp10 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
-HXDLIN( 534)		_hx_tmp10->set(HX_("pow",98,5d,55,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("pow",98,5d,55,00),::Array_obj< ::Dynamic>::__new(2)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0))->init(1, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("y",79,00,00,00), ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,( (Float)(1) ),0,0),0,0)), ::Dynamic(new _hx_Closure_10()))));
+HXDLIN( 534)		_hx_tmp10->set(HX_("tan",61,5a,58,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("tan",61,5a,58,00),::Array_obj< ::Dynamic>::__new(1)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0)), ::Dynamic(new _hx_Closure_10()))));
+HXLINE( 541)		 ::haxe::ds::StringMap _hx_tmp11 = ::src::types::V_obj::toMap(this->environment->get(HX_("math",c8,41,56,48)));
+HXDLIN( 541)		_hx_tmp11->set(HX_("pow",98,5d,55,00),::src::types::Value_obj::VNative( ::src::types::NativeFunction_obj::__alloc( HX_CTX ,HX_("pow",98,5d,55,00),::Array_obj< ::Dynamic>::__new(2)->init(0, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("x",78,00,00,00),null(),0,0))->init(1, ::src::ast::Parameter_obj::__alloc( HX_CTX ,HX_("y",79,00,00,00), ::src::ast::NumberExpr_obj::__alloc( HX_CTX ,( (Float)(1) ),0,0),0,0)), ::Dynamic(new _hx_Closure_11()))));
             	}
 
 

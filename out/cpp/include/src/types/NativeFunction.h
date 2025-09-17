@@ -6,7 +6,6 @@
 #include <hxcpp.h>
 #endif
 
-HX_DECLARE_CLASS1(src,ASTWalker)
 HX_DECLARE_CLASS1(src,Environment)
 HX_DECLARE_CLASS1(src,Interpreter)
 HX_DECLARE_CLASS2(src,ast,Parameter)

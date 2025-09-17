@@ -6,10 +6,6 @@
 #include <hxcpp.h>
 #endif
 
-#ifndef INCLUDED_src_ASTWalker
-#include <src/ASTWalker.h>
-#endif
-HX_DECLARE_CLASS1(src,ASTWalker)
 HX_DECLARE_CLASS1(src,Environment)
 HX_DECLARE_CLASS1(src,Interpreter)
 HX_DECLARE_CLASS2(src,ast,ArrayExpr)
@@ -42,10 +38,10 @@ HX_DECLARE_CLASS2(src,types,Value)
 namespace src{
 
 
-class HXCPP_CLASS_ATTRIBUTES Interpreter_obj : public  ::src::ASTWalker_obj
+class HXCPP_CLASS_ATTRIBUTES Interpreter_obj : public ::hx::Object
 {
 	public:
-		typedef  ::src::ASTWalker_obj super;
+		typedef ::hx::Object super;
 		typedef Interpreter_obj OBJ_;
 		Interpreter_obj();
 
@@ -79,12 +75,16 @@ class HXCPP_CLASS_ATTRIBUTES Interpreter_obj : public  ::src::ASTWalker_obj
 		::Dynamic visit_dyn();
 
 		void visitPrintStmt( ::src::ast::PrintStmt stmt);
+		::Dynamic visitPrintStmt_dyn();
 
 		void visitInputStmt( ::src::ast::InputStmt stmt);
+		::Dynamic visitInputStmt_dyn();
 
 		void visitLetStmt( ::src::ast::LetStmt stmt);
+		::Dynamic visitLetStmt_dyn();
 
 		void visitIfStmt( ::src::ast::IfStmt stmt);
+		::Dynamic visitIfStmt_dyn();
 
 		void visitWhileStmt( ::src::ast::WhileStmt stmt);
 		::Dynamic visitWhileStmt_dyn();
@@ -93,41 +93,58 @@ class HXCPP_CLASS_ATTRIBUTES Interpreter_obj : public  ::src::ASTWalker_obj
 		::Dynamic visitForeachStmt_dyn();
 
 		void visitBlockStmt( ::src::ast::BlockStmt stmt);
+		::Dynamic visitBlockStmt_dyn();
 
 		void visitExprStmt( ::src::ast::ExprStmt stmt);
+		::Dynamic visitExprStmt_dyn();
 
 		void visitReturnStmt( ::src::ast::ReturnStmt stmt);
 		::Dynamic visitReturnStmt_dyn();
 
 		void visitFunctionStmt( ::src::ast::FunctionStmt stmt);
+		::Dynamic visitFunctionStmt_dyn();
 
 		void visitStmt( ::src::ast::Stmt stmt);
+		::Dynamic visitStmt_dyn();
 
-		 ::Dynamic visitExpr( ::src::ast::Expr expr);
+		 ::src::types::Value visitExpr( ::src::ast::Expr expr);
+		::Dynamic visitExpr_dyn();
 
 		 ::src::types::Value visitUnaryExpr( ::src::ast::UnaryExpr expr);
+		::Dynamic visitUnaryExpr_dyn();
 
 		 ::src::types::Value visitBinaryExpr( ::src::ast::BinaryExpr expr);
+		::Dynamic visitBinaryExpr_dyn();
 
 		 ::src::types::Value visitNumberExpr( ::src::ast::NumberExpr expr);
+		::Dynamic visitNumberExpr_dyn();
 
 		 ::src::types::Value visitVariableExpr( ::src::ast::VariableExpr expr);
+		::Dynamic visitVariableExpr_dyn();
 
 		 ::src::types::Value visitStringExpr( ::src::ast::StringExpr expr);
+		::Dynamic visitStringExpr_dyn();
 
 		 ::src::types::Value visitCallExpr( ::src::ast::CallExpr expr);
+		::Dynamic visitCallExpr_dyn();
 
 		 ::src::types::Value visitNullExpr( ::src::ast::NullExpr expr);
+		::Dynamic visitNullExpr_dyn();
 
 		 ::src::types::Value visitBooleanExpr( ::src::ast::BooleanExpr expr);
+		::Dynamic visitBooleanExpr_dyn();
 
 		 ::src::types::Value visitArrayExpr( ::src::ast::ArrayExpr expr);
+		::Dynamic visitArrayExpr_dyn();
 
 		 ::src::types::Value visitIndexExpr( ::src::ast::IndexExpr expr);
+		::Dynamic visitIndexExpr_dyn();
 
 		 ::src::types::Value visitMapExpr( ::src::ast::MapExpr expr);
+		::Dynamic visitMapExpr_dyn();
 
 		 ::src::types::Value visitFunctionExpr( ::src::ast::FunctionExpr expr);
+		::Dynamic visitFunctionExpr_dyn();
 
 		void loadFunctions();
 		::Dynamic loadFunctions_dyn();

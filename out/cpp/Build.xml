@@ -15,7 +15,9 @@
    <depend name="include/sys/io/FileInput.h"/>
   </file>
   <file name="src/sys/io/File.cpp" >
+   <depend name="include/haxe/io/Output.h"/>
    <depend name="include/sys/io/File.h"/>
+   <depend name="include/sys/io/FileOutput.h"/>
   </file>
   <file name="src/src/types/Value.cpp" >
    <depend name="include/haxe/IMap.h"/>
@@ -35,7 +37,6 @@
    <depend name="include/src/types/Value.h"/>
   </file>
   <file name="src/src/types/NativeFunction.cpp" >
-   <depend name="include/src/ASTWalker.h"/>
    <depend name="include/src/Environment.h"/>
    <depend name="include/src/Interpreter.h"/>
    <depend name="include/src/ast/Expr.h"/>
@@ -45,7 +46,6 @@
    <depend name="include/src/types/Value.h"/>
   </file>
   <file name="src/src/types/Function.cpp" >
-   <depend name="include/src/ASTWalker.h"/>
    <depend name="include/src/Environment.h"/>
    <depend name="include/src/Interpreter.h"/>
    <depend name="include/src/ast/Expr.h"/>
@@ -54,6 +54,37 @@
    <depend name="include/src/ast/Stmt.h"/>
    <depend name="include/src/types/Function.h"/>
    <depend name="include/src/types/Value.h"/>
+  </file>
+  <file name="src/src/compiler/PyCompiler.cpp" >
+   <depend name="include/Std.h"/>
+   <depend name="include/src/Token.h"/>
+   <depend name="include/src/ast/ArrayExpr.h"/>
+   <depend name="include/src/ast/BinaryExpr.h"/>
+   <depend name="include/src/ast/BlockStmt.h"/>
+   <depend name="include/src/ast/BooleanExpr.h"/>
+   <depend name="include/src/ast/CallExpr.h"/>
+   <depend name="include/src/ast/Expr.h"/>
+   <depend name="include/src/ast/ExprStmt.h"/>
+   <depend name="include/src/ast/ForeachStmt.h"/>
+   <depend name="include/src/ast/FunctionExpr.h"/>
+   <depend name="include/src/ast/FunctionStmt.h"/>
+   <depend name="include/src/ast/IfStmt.h"/>
+   <depend name="include/src/ast/IndexExpr.h"/>
+   <depend name="include/src/ast/InputStmt.h"/>
+   <depend name="include/src/ast/LetStmt.h"/>
+   <depend name="include/src/ast/MapExpr.h"/>
+   <depend name="include/src/ast/Node.h"/>
+   <depend name="include/src/ast/NullExpr.h"/>
+   <depend name="include/src/ast/NumberExpr.h"/>
+   <depend name="include/src/ast/Parameter.h"/>
+   <depend name="include/src/ast/PrintStmt.h"/>
+   <depend name="include/src/ast/ReturnStmt.h"/>
+   <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/src/ast/StringExpr.h"/>
+   <depend name="include/src/ast/UnaryExpr.h"/>
+   <depend name="include/src/ast/VariableExpr.h"/>
+   <depend name="include/src/ast/WhileStmt.h"/>
+   <depend name="include/src/compiler/PyCompiler.h"/>
   </file>
   <file name="src/src/ast/WhileStmt.cpp" >
    <depend name="include/src/ast/BlockStmt.h"/>
@@ -266,9 +297,9 @@
   <file name="src/src/Main.cpp" >
    <depend name="include/Sys.h"/>
    <depend name="include/haxe/Exception.h"/>
+   <depend name="include/haxe/io/Encoding.h"/>
    <depend name="include/haxe/io/Input.h"/>
    <depend name="include/haxe/io/Output.h"/>
-   <depend name="include/src/ASTWalker.h"/>
    <depend name="include/src/Interpreter.h"/>
    <depend name="include/src/Lexer.h"/>
    <depend name="include/src/Main.h"/>
@@ -277,7 +308,9 @@
    <depend name="include/src/Utils.h"/>
    <depend name="include/src/ast/Node.h"/>
    <depend name="include/src/ast/Stmt.h"/>
+   <depend name="include/src/compiler/PyCompiler.h"/>
    <depend name="include/sys/io/File.h"/>
+   <depend name="include/sys/io/FileOutput.h"/>
   </file>
   <file name="src/src/Lexer.cpp" >
    <depend name="include/EReg.h"/>
@@ -292,7 +325,6 @@
    <depend name="include/haxe/IMap.h"/>
    <depend name="include/haxe/ds/StringMap.h"/>
    <depend name="include/haxe/io/Input.h"/>
-   <depend name="include/src/ASTWalker.h"/>
    <depend name="include/src/Environment.h"/>
    <depend name="include/src/Interpreter.h"/>
    <depend name="include/src/Return.h"/>
@@ -341,32 +373,6 @@
    <depend name="include/src/Environment.h"/>
    <depend name="include/src/types/Value.h"/>
   </file>
-  <file name="src/src/ASTWalker.cpp" >
-   <depend name="include/src/ASTWalker.h"/>
-   <depend name="include/src/ast/ArrayExpr.h"/>
-   <depend name="include/src/ast/BinaryExpr.h"/>
-   <depend name="include/src/ast/BlockStmt.h"/>
-   <depend name="include/src/ast/BooleanExpr.h"/>
-   <depend name="include/src/ast/CallExpr.h"/>
-   <depend name="include/src/ast/Expr.h"/>
-   <depend name="include/src/ast/ExprStmt.h"/>
-   <depend name="include/src/ast/FunctionExpr.h"/>
-   <depend name="include/src/ast/FunctionStmt.h"/>
-   <depend name="include/src/ast/IfStmt.h"/>
-   <depend name="include/src/ast/IndexExpr.h"/>
-   <depend name="include/src/ast/InputStmt.h"/>
-   <depend name="include/src/ast/LetStmt.h"/>
-   <depend name="include/src/ast/MapExpr.h"/>
-   <depend name="include/src/ast/Node.h"/>
-   <depend name="include/src/ast/NullExpr.h"/>
-   <depend name="include/src/ast/NumberExpr.h"/>
-   <depend name="include/src/ast/PrintStmt.h"/>
-   <depend name="include/src/ast/Stmt.h"/>
-   <depend name="include/src/ast/StringExpr.h"/>
-   <depend name="include/src/ast/UnaryExpr.h"/>
-   <depend name="include/src/ast/VariableExpr.h"/>
-   <depend name="include/src/types/Value.h"/>
-  </file>
   <file name="src/haxe/iterators/ArrayIterator.cpp" >
    <depend name="include/haxe/iterators/ArrayIterator.h"/>
   </file>
@@ -375,6 +381,7 @@
    <depend name="include/haxe/exceptions/NotImplementedException.h"/>
    <depend name="include/haxe/exceptions/PosException.h"/>
    <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/Encoding.h"/>
    <depend name="include/haxe/io/Error.h"/>
    <depend name="include/haxe/io/Output.h"/>
   </file>
