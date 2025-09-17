@@ -11,12 +11,10 @@
 3. [Motivation](#-motivation)
 4. [Architecture & Design](#-architecture--design)
 5. [Getting Started](#-getting-started)
-
    * [Prerequisites](#prerequisites)
    * [Installation](#-installation)
    * [Running files](#-running-files)
 6. [Usage](#usage)
-
    * [Writing code in Haxic](#-writing-code-in-haxic)
    * [Examples](#-examples)
 7. [Folder Structure](#-folder-structure)
@@ -94,10 +92,10 @@ Haxic has a REPL and a compiler/interpreter, both of which can be run as follows
 
 ```bash
 # Python build:
-py out/py/haxic.py <file> # Omit file for REPL
+py out/py/haxic.py file (-py out_file) # Omit file for REPL, add the last part to use the compiler
 
 # C++ build:
-out/cpp/haxic <file> # Omit file for REPL
+out/cpp/haxic file (-py out_file) # Omit file for REPL, add the last part to use the compiler
 ```
 
 ---
@@ -126,18 +124,21 @@ See the `examples/` folder for sample programs. These programs also act as langu
 
 ## 🏷 Folder Structure
 
-| Path             | Description                                  |
-| ---------------- | -------------------------------------------- |
-| `src/`           | Main source code (parser, interpreter, etc.) |
-| `examples/`      | Example Haxic programs                       |
-| `out/`           | Output directories (Python, C++, etc.)       |
-| `build.bat`      | Windows build script                         |
-| `.gitattributes` | Git settings (line endings, etc.)            |
-| `LICENSE`        | Project license (MIT)                        |
+| Path             | Description                                                                 |
+| ---------------- | --------------------------------------------------------------------------- |
+| `src/`           | Main source code (parser, interpreter, etc.)                                |
+| `examples/`      | Example Haxic programs                                                      |
+| `out/`           | Output directories (Python, C++, etc.)                                      |
+| `haxic_std.py`   | The Haxic standard library, used by Haxic programs ran through the compiler |
+| `build.bat`      | Windows build script                                                        |
+| `.gitattributes` | Git settings (line endings, etc.)                                           |
+| `LICENSE`        | Project license (MIT)                                                       |
 
 ## 📊 Performance
 
-On average, Haxic's C++ build features a performance similar to that of Python, if not greater. The Python build ia about 50x slower, but has a great performance for short programs.
+On average, Haxic's C++ build features a performance similar to that of Python, if not greater. The Python build is about 50x slower, but has a great performance for short programs.
+Also, the new compiler (that generates Python code for now) creates programs that are up to *10-15 times faster* than the C++ tree-walk interpreter.
+This said, another compiler is being built that will generate pure C++ code, with a hopefully huge performance boost, and a bytecode VM is also planned for the near future.
 
 ## ⭐️ Contributing
 
@@ -165,7 +166,7 @@ Haxic is licensed under the **MIT License**.
 * Modules
 * OOP Features
 * A larger standard library
-* Haxic compiler
+* Haxic compiler (partially finished)
 
 ---
 
@@ -173,3 +174,4 @@ Haxic is licensed under the **MIT License**.
 
 * The Haxe community
 * Feedback from any contributors & testers
+* @coco_ryux for helping out!
