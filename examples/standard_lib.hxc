@@ -29,3 +29,8 @@ print range(-15.1, 17.8, 0.5);
 
 let t1 = clock();
 print "Execution time = " + (t1 - t0) * 1000 + "ms";
+
+print math.sin(54);
+print math.cos(b[0] - b[2]);
+print math.tan(b[1] / a);
+print math.pow(g(2, 3), length(c));
