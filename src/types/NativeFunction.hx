@@ -25,7 +25,7 @@ class NativeFunction {
         interp.environment = new Environment(previousEnv);
         for (i in 0...params.length) {
             var param = params[i];
-            var value:Dynamic = null;
+            var value:Value = null;
 
             if (i < args.length) {
                 value = args[i]; // provided by caller
