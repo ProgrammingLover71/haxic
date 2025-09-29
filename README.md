@@ -160,13 +160,12 @@ Haxic is licensed under the **MIT License**.
 ## 📋 Roadmap
 
 * Improved error messages
-* More target backends for the compiler/interpreter (JavaScript, etc.)
-* Optimizations for compilation
+* A JIT (no really)
+* Optimizations
 * Packaging & distribution
 * Modules
-* OOP Features
 * A larger standard library
-* Haxic compiler (partially finished)
+* More features
 
 ---
 
